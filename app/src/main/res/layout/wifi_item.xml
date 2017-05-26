@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+                android:background="@color/white"
+                android:paddingTop="3dp"
+               android:descendantFocusability="blocksDescendants"
+              android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/wifi_item_img_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="-8dp"
+        android:layout_marginBottom="-8dp"
+        android:adjustViewBounds="true"
+        android:layout_alignBottom="@+id/wifi_item_rl_main"
+        android:layout_alignTop="@+id/wifi_item_rl_main"
+        android:src="@mipmap/goods"/>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/seletor_item_wifi_bg"
+        android:id="@+id/wifi_item_rl_main"
+        android:layout_alignParentLeft="true"
+        android:padding="14dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="8dp"
+        android:layout_alignParentStart="true">
+
+       <!-- <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/wifi_item_left"
+            android:gravity="center_vertical"
+            android:orientation="vertical">-->
+        <ImageView
+            android:id="@+id/item_wifi_img_wifi"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp"
+            android:src="@mipmap/wifi_0"
+           />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/item_wifi_tv_state"
+            android:text="可连接"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/item_wifi_img_wifi"
+            android:textColor="@color/text_black_lower"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_wifi_tv_title"
+                android:text="国美在线"
+                android:layout_marginLeft="10dp"
+                android:lines="1"
+                android:layout_toRightOf="@+id/item_wifi_img_wifi"
+                android:maxLength="8"
+                android:ellipsize="end"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/auth"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/item_wifi_tv_title"
+            android:id="@+id/wifi_item_auth"/>
+
+        </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:id="@+id/wifi_item_tv_connect"
+        android:layout_alignParentRight="true"
+        android:text="链接"
+        android:layout_marginRight="10dp"
+        android:layout_alignBottom="@+id/wifi_item_rl_main"
+        android:background="@drawable/tv_bg_orange"
+        android:textColor="@color/colorOranger"
+        />
+
+</RelativeLayout>

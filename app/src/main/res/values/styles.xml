@@ -1,0 +1,54 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="RootViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/mainGreen</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <style name="MyAppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorWhite</item>
+        <item name="colorPrimaryDark">@color/colorWhite</item>
+        <item name="colorAccent">@color/mainGreen</item>
+        <item name="android:windowAnimationStyle">@style/Animation_Activity</item>
+    </style>
+
+    <style name="MyTheme.NoTitleBar.CustomBackground" parent="ImageTranslucentTheme">
+        <item name="android:windowBackground">@mipmap/splash</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+    <style name="MainAppTheme" parent="MyAppTheme">
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+    <style name="ImageTranslucentTheme" parent="MyAppTheme">
+        <!--在Android 4.4之前的版本上运行，直接跟随系统主题-->
+    </style>
+    <style name="Animation_Activity"
+           parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_in</item>
+    </style>
+
+    <style name="MyToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">0dp</item>
+    </style>
+</resources>

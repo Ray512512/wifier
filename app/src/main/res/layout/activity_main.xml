@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/activity_main"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+>
+    <com.traffic.wifiapp.ui.view.CustomViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/text_black_lower"/>
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/background_main"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:weightSum="3">
+
+        <RadioButton
+            android:id="@+id/radio_button_one"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/transparency"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="WiFi"
+            android:scaleType="centerCrop"
+            android:drawableTop="@drawable/seletor_tab_wifi"
+            android:textColor="@color/tab_textcolor"
+            android:textSize="16dp"/>
+
+        <RadioButton
+            android:id="@+id/radio_button_two"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@color/transparency"
+            android:button="@null"
+            android:gravity="center"
+            android:text="附近"
+            android:drawableTop="@drawable/seletor_tab_gps"
+            android:textColor="@color/tab_textcolor"
+            android:textSize="16dp"/>
+
+        <RadioButton
+            android:id="@+id/radio_button_third"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:background="@color/transparency"
+            android:text="商品"
+            android:drawableTop="@drawable/seletor_tab_money"
+            android:textColor="@color/tab_textcolor"
+            android:textSize="16dp"/>
+    </RadioGroup>
+</LinearLayout>

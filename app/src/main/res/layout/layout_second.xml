@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
+
+    <include layout="@layout/common_title"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        >
+       <!-- <com.baidu.mapapi.map.MapView
+            android:id="@+id/mapview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+           />-->
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/mapView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/map_top_view"
+            android:orientation="vertical">
+
+            <com.traffic.wifiapp.ui.view.BannerLayout
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:minHeight="90dp"
+                app:autoPlayDuration="3000"
+                app:imageHeight="160dp"
+                app:indicatorMargin="10dp"
+                app:indicatorPosition="centerBottom"
+                app:indicatorShape="oval"
+                android:layout_marginBottom="-50dp"
+                app:indicatorSpace="3dp"
+                app:scrollDuration="1100"
+                app:selectedIndicatorColor="@color/colorOranger"
+                app:selectedIndicatorHeight="8dp"
+                app:selectedIndicatorWidth="8dp"
+                app:unSelectedIndicatorColor="@color/text_black_lower"
+                app:unSelectedIndicatorHeight="8dp"
+                app:unSelectedIndicatorWidth="8dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/seletor_blackhalf_press"
+                android:gravity="center"
+                android:visibility="gone"
+                android:id="@+id/map_up_down"
+                >
+                <ImageView
+                    android:id="@+id/img_map_up_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_up"
+                    android:layout_marginRight="16dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:text="@string/up"
+                    android:layout_centerInParent="true"
+                    android:drawablePadding="16dp"
+                    android:id="@+id/tv_map_up_down"
+                    android:gravity="center"
+                    />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/seletor_set_my_loc"
+            android:layout_marginBottom="100dp"
+            android:gravity="center"
+            android:id="@+id/map_setmyLocation"
+            android:layout_gravity="bottom|right">
+        <ImageView
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:src="@mipmap/myloc"
+            />
+        </LinearLayout>
+       </FrameLayout>
+</LinearLayout>

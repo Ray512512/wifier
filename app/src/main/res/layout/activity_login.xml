@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_main"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    tools:context="com.traffic.wifiapp.login.LoginActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/logo"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="80dp"
+        />
+    <EditText
+        android:id="@+id/exit_phone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_c_gray"
+        android:drawablePadding="20dp"
+        android:drawableLeft="@mipmap/user"
+        android:hint="手机号"
+        android:inputType="phone"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
+        android:maxLength="11"
+        android:paddingLeft="20dp"
+        android:singleLine="true"
+        />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:textSize="16sp"
+        android:background="@drawable/seletor_main_green"
+        android:textColor="@color/white"
+        android:text="登   录"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_register"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="50dp"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:text="没有账号,点此注册"
+        android:textColor="@color/text_black_middle"
+        android:textSize="16sp"/>
+</LinearLayout>

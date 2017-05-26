@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/background_main"
+              android:layout_width="match_parent"
+              android:layout_below="@+id/top_bar"
+              android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingBottom="20dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_black_high"
+                android:textSize="16sp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:id="@+id/money_name"
+                android:text="格力电器"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorBgAll"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_black_lower"
+                android:textSize="14sp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:text="打赏"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingTop="8dp"
+                    android:id="@+id/money1_liner"
+                    android:paddingBottom="8dp"
+                    android:background="@drawable/seletor_money_choice"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="1小时"
+                        android:id="@+id/money1_time"
+                        android:textColor="@color/money_textcolor"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/money1_line"
+                        android:background="@drawable/seletor_money_choice_bg"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="1元"
+                        android:id="@+id/money1_price"
+                        android:textColor="@color/money_textcolor"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:id="@+id/money2_liner"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/seletor_money_choice"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="4小时"
+                        android:id="@+id/money2_time"
+                        android:textColor="@color/money_textcolor"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/money2_line"
+                        android:background="@drawable/seletor_money_choice_bg"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="2元"
+                        android:id="@+id/money2_price"
+                        android:textColor="@color/money_textcolor"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:id="@+id/money3_liner"
+                    android:background="@drawable/seletor_money_choice"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="24小时"
+                        android:id="@+id/money3_time"
+                        android:textColor="@color/money_textcolor"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/money3_line"
+                        android:background="@drawable/seletor_money_choice_bg"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="5元"
+                        android:id="@+id/money3_price"
+                        android:textColor="@color/money_textcolor"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="25dp"
+            android:text="微信支付"
+            android:textSize="16sp"
+            android:id="@+id/monet_btn_pay"
+            android:textColor="@color/white"
+            android:background="@drawable/seletor_main_green"/>
+    </LinearLayout>

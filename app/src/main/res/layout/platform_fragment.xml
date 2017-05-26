@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:gravity="center_horizontal"
+              android:layout_width="match_parent"
+              android:background="@color/white"
+              android:id="@+id/platform_root"
+              android:layout_below="@+id/top_bar"
+              android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/dashang"
+        android:layout_margin="20dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background_main"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_main"
+        android:paddingBottom="30dp"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:src="@mipmap/money"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/et_pya"
+            android:maxLength="10"
+            android:inputType="numberDecimal"
+            android:textColor="@color/text_black_high"
+            android:textColorHint="@color/text_black_gray"
+            android:hint="在此输入打赏金额"
+            android:background="@color/white"/>
+        </LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="25dp"
+            android:text="微信支付"
+            android:textSize="16sp"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/monet_btn_pay_platform"
+            android:textColor="@color/white"
+            android:background="@drawable/seletor_main_green"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

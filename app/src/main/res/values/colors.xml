@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#fe0101</color>
+    <color name="white">#ffffff</color>
+    <color name="whitePress">#88ffffff</color>
+    <color name="black">#000000</color>
+    <color name="all_bg">#00A1EF</color>
+    <color name="little_yellow">#90FEF4AD</color>
+    <color name="text_black_high">#333333</color>
+    <color name="text_black_middle">#666666</color>
+    <color name="text_black_lower">#999999</color>
+    <color name="text_black_gray">#dddddd</color>
+
+    <color name="colorBgAll">#eeeeee</color><!-- 所有背景颜色 -->
+    <color name="background_main">#F2F2F2</color><!-- 所有背景颜色 -->
+    <color name="cyan">#00BCD4</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhitehlaf">#aaFFFFFF</color>
+    <color name="colorWhitehlaf_press">#88FFFFFF</color>
+    <color name="colorTitleText">#666666</color>
+    <color name="colorTabText">#898989</color>
+    <color name="transparency">#00000000</color>
+    <color name="colorYellow">#F09C61</color>
+    <color name="colorOranger">#df6c1c</color>
+    <color name="colorOrangerPress">#88df6c1c</color>
+    <color name="color_oranger">#dbc12b</color>
+    <color name="mainGreen">#02B890</color>
+    <color name="mainGreenHalf">#8802B890</color>
+    <color name="bgGreen">#95DDCD</color>
+    <color name="pressColor">#32f1f1f1</color>
+    <color name="black_half">#64000000</color>
+    <color name="black_half_press">#32000000</color>
+    <color name="tran_bg">#1f797979</color>
+    <color name="map_item_tv">#e3d9b2</color>
+
+</resources>

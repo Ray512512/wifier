@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="20dp"
+    android:background="@color/little_yellow"
+    >
+
+    <ImageView
+        android:id="@+id/img_wifi"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/ic_wifi" />
+
+    <TextView
+        android:id="@+id/tv_wifi_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_centerVertical="true"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:layout_toRightOf="@+id/img_wifi"
+        android:gravity="center"
+        android:text="1111111111111111111"
+        android:textColor="@color/text_black_high"
+        android:textStyle="bold"
+        android:textSize="20dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EBEBEB"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/img_wifi"/>
+</RelativeLayout>
