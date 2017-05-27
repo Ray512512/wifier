@@ -54,8 +54,7 @@ public static final String TAG="WXManager";
 
         request.nonceStr=wxOrderInfo.getNonce_str();//随机字符串
         request.timeStamp= wxOrderInfo.getCreate_time();
-        request.extData=wxOrderInfo.getLog_id()+"&"+
-                (wxOrderInfo.getOderEntry().getShop_id().equals("0")?"":wxOrderInfo.getOderEntry().getTotal_price());
+        request.extData=wxOrderInfo.getOderEntry().getAllowTime()+"";
 //        request.sign= wxOrderInfo.getSign();
         request.sign=genPayReq(request);
         String A="appid="+request.appId+"&partnerId="+request.partnerId+

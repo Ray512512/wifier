@@ -53,7 +53,6 @@ public class AlertDialogUtil {
      **/
     public static  void  AlertDialog(Context context, String message, String NegativeButton){
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(context.getResources().getString(R.string.alertdialog_title));
         builder.setMessage(message);
         builder.setNegativeButton(NegativeButton, (dialogInterface, i) -> builder.create().dismiss());
         builder.create().show();

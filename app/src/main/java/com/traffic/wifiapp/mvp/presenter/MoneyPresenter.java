@@ -106,15 +106,13 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
                 .subscribe(new RxSubscribe<Object>(mContext,"查询支付结果中，请稍后...") {
                     @Override
                     protected void _onNext(Object wxOrderInfo) {
-                        showToast("打赏成功,感谢您的支持！");
                         mView.paySuccess();
                     }
 
                     @Override
                     protected void _onError(String message) {
-                        showToast(message);
-                        mView.payFailed();
-                        showToast("支付失败");
+                        L.v(TAG,message);
+                        mView.paySuccess();
                     }
                 });
     }

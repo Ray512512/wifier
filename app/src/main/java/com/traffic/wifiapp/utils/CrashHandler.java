@@ -79,12 +79,12 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             mDefaultHandler.uncaughtException(thread,ex);
         }else{//自己处理
             try {//延迟3秒杀进程
-                Thread.sleep(3000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Log.e(TAG, "error : ", e);
             }
             //退出程序
-//            AppManager.getAppManager().AppExit(mContext);
+            AppManager.getInstance(mContext).AppExit(mContext);
         }
 
     }
@@ -112,7 +112,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         }.start();
         //保存日志文件
 //        saveCrashInfo2File(ex);
-        return false;
+        return true;
     }
 
 

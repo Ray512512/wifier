@@ -44,7 +44,7 @@ public class WifiApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        L.isDebug = true;//日志调试开关
+        L.isDebug = false;//日志调试开关
         MyHotFixManager.init(this);
         CrashHandler.getInstance().init(this);
         SDKInitializer.initialize(this);//初始化百度地图
@@ -54,7 +54,6 @@ public class WifiApplication extends Application {
     }
 
     private boolean isOpenWifi(){
-
         long time=0;
         try {
             time= System.currentTimeMillis() - Long.parseLong(String.valueOf(SPUtils.get(getWifiIp(this), 0)));

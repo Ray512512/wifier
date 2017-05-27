@@ -2,7 +2,6 @@ package com.traffic.wifiapp.base;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -39,13 +38,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         AppManager.getInstance(mContext).addActivity(this);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        SystemUtil.smoothSwitchScreen(this);
-        SystemUtil.virtualStatusBar(this);
-        ViewGroup contentFrameLayout = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
-        View parentView = contentFrameLayout.getChildAt(0);
-        if (parentView != null && Build.VERSION.SDK_INT >= 14) {
-            parentView.setFitsSystemWindows(true);
-        }
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        SystemUtil.smoothSwitchScreen(this);
+//        SystemUtil.virtualStatusBar(this);
+//        ViewGroup contentFrameLayout = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
+//        View parentView = contentFrameLayout.getChildAt(0);
+//        if (parentView != null && Build.VERSION.SDK_INT >= 14) {
+//            parentView.setFitsSystemWindows(true);
+//        }
         initPresenter();
         setMainLayout();
         ButterKnife.bind(this);
@@ -220,4 +220,5 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         super.onResume();
         stopService(new Intent(this, WindowsService.class));
     }
+
 }

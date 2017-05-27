@@ -22,6 +22,7 @@ import com.traffic.wifiapp.mvp.view.MoneyIView;
 import com.traffic.wifiapp.ui.view.BannerLayout;
 import com.traffic.wifiapp.ui.view.swipefreshReccycleview.MyRecyclerView;
 import com.traffic.wifiapp.ui.view.swipefreshReccycleview.MySwipeRefreshLayout;
+import com.traffic.wifiapp.utils.L;
 import com.traffic.wifiapp.utils.NetworkTools;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
     public static final int TYPE_SHOW_NORMAL = 1;//打赏给平台
     public static final int TYPE_SHOW_PAYS = 2;//打赏给商家 私人
     public static final int TYPE_SHOW_GOODS = 3;//显示商品
+    private static final java.lang.String TAG = "ShopAndPayFragment";
 
 
     @Bind(R.id.img_back) //收费wifi
@@ -315,13 +317,13 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
 
     @Override
     public void payFailed() {
-        currentPayWifi=null;
+//        currentPayWifi=null;
     }
 
     @Override
     public void paySuccess() {
-        mPresenter.openWifi(currentPayWifi.getAllowTime());
-        currentPayWifi=null;
+//        Log.v("paySuccess", "当前Activity"+ AppManager.getInstance(mContext).getTopActivity().getClass().getSimpleName());
+//        mPresenter.openWifi(currentPayWifi.getAllowTime());
     }
 
     @Override
@@ -332,6 +334,12 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
     }
 
     public void dealPayWifiR(String t){
-        mPresenter.queryPayResult(t);
+        currentPayWifi=null;
+        showShortToast("打赏成功,感谢您的支持！");
+        try {
+        mPresenter.openWifi(Long.parseLong(t));
+        }catch (Exception e){
+            L.e(TAG,e.toString());
+        }
     }
 }

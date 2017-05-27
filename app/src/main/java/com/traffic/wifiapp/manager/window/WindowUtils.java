@@ -28,9 +28,12 @@ public class WindowUtils {
         try {
             if (DeviceUtils.isAppAtBackground(context)) {
                 MainActivity.start(context);
-                WifiProvider currentW = AppManager.getInstance(context).getMainActivity().getPresenter().getWifiFragment().getConnectWifi();
-                if (currentW != null) {
-                    AppManager.getInstance(context).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS, currentW);
+                MainActivity activity=AppManager.getInstance(context).getMainActivity();
+                if(activity!=null) {
+                    WifiProvider currentW = activity.getPresenter().getWifiFragment().getConnectWifi();
+                    if (currentW != null) {
+                        activity.getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS, currentW);
+                    }
                 }
             }
         } catch (Exception e) {

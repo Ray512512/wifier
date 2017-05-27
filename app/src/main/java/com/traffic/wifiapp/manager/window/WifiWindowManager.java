@@ -182,8 +182,8 @@ public class WifiWindowManager implements View.OnClickListener {
         wmParams.gravity = Gravity.TOP | Gravity.LEFT;
         wmParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         wmParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        wmParams.x = SystemUtil.dip2px(mContext, 100);
-        wmParams.y = SystemUtil.dip2px(mContext, 150);
+        wmParams.x = SystemUtil.dip2px(mContext, 0);
+        wmParams.y = SystemUtil.dip2px(mContext, 80);
     }
 
     /**

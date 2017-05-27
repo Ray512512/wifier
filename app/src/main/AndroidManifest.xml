@@ -35,7 +35,7 @@
         android:icon="@drawable/ic_app"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/MyAppTheme"
+        android:theme="@style/AppTheme"
         tools:replace="android:icon">
 
         <meta-data
@@ -61,7 +61,7 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme">
+           >
         </activity>
 
         <service
@@ -75,8 +75,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".login.RegisterActivity"/>
-        <activity android:name=".login.LoginActivity">
+        <activity android:name=".login.RegisterActivity"
+                  android:theme="@style/LoginTheme"/>
+        <activity android:name=".login.LoginActivity"
+            android:theme="@style/LoginTheme">
         </activity>
         <activity android:name=".webclient.WebViewActivity">
         </activity>

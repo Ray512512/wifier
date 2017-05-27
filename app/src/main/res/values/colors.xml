@@ -22,6 +22,7 @@
     <color name="colorTitleText">#666666</color>
     <color name="colorTabText">#898989</color>
     <color name="transparency">#00000000</color>
+    <color name="transparency_bg">#50000000</color>
     <color name="colorYellow">#F09C61</color>
     <color name="colorOranger">#df6c1c</color>
     <color name="colorOrangerPress">#88df6c1c</color>
