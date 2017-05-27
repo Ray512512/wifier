@@ -28,6 +28,7 @@ import com.traffic.wifiapp.bean.User;
 import com.traffic.wifiapp.bean.response.WifiProvider;
 import com.traffic.wifiapp.fragment.ShopAndPayFragment;
 import com.traffic.wifiapp.manager.WifiAdmin;
+import com.traffic.wifiapp.mvp.presenter.MoneyPresenter;
 import com.traffic.wifiapp.utils.AnimaUtil;
 import com.traffic.wifiapp.utils.AppManager;
 import com.traffic.wifiapp.utils.L;
@@ -46,6 +47,7 @@ import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_PAY;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_PAY;
+import static com.traffic.wifiapp.common.ConstantField.H1;
 import static com.traffic.wifiapp.common.ConstantField.USER;
 import static com.traffic.wifiapp.manager.window.WindowUtils.getXinHaoStr;
 import static com.traffic.wifiapp.manager.window.WindowUtils.gotoApp;
@@ -473,9 +475,11 @@ public class WifiWindowManager implements View.OnClickListener {
         switch (wifiProvider.getType()){
             case TYPE_SHOPER_FREE:
                 WifiAdmin.getIntance(mContext).connect(wifiProvider.getSSID());
+                MoneyPresenter.openWifi(24*H1);//打开24小时
                 break;
             case TYPE_SINGLE_FREE:
                 WifiAdmin.getIntance(mContext).connect(wifiProvider.getSSID());
+                MoneyPresenter.openWifi(24*H1);//打开24小时
                 break;
             case TYPE_SHOPER_PAY:
                 MainActivity.start(mContext);

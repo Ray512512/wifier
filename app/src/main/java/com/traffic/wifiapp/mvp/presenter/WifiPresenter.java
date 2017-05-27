@@ -33,6 +33,10 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_FREE;
+import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_FREE;
+import static com.traffic.wifiapp.common.ConstantField.H1;
+
 /**
  * Created by Ray on 2017/5/7.
  * email：1452011874@qq.com
@@ -260,6 +264,9 @@ public class WifiPresenter extends BasePresenter<WifiIView>{
                         L.v(TAG,"匹配到服务器wifi且已连接");
                         isCancle=true;
                         mView.wifiConnectSuccess(w);
+                        if(w.getType()==TYPE_SHOPER_FREE||w.getType()==TYPE_SINGLE_FREE){//当链接是免费wifi
+                            MoneyPresenter.openWifi(24*H1);//打开24小时
+                        }
                         break;
                     }
                 }

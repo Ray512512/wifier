@@ -116,7 +116,7 @@ public class WifiAdmin {
    
     // 得到网络列表     
     public List<ScanResult> getWifiList() {
-        if(mWifiList==null||mWifiList.size()==0)startScan();
+        startScan();
         return mWifiList;   
     }   
    

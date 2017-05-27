@@ -13,6 +13,7 @@ import com.traffic.wifiapp.adatper.WifiAdapter;
 import com.traffic.wifiapp.base.BaseFragment;
 import com.traffic.wifiapp.bean.response.SlideImageUrls;
 import com.traffic.wifiapp.bean.response.WifiProvider;
+import com.traffic.wifiapp.mvp.presenter.MoneyPresenter;
 import com.traffic.wifiapp.mvp.presenter.WifiPresenter;
 import com.traffic.wifiapp.mvp.view.WifiIView;
 import com.traffic.wifiapp.ui.view.BannerLayout;
@@ -29,6 +30,7 @@ import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_PAY;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_PAY;
+import static com.traffic.wifiapp.common.ConstantField.H1;
 import static com.traffic.wifiapp.manager.window.WifiWindowManager.RECIVER_ACTION;
 
 /**
@@ -94,11 +96,13 @@ public class WifiFragment extends BaseFragment<WifiPresenter> implements WifiIVi
                 case TYPE_SHOPER_FREE:
 //                    showLoadingView();
                     mPresenter.connect(wifiProvider.getSSID());
+                    MoneyPresenter.openWifi(24*H1);//打开24小时
                     AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS,wifiProvider);
                     break;
                 case TYPE_SINGLE_FREE:
 //                    showLoadingView();
                     mPresenter.connect(wifiProvider.getSSID());
+                    MoneyPresenter.openWifi(24*H1);//打开24小时
                     AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS,wifiProvider);
                     break;
                 case TYPE_SHOPER_PAY:
@@ -171,6 +175,7 @@ public class WifiFragment extends BaseFragment<WifiPresenter> implements WifiIVi
 
     @Override
     public void wifiConnectCancle() {
+        adapter.setAll(null);
         adapter.setConnectWifiState(null);
         currentContectWifi=null;
         mContext.sendBroadcast(new Intent(RECIVER_ACTION));

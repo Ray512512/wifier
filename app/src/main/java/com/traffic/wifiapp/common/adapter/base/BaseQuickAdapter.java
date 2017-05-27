@@ -5,13 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
  * Created by HanHailong on 15/9/6.
@@ -162,7 +158,9 @@ public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends R
 
     public void setAll(List<T> elem) {
         mData.clear();
-        mData.addAll(elem);
+        if(elem!=null){
+            mData.addAll(elem);
+        }
         notifyDataSetChanged();
     }
 

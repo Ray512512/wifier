@@ -49,7 +49,7 @@ public class WifiApplication extends Application {
         CrashHandler.getInstance().init(this);
         SDKInitializer.initialize(this);//初始化百度地图
         if(isOpenWifi())
-        MoneyPresenter.openWifi(5*M1);//打开app 尝试打开免费wifi5min
+        MoneyPresenter.openWifi(15*M1);//打开app 尝试打开免费wifi5min
 
     }
 
@@ -61,7 +61,7 @@ public class WifiApplication extends Application {
             L.e(e.toString());
             return false;
         }
-        if(time>H1*1000){
+        if(time>H1*1000){//毫秒级别 x1000
             return true;
         }
         return false;

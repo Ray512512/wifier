@@ -3,8 +3,8 @@ package com.traffic.wifiapp.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.DhcpInfo;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -159,9 +159,10 @@ private static boolean isFastMobileNetwork(Context context) {
       WifiManager wifiManager = (WifiManager)context. getSystemService(Context.WIFI_SERVICE);
       //判断wifi是否开启
       if (wifiManager.isWifiEnabled()) {
-         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-         int ipAddress = wifiInfo.getIpAddress();
-         ip = intToIp(ipAddress);
+          DhcpInfo d=wifiManager.getDhcpInfo();
+          int ipAddress=d.gateway;
+          ip = intToIp(ipAddress);
+          L.v("getWifiIp",d.toString());
       }
       return ip;
    }

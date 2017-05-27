@@ -14,6 +14,7 @@ import com.traffic.wifiapp.mvp.view.MoneyIView;
 import com.traffic.wifiapp.retrofit.ApiManager;
 import com.traffic.wifiapp.rxjava.RxHelper;
 import com.traffic.wifiapp.rxjava.RxSubscribe;
+import com.traffic.wifiapp.utils.FileUtils;
 import com.traffic.wifiapp.utils.L;
 import com.traffic.wifiapp.utils.NetworkTools;
 import com.traffic.wifiapp.utils.SPUtils;
@@ -24,8 +25,6 @@ import java.util.HashMap;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static com.traffic.wifiapp.common.ConstantField.DEDIRECT;
 
 
 /**
@@ -118,9 +117,10 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
     }
 
     public static void openWifi(long duration){
-        String ip= NetworkTools.getWifiIp(WifiApplication.getInstance()),redirect=DEDIRECT;
+        String ip= NetworkTools.getWifiIp(WifiApplication.getInstance());
 //        ip="192.168.10.1";
-        String url="http://"+ip+":2060/wifidog/shumo?allow="+true+"&duration="+duration+"&redirect="+redirect;
+        String url="http://"+ip+":2060/wifidog/shumo?allow="+1+"&duration="+duration;
+        FileUtils.writeTxtToFile("尝试打开当前链接wifi开关---"+"url:+"+url,FileUtils.path,"wifi开关调试日志");
         L.v("openWifi",url);
 //        Toast.makeText(WifiApplication.getInstance(),"连接wifi中，请稍后...",Toast.LENGTH_SHORT).show();
         String finalIp = ip;
@@ -135,6 +135,7 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
                     public void onError(Throwable e) {
 //                        Toast.makeText(WifiApplication.getInstance(),"开启wifi失败",Toast.LENGTH_SHORT).show();
                         L.v(TAG,e.toString());
+                        FileUtils.writeTxtToFile("尝试打开失败"+"url:+"+url+"失败原因："+e.toString(),FileUtils.path,"wifi开关调试日志");
                     }
 
                     @Override
