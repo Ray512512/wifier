@@ -48,14 +48,10 @@ public class MapItemView extends FrameLayout {
                    else if(mWifiProvider!=null)
                     switch (mWifiProvider.getType()){
                         case TYPE_SHOPER_FREE:
-                            AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS,mWifiProvider);
-                            break;
                         case TYPE_SINGLE_FREE:
                             AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS,mWifiProvider);
                             break;
                         case TYPE_SHOPER_PAY:
-                            AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_PAYS,mWifiProvider);
-                            break;
                         case TYPE_SINGLE_PAY:
                             AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_PAYS,mWifiProvider);
                             break;

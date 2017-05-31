@@ -74,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:text="1元"
+                        android:text="0.1元"
                         android:id="@+id/money1_price"
                         android:textColor="@color/money_textcolor"/>
 
@@ -114,7 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:text="2元"
+                        android:text="0.2元"
                         android:id="@+id/money2_price"
                         android:textColor="@color/money_textcolor"/>
 
@@ -152,7 +152,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:text="5元"
+                        android:text="0.5元"
                         android:id="@+id/money3_price"
                         android:textColor="@color/money_textcolor"/>
 

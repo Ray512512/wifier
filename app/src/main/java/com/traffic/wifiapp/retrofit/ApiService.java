@@ -54,7 +54,7 @@ public interface ApiService {
     Observable<BaseModel<Object>> queryPayResult(@Body HashMap<String, String> map);
 
     @GET
-    Observable<Object> openWifiByIp(@Url String url);
+    Observable<String >openWifiByIp(@Url String url);
 
     @GET("wap/news/article.html")
     Observable<BaseModel<ArrayList<Goods>>> getShowGoods(@Query("shop_id") String shop_id);

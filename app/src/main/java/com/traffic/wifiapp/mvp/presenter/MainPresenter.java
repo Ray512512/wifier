@@ -12,10 +12,13 @@ import com.traffic.wifiapp.R;
 import com.traffic.wifiapp.base.BaseIView;
 import com.traffic.wifiapp.base.BasePresenter;
 import com.traffic.wifiapp.bean.response.WifiProvider;
+import com.traffic.wifiapp.common.WifiApplication;
+import com.traffic.wifiapp.fragment.MapFragment;
 import com.traffic.wifiapp.fragment.ShopAndPayFragment;
 import com.traffic.wifiapp.fragment.WifiFragment;
-import com.traffic.wifiapp.fragment.MapFragment;
-import com.traffic.wifiapp.utils.AppManager;
+
+import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_PAY;
+import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_PAY;
 
 /**
  * Created by Ray on 2017/5/6.
@@ -91,22 +94,28 @@ public class MainPresenter extends BasePresenter {
                     viewpager.setCurrentItem(FRAGMENT_INDEX_TWO);
                     break;
                 case R.id.radio_button_third:
-                    WifiProvider mWifiProvider= AppManager.getInstance(mContext).getMainActivity().getPresenter().getWifiFragment().getConnectWifi();
-                    if(mWifiProvider==null){//
-                        setMoneyPage(ShopAndPayFragment.TYPE_SHOW_NORMAL,mWifiProvider);
-                    }else {
-                        setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS,mWifiProvider);
-                    }
                     break;
                 default:
                     break;
             }
         });
+        mainActivity.findViewById(R.id.radio_button_third).setOnClickListener(v -> {
+            WifiProvider mWifiProvider= WifiApplication.getInstance().getCurrentWifi();
+            if(mWifiProvider==null){//
+                setMoneyPage(ShopAndPayFragment.TYPE_SHOW_NORMAL,mWifiProvider);
+            }else {
+                if(mWifiProvider.getType()==TYPE_SHOPER_PAY||mWifiProvider.getType()==TYPE_SINGLE_PAY){
+                    setMoneyPage(ShopAndPayFragment.TYPE_SHOW_PAYS,mWifiProvider);
+                }else {
+                    setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS,mWifiProvider);
+                }
+            }
+        });
     }
 
     public void setMoneyPage(int type, WifiProvider wifiProvider){
-        ((ShopAndPayFragment)mFragments[FRAGMENT_INDEX_THREE]).setmWifiProvider(wifiProvider);
         ((ShopAndPayFragment)mFragments[FRAGMENT_INDEX_THREE]).setViewType(type);
+        ((ShopAndPayFragment)mFragments[FRAGMENT_INDEX_THREE]).setmWifiProvider(wifiProvider);
         viewpager.setCurrentItem(FRAGMENT_INDEX_THREE);
     }
 

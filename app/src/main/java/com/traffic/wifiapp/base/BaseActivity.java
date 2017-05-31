@@ -190,30 +190,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         AppManager.getInstance(mContext).killActivity(this);
     }
 
-    @Override
-    public void onRefreshSuccess() {
 
-    }
-
-    @Override
-    public void onRefreshFaile() {
-
-    }
-
-    @Override
-    public void showLoading(String msg) {
-
-    }
-
-    @Override
-    public void stopLoading() {
-
-    }
-
-    @Override
-    public void showEmpty() {
-
-    }
 
     @Override
     protected void onResume() {

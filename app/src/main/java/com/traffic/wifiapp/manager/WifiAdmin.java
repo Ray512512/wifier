@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.traffic.wifiapp.utils.AlertDialogUtil;
 import com.traffic.wifiapp.utils.GPSUtils;
+import com.traffic.wifiapp.utils.L;
 
 import java.util.List;
 
@@ -168,6 +169,7 @@ public class WifiAdmin {
     }
 
     public void connect(String ssid){
+        L.v("connect","正在尝试链接："+ssid);
         Toast.makeText(mContext,"连接中，请稍后...",Toast.LENGTH_SHORT).show();
         addNetwork(CreateWifiInfo(ssid,"",1));
     }

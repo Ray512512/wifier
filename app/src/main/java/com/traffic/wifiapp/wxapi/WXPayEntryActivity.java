@@ -77,14 +77,10 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
             Log.v(TAG, "errCode="+payResp.errCode+"\terrStr="+payResp.errStr+"\textData"+payResp.extData
             +"\treturnKey="+payResp.returnKey+"\tprepayId="+payResp.prepayId+"\tcheckArgs="+payResp.checkArgs()+
             "\topenId="+payResp.openId+"\tgetType="+payResp.getType()+"\ttransaction="+payResp.transaction);
-            if(isPaySuccess){
                 MainActivity activity= AppManager.getInstance(mContext).getMainActivity();
                 if(activity!=null){
-                    activity.getPresenter().getPayFragment().dealPayWifiR(transactionId);
+                    activity.getPresenter().getPayFragment().dealPayWifiR(transactionId,isPaySuccess);
                 }
-            }else {
-                showShortToast("支付失败");
-            }
         }
         finish();
     }

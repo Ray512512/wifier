@@ -1,6 +1,7 @@
 package com.traffic.wifiapp.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.traffic.wifiapp.base.BaseFragment;
 import com.traffic.wifiapp.bean.entry.OderEntry;
 import com.traffic.wifiapp.bean.response.Goods;
 import com.traffic.wifiapp.bean.response.WifiProvider;
+import com.traffic.wifiapp.manager.WifiAdmin;
 import com.traffic.wifiapp.mvp.presenter.MoneyPresenter;
 import com.traffic.wifiapp.mvp.view.MoneyIView;
 import com.traffic.wifiapp.ui.view.BannerLayout;
@@ -106,6 +108,7 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
 
 
     public void setmWifiProvider(WifiProvider mWifiProvider) {
+        if(viewType==TYPE_SHOW_NORMAL)return;
         this.mWifiProvider = mWifiProvider;
     }
 
@@ -133,7 +136,7 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         //懒加载
-        if (getUserVisibleHint()&&currentPayWifi==null) {
+        if (getUserVisibleHint()&&currentPayWifi==null&&platformRoot!=null) {
             platformRoot.setVisibility(View.GONE);
             fragmentMoneyRoot.setVisibility(View.GONE);
             showGoods.setVisibility(View.GONE);
@@ -158,6 +161,11 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUserVisibleHint(true);
+    }
 
     @Override
     protected void initView(Bundle savedInstanceSate) {
@@ -271,7 +279,7 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
                 time= H4;
                 break;
             case MONEY_CHECK_24H:
-                text = money2Price.getText().toString();
+                text = money3Price.getText().toString();
                 price = text.substring(0, text.length() - 1);
                 msg = "购买了"+money2Time.getText().toString()+"wifi使用";
                 time= H24;
@@ -284,20 +292,6 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
         return currentPayWifi;
     }
 
-
-//    private ArrayList<SlideImageUrls> slideImageUrlses;
-
-   /* @Override
-    public void showSlide(List<SlideImageUrls> urls) {
-        slideImageUrlses = (ArrayList<SlideImageUrls>) urls;
-        List<String> showUrls = new ArrayList<>();
-        List<String> clickUrls = new ArrayList<>();
-        for (SlideImageUrls s : urls) {
-            showUrls.add(s.getPic_url());
-            clickUrls.add(s.getLink_url());
-        }
-        banner.setViewUrls(showUrls);
-    }*/
 
     @Override
     public void showGoods(ArrayList<Goods> goodses) {
@@ -312,7 +306,12 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
                 slides.add(goods.getPhotolb());
             }
         }
-        banner.setViewUrls(slides);
+        if(slides.size()==0){
+            banner.setVisibility(View.GONE);
+        }else {
+            banner.setVisibility(View.VISIBLE);
+            banner.setViewUrls(slides);
+        }
     }
 
     @Override
@@ -333,13 +332,25 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
         return rootView;
     }
 
-    public void dealPayWifiR(String t){
-        currentPayWifi=null;
+    public static boolean isOpenWifi=false;
+    public static long allowTime=0;
+    public void dealPayWifiR(String t,boolean isSuccess){
+        if(TextUtils.isEmpty(t)||!isSuccess){
+                return;
+        }
+        isOpenWifi=true;
         showShortToast("打赏成功,感谢您的支持！");
+        new Handler().postDelayed(() -> {
+            isOpenWifi = false;
+            allowTime=0;
+        },10*1000);
         try {
-        mPresenter.openWifi(Long.parseLong(t));
+        allowTime=Long.parseLong(t);
+        WifiAdmin.getIntance(mContext).connect(currentPayWifi.getProvider().getSSID());
+//        MoneyPresenter.openWifi();
         }catch (Exception e){
             L.e(TAG,e.toString());
         }
+        currentPayWifi=null;
     }
 }

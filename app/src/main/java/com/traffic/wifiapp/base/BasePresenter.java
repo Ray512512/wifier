@@ -27,13 +27,4 @@ public abstract class BasePresenter<I extends BaseIView> {
             mView = null;
         }
     }
-
-    public void showLoading(String msg) {
-        if (mView != null) {
-            mView.showLoading(msg);
-        }
-    }
-
-
-
 }

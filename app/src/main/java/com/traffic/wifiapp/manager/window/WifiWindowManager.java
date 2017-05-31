@@ -1,9 +1,6 @@
 package com.traffic.wifiapp.manager.window;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -26,11 +23,11 @@ import com.traffic.wifiapp.MainActivity;
 import com.traffic.wifiapp.R;
 import com.traffic.wifiapp.bean.User;
 import com.traffic.wifiapp.bean.response.WifiProvider;
-import com.traffic.wifiapp.fragment.ShopAndPayFragment;
+import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.manager.WifiAdmin;
-import com.traffic.wifiapp.mvp.presenter.MoneyPresenter;
+import com.traffic.wifiapp.mvp.presenter.WifiAppPresenter;
+import com.traffic.wifiapp.mvp.view.WifiServiceIView;
 import com.traffic.wifiapp.utils.AnimaUtil;
-import com.traffic.wifiapp.utils.AppManager;
 import com.traffic.wifiapp.utils.L;
 import com.traffic.wifiapp.utils.LocationUtils;
 import com.traffic.wifiapp.utils.SPUtils;
@@ -47,7 +44,6 @@ import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_PAY;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_PAY;
-import static com.traffic.wifiapp.common.ConstantField.H1;
 import static com.traffic.wifiapp.common.ConstantField.USER;
 import static com.traffic.wifiapp.manager.window.WindowUtils.getXinHaoStr;
 import static com.traffic.wifiapp.manager.window.WindowUtils.gotoApp;
@@ -56,7 +52,7 @@ import static com.traffic.wifiapp.manager.window.WindowUtils.gotoApp;
  * Created by ray on 2017/5/24.
  */
 
-public class WifiWindowManager implements View.OnClickListener {
+public class WifiWindowManager implements View.OnClickListener, WifiServiceIView {
     private final String TAG = "WifiWindowManager";
     public static final String RECIVER_ACTION = "wifiListChange";//注册的wifi监听广播
     @Bind(R.id.img_center)
@@ -143,10 +139,11 @@ public class WifiWindowManager implements View.OnClickListener {
 
     private Context mContext;
     private static WifiWindowManager windowManager;
+    private WifiAppPresenter wifiAppPresenter;
 
     public static WifiWindowManager getIntance(Context context) {
         if (windowManager == null) {
-            windowManager = new WifiWindowManager(context);
+            windowManager = new WifiWindowManager(context.getApplicationContext());
         }
         return windowManager;
     }
@@ -160,17 +157,15 @@ public class WifiWindowManager implements View.OnClickListener {
         initView();
         addWindowView2Window();
         initClick();
-        registBordCast();
+        initPrestener();
+
     }
 
-    /**
-     * 注册wifi列表变化的广播
-     * */
-    public void registBordCast(){
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(RECIVER_ACTION);
-        mContext.registerReceiver(mRecaiver, filter);
+    private void initPrestener(){
+        wifiAppPresenter= WifiApplication.getInstance().getWifiAppPresenter();
+        wifiAppPresenter.setmServiceIView(this);
     }
+
 
     /**
      * 初始化悬浮窗参数
@@ -317,14 +312,10 @@ public class WifiWindowManager implements View.OnClickListener {
 
     public void getDataFromWifiFragment() {
         try {
-            MainActivity activity = AppManager.getInstance(mContext).getMainActivity();
             windowItem1.setVisibility(View.GONE);
             windowItem2.setVisibility(View.GONE);
             windowItem3.setVisibility(View.GONE);
             setMainCOntentViewH(0);
-            if (activity != null) {
-                currentW = activity.getPresenter().getWifiFragment().getConnectWifi();//获取当前已连接wifi
-                 ww = activity.getPresenter().getWifiFragment().getWifiList();//获取可用wifi列表
                 if (ww != null) {
                     int size = ww.size();
                     for (int i = 0; i < size; i++) {
@@ -349,7 +340,6 @@ public class WifiWindowManager implements View.OnClickListener {
                     }
                     setMainCOntentViewH(ViewUtils.getViewHeight(windowItem1)*size);
                 }
-            }
         } catch (Exception e) {
             L.e(TAG,e.toString());
         }
@@ -421,8 +411,6 @@ public class WifiWindowManager implements View.OnClickListener {
             Log.i(TAG, "removeView");
             mWindowManager.removeView(mWindowView);
         }
-        if(mRecaiver!=null)
-            mContext.unregisterReceiver(mRecaiver);
     }
 
     @Override
@@ -471,23 +459,16 @@ public class WifiWindowManager implements View.OnClickListener {
             Toast.makeText(mContext,"wifi信息已丢失",Toast.LENGTH_SHORT).show();
             return;
         }
-        if(button.getText().equals("已连"))return;
+//        if(button.getText().equals("已连"))return;
         switch (wifiProvider.getType()){
             case TYPE_SHOPER_FREE:
-                WifiAdmin.getIntance(mContext).connect(wifiProvider.getSSID());
-                MoneyPresenter.openWifi(24*H1);//打开24小时
-                break;
             case TYPE_SINGLE_FREE:
+                if(button.getText().equals("已连"))return;
                 WifiAdmin.getIntance(mContext).connect(wifiProvider.getSSID());
-                MoneyPresenter.openWifi(24*H1);//打开24小时
                 break;
             case TYPE_SHOPER_PAY:
-                MainActivity.start(mContext);
-                AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_PAYS,wifiProvider);
-                break;
             case TYPE_SINGLE_PAY:
-                MainActivity.start(mContext);
-                AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_PAYS,wifiProvider);
+                MainActivity.jumpPay(mContext,wifiProvider);
                 break;
         }
     }catch (Exception e){
@@ -495,17 +476,28 @@ public class WifiWindowManager implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void showWifiList(ArrayList<WifiProvider> wifiProviders) {
+        ww=wifiProviders;
+        getDataFromWifiFragment();
+    }
 
+    @Override
+    public void wifiConnectSuccess(WifiProvider s) {
+          currentW=s;
+        getDataFromWifiFragment();
+    }
 
-    private BroadcastReceiver mRecaiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            if(action.equals(RECIVER_ACTION)){
-                L.v(TAG,"wifi列表数据变化，刷新悬浮窗");
-                getDataFromWifiFragment();//刷新wifi列表
-            }
+    @Override
+    public void wifiConnectCancle() {
+          currentW=null;
+          ww=null;
+        getDataFromWifiFragment();
+    }
 
-        }
-    };
+    @Override
+    public void wifiNoConnect() {
+        currentW=null;
+        getDataFromWifiFragment();
+    }
 }

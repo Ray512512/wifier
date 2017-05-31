@@ -1,6 +1,5 @@
 package com.traffic.wifiapp.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,8 +12,9 @@ import com.traffic.wifiapp.adatper.WifiAdapter;
 import com.traffic.wifiapp.base.BaseFragment;
 import com.traffic.wifiapp.bean.response.SlideImageUrls;
 import com.traffic.wifiapp.bean.response.WifiProvider;
-import com.traffic.wifiapp.mvp.presenter.MoneyPresenter;
-import com.traffic.wifiapp.mvp.presenter.WifiPresenter;
+import com.traffic.wifiapp.common.WifiApplication;
+import com.traffic.wifiapp.data.WifiUtils;
+import com.traffic.wifiapp.mvp.presenter.WifiAppPresenter;
 import com.traffic.wifiapp.mvp.view.WifiIView;
 import com.traffic.wifiapp.ui.view.BannerLayout;
 import com.traffic.wifiapp.utils.AppManager;
@@ -30,14 +30,12 @@ import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_PAY;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_PAY;
-import static com.traffic.wifiapp.common.ConstantField.H1;
-import static com.traffic.wifiapp.manager.window.WifiWindowManager.RECIVER_ACTION;
 
 /**
  * Created by caism on 2017/4/14.
  */
 
-public class WifiFragment extends BaseFragment<WifiPresenter> implements WifiIView {
+public class WifiFragment extends BaseFragment implements WifiIView {
     private static final String TAG = "wificonnect";
 
 
@@ -57,8 +55,10 @@ public class WifiFragment extends BaseFragment<WifiPresenter> implements WifiIVi
         return fragment;
     }
 
-    private WifiAdapter adapter;
-    private WifiProvider currentContectWifi;
+    private WifiAppPresenter mPresenter;
+    private  WifiAdapter adapter;
+    private  WifiProvider currentContectWifi;
+    private  boolean isJump=true;
 
 
 
@@ -69,14 +69,14 @@ public class WifiFragment extends BaseFragment<WifiPresenter> implements WifiIVi
 
     @Override
     protected void initPresenter() {
-        mPresenter = new WifiPresenter((Activity) mContext, this);
+        mPresenter = WifiApplication.getInstance().getWifiAppPresenter();
+        mPresenter.setmFragmentView(this);
     }
 
     @Override
     protected void initView(Bundle savedInstanceSate) {
         initHelperView(recyclerView);
         showLoadingView();
-        mPresenter.registBordCast();
         mPresenter.getSlideUrls();
         tvTitle.setText("WIFI");
 
@@ -86,28 +86,20 @@ public class WifiFragment extends BaseFragment<WifiPresenter> implements WifiIVi
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener((view, position) -> {
             WifiProvider wifiProvider=adapter.getItem(position);
-            if(currentContectWifi!=null){
-                if(currentContectWifi.getBSSID().equals(wifiProvider.getBSSID())){
-                    AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS,wifiProvider);
-                    return;//已经成功链接的wifi 和点击的wifi是同一个则什么都不做
-                }
-            }
-            switch (wifiProvider.getType()){
+            int type=wifiProvider.getType();
+            switch (type){
                 case TYPE_SHOPER_FREE:
-//                    showLoadingView();
-                    mPresenter.connect(wifiProvider.getSSID());
-                    MoneyPresenter.openWifi(24*H1);//打开24小时
-                    AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS,wifiProvider);
-                    break;
                 case TYPE_SINGLE_FREE:
-//                    showLoadingView();
+                    if(currentContectWifi!=null){
+                        if(currentContectWifi.getBSSID().equals(wifiProvider.getBSSID())){
+                            AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS,wifiProvider);
+                            return;//已经成功链接的wifi 和点击的wifi是同一个则什么都不做
+                        }
+                    }
+                    isJump=true;
                     mPresenter.connect(wifiProvider.getSSID());
-                    MoneyPresenter.openWifi(24*H1);//打开24小时
-                    AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS,wifiProvider);
                     break;
                 case TYPE_SHOPER_PAY:
-                    AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_PAYS,wifiProvider);
-                    break;
                 case TYPE_SINGLE_PAY:
                     AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_PAYS,wifiProvider);
                     break;
@@ -131,17 +123,12 @@ public class WifiFragment extends BaseFragment<WifiPresenter> implements WifiIVi
         mPresenter.getScanWifiList();
     }
 
-    public ArrayList<WifiProvider> getWifiList(){
-        if(adapter==null)return null;
-        return adapter.getData();
-    }
-    public WifiProvider getConnectWifi(){
-        return currentContectWifi;
-    }
     @Override
     public void showWifiList(ArrayList<WifiProvider> wifiMsgs) {
+        showDataView();
+        if(AppManager.getInstance(mContext).getMainActivity()==null)return;
             adapter.setAll(wifiMsgs);
-            showDataView();
+            WifiApplication.getInstance().setWifiProviders(wifiMsgs);
             AppManager.getInstance(mContext).getMainActivity().getPresenter().getMapFragment().refresh();
     }
 
@@ -166,29 +153,48 @@ public class WifiFragment extends BaseFragment<WifiPresenter> implements WifiIVi
 
     @Override
     public void wifiConnectSuccess(WifiProvider s) {
+        boolean isFree=WifiUtils.isFreeWifiAndOpenIt(s,false);
+        if(isJump) {
+            isJump=false;
+            if (!isFree) {
+                AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_PAYS, s);
+            } else
+                AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_GOODS, s);
+        }
         currentContectWifi=s;
+        WifiApplication.getInstance().setCurrentWifi(s);
         showDataView();
-        showShortToast("连接成功");
+//        showShortToast("连接成功");
         adapter.setConnectWifiState(s);
-        mContext.sendBroadcast(new Intent(RECIVER_ACTION));
+//        mContext.sendBroadcast(new Intent(RECIVER_ACTION));
     }
 
     @Override
     public void wifiConnectCancle() {
+        WifiApplication.getInstance().setWifiProviders(null);
         adapter.setAll(null);
+        WifiApplication.getInstance().setCurrentWifi(null);
         adapter.setConnectWifiState(null);
         currentContectWifi=null;
-        mContext.sendBroadcast(new Intent(RECIVER_ACTION));
+//        mContext.sendBroadcast(new Intent(RECIVER_ACTION));
+    }
+
+    @Override
+    public void wifiNoConnect() {
+        WifiApplication.getInstance().setCurrentWifi(null);
+        adapter.setConnectWifiState(null);
+        currentContectWifi=null;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mPresenter.unregistBordCast();
+//        mPresenter.setmFragmentView(null);
         ButterKnife.unbind(this);
     }
 
     public void refreshWifiList(){
+        if(adapter!=null)
         adapter.notifyDataSetChanged();
     }
 

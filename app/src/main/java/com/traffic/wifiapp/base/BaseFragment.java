@@ -90,7 +90,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         Toast.makeText(mContext, resId, Toast.LENGTH_SHORT).show();
     }
 
-    private void reShowView(int viewType) {
+ /*   private void reShowView(int viewType) {
         switch (viewType) {
             case ConstantField.TYPE_VIEW_EMPTY:
                 showEmpty();
@@ -102,22 +102,8 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
                 showDataView();
                 break;
         }
-    }
-    protected void onCreateView(Bundle savedInstanceState) {
+    }*/
 
-    }
-
-    public void setContentView(View view) {
-        rootView = view;
-    }
-
-    public void setContentView(int layoutResID) {
-        setContentView((ViewGroup) inflater.inflate(layoutResID, container, false));
-    }
-
-    public View getContentView() {
-        return rootView;
-    }
 
     /**
      * 通过Class跳转界面
@@ -251,25 +237,5 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     //跳转去登录
     @Override
     public void onLoginAction() {
-    }
-
-    @Override
-    public void onRefreshSuccess() {
-
-    }
-
-    @Override
-    public void onRefreshFaile() {
-
-    }
-
-    @Override
-    public void showLoading(String msg) {
-
-    }
-
-    @Override
-    public void stopLoading() {
-
     }
 }

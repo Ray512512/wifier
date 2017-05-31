@@ -25,9 +25,10 @@ public class ConstantField {
     public static final long H1=60*60;//1小时
     public static final long H4=60*60*4;//4小时
     public static final long H24=60*60*24;//24小时
-    public static final String  DEDIRECT="https://www.baidu.com/";//导航地址
+    public static final String  DEDIRECT="https://www.baidu.com";//导航地址
 
 
     public static final String IS_HINT_SYSTEM_WINDOW = "systemDialogPerrmison";//系统弹窗权限
+    public static final String JUMP_ACTION= "jumpAction";
 
 }

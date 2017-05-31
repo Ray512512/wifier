@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.traffic.wifiapp.retrofit.ServerException;
-import com.traffic.wifiapp.utils.FileUtils;
 import com.traffic.wifiapp.utils.L;
 import com.traffic.wifiapp.utils.NetUtil;
 
@@ -84,7 +83,6 @@ public abstract class RxSubscribe<T> extends Subscriber<T> {
             _onError(e.getMessage());
         } else {
             _onError("请求失败，请稍后再试...");
-            FileUtils.writeTxtToFile("网络请求失败："+e.toString(),FileUtils.path,"wifi开关调试日志");
             L.v(TAG, e.toString());
         }
         if (showDialog())

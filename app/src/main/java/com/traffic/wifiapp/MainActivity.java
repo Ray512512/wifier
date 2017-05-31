@@ -9,9 +9,12 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import com.traffic.wifiapp.base.BaseActivity;
+import com.traffic.wifiapp.bean.response.WifiProvider;
 import com.traffic.wifiapp.common.ConstantField;
+import com.traffic.wifiapp.manager.window.WindowUtils;
 import com.traffic.wifiapp.mvp.presenter.MainPresenter;
 import com.traffic.wifiapp.mvp.view.MainIView;
+import com.traffic.wifiapp.service.WindowsService;
 import com.traffic.wifiapp.utils.AlertDialogUtil;
 import com.traffic.wifiapp.utils.SPUtils;
 import com.traffic.wifiapp.utils.SystemUtil;
@@ -22,6 +25,8 @@ import java.util.TimerTask;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
+
+import static com.traffic.wifiapp.common.ConstantField.JUMP_ACTION;
 
 @RuntimePermissions
 public class MainActivity extends BaseActivity<MainPresenter> implements MainIView {
@@ -47,6 +52,21 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
     protected void initAfterData() {
         MainActivityPermissionsDispatcher.windowPermissionPassWithCheck(this);
         checkWindowPerission();
+        checkJump();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        checkJump();
+    }
+
+    private void checkJump(){
+        WifiProvider w=getIntent().getParcelableExtra(JUMP_ACTION);
+        if(w!=null){
+            WindowUtils.checkJumpAction(this,w);
+        }
     }
 
     @Override
@@ -64,6 +84,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
+
+    public static void jumpPay(Context context, WifiProvider w){
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(JUMP_ACTION,w);
+        context.startActivity(intent);
+    }
     private static boolean isExit = false;
     @Override
     public void onBackPressed() {
@@ -79,9 +106,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
                 }
             }, 2000);
         } else {
+            startService(new Intent(this, WindowsService.class));
 //            System.exit(0);
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

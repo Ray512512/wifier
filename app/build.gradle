@@ -96,4 +96,5 @@ dependencies {
 
     compile 'com.aliyun.ams:alicloud-android-hotfix:3.0.0'
 
+
 }

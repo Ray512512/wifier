@@ -13,13 +13,14 @@ import java.io.RandomAccessFile;
 public class FileUtils {
     public static final String path = "/sdcard/wifier/";
     public static void writeTxtToFile(String strcontent, String filePath, String fileName) {
+        if(!L.isDebug)return;
         new Thread(() -> {
             makeFilePath(filePath, fileName);
             String strFilePath = filePath + fileName;
             if(!strFilePath.contains(".txt")){
                 strFilePath+=".txt";
             }
-            String strContent =DateUtils.getTimestampStr()+ strcontent + "\r\n";
+            String strContent =TimeFormat.getDateTime(System.currentTimeMillis())+ strcontent + "\r\n";
             try {
                 File file = new File(strFilePath);
                 if (!file.exists()) {

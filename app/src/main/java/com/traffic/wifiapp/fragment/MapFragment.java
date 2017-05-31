@@ -12,11 +12,11 @@ import com.baidu.mapapi.map.MapView;
 import com.traffic.wifiapp.R;
 import com.traffic.wifiapp.base.BaseFragment;
 import com.traffic.wifiapp.bean.response.SlideImageUrls;
+import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.mvp.presenter.BaiduMapPresenter;
 import com.traffic.wifiapp.mvp.view.BaiduMapIView;
 import com.traffic.wifiapp.ui.view.BannerLayout;
 import com.traffic.wifiapp.utils.AnimaUtil;
-import com.traffic.wifiapp.utils.AppManager;
 import com.traffic.wifiapp.webclient.WebViewActivity;
 
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public class MapFragment extends BaseFragment<BaiduMapPresenter> implements Baid
     }
 
     public void refresh(){
-        mPresenter.showWifiPoint(AppManager.getInstance(mContext).getMainActivity().getPresenter().getWifiFragment().getWifiList());
+        mPresenter.showWifiPoint(WifiApplication.getInstance().getWifiProviders());
     }
 
     @Override

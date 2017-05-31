@@ -50,7 +50,6 @@
                 android:maxLines="3"
                 android:layout_gravity="bottom"
                 android:text="价格：10元"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:textColor="@color/text_black_middle"
                 android:textSize="12sp"/>

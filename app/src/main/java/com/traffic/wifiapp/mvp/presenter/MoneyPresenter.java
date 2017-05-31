@@ -14,7 +14,6 @@ import com.traffic.wifiapp.mvp.view.MoneyIView;
 import com.traffic.wifiapp.retrofit.ApiManager;
 import com.traffic.wifiapp.rxjava.RxHelper;
 import com.traffic.wifiapp.rxjava.RxSubscribe;
-import com.traffic.wifiapp.utils.FileUtils;
 import com.traffic.wifiapp.utils.L;
 import com.traffic.wifiapp.utils.NetworkTools;
 import com.traffic.wifiapp.utils.SPUtils;
@@ -22,9 +21,11 @@ import com.traffic.wifiapp.utils.SPUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import static com.traffic.wifiapp.common.ConstantField.DEDIRECT;
 
 
 /**
@@ -66,7 +67,7 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
 
                     @Override
                     protected void _onError(String message) {
-                        showToast("暂无商品数据");
+                        L.v(TAG,"获取商品数据失败");
                         mView.showGoods(null);
                     }
                 });
@@ -119,32 +120,31 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
     public static void openWifi(long duration){
         String ip= NetworkTools.getWifiIp(WifiApplication.getInstance());
 //        ip="192.168.10.1";
-        String url="http://"+ip+":2060/wifidog/shumo?allow="+1+"&duration="+duration;
-        FileUtils.writeTxtToFile("尝试打开当前链接wifi开关---"+"url:+"+url,FileUtils.path,"wifi开关调试日志");
+        String url="http://"+ip+":2060/wifidog/auth?internet=allow"+"&duration="+duration+"&redirect="+DEDIRECT;
+//        FileUtils.writeTxtToFile("尝试打开当前链接wifi开关---"+"url:+"+url,FileUtils.path,"wifi开关调试日志");
         L.v("openWifi",url);
-//        Toast.makeText(WifiApplication.getInstance(),"连接wifi中，请稍后...",Toast.LENGTH_SHORT).show();
         String finalIp = ip;
-        ApiManager.mApiService.openWifiByIp(url)
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Object>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-//                        Toast.makeText(WifiApplication.getInstance(),"开启wifi失败",Toast.LENGTH_SHORT).show();
-                        L.v(TAG,e.toString());
-                        FileUtils.writeTxtToFile("尝试打开失败"+"url:+"+url+"失败原因："+e.toString(),FileUtils.path,"wifi开关调试日志");
-                    }
-
-                    @Override
-                    public void onNext(Object o) {
+        OkHttpClient mOkHttpClient = new OkHttpClient();
+        new Thread() {
+            public void run() {
+                try {
+                    Request request = new Request.Builder().url(url).build();
+                    Response response = mOkHttpClient.newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        L.f(TAG,"开启免费wifi成功："+url);
                         SPUtils.put(finalIp,System.currentTimeMillis());
                         Toast.makeText(WifiApplication.getInstance(),"连接成功，可以免费上网了",Toast.LENGTH_SHORT).show();
-//                        WifiAdmin.getIntance(mContext).connect(entry.getProvider().getIpAddr());
+//                        FileUtils.writeTxtToFile("接口访问成功:"+response.toString(),FileUtils.path,"wifi开关调试日志");
+                    }else if(response.isRedirect()){
+//                        FileUtils.writeTxtToFile("接口重定向:"+response.toString(),FileUtils.path,"wifi开关调试日志");
                     }
-                });
+                } catch (Exception e) {
+                    e.printStackTrace();
+//                    FileUtils.writeTxtToFile("尝试打开失败"+"url:+"+url+"失败原因："+e.toString(),FileUtils.path,"wifi开关调试日志");
+                }
+            }
+        }.start();
     }
+
 
 }
