@@ -71,7 +71,7 @@ public class WifiApplication extends Application{
     public void onCreate() {
         super.onCreate();
         instance = this;
-        L.isDebug = true;//日志调试开关
+        L.isDebug = false;//日志调试开关
         MyHotFixManager.init(this);
         CrashHandler.getInstance().init(this);
         SDKInitializer.initialize(this);//初始化百度地图
