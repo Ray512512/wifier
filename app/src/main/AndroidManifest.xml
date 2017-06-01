@@ -24,6 +24,7 @@
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <!-- 开机广播 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -76,7 +77,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".login.RegisterActivity"
-                  android:theme="@style/LoginTheme"/>
+                  android:theme="@style/RegistTheme"/>
         <activity android:name=".login.LoginActivity"
             android:theme="@style/LoginTheme">
         </activity>

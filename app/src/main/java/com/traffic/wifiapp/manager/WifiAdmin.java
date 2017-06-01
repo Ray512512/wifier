@@ -106,7 +106,10 @@ public class WifiAdmin {
         try {
         if(!GPSUtils.isOPen(mContext)){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if(mContext instanceof Activity)
                 AlertDialogUtil.AlertDialog(mContext, "设置","请打开GPS否则无法获取附近Wifi信息", (dialog, which) -> GPSUtils.openGPS((Activity) mContext));
+               else
+                Toast.makeText(mContext,"请打开GPS否则无法获取附近Wifi信息",Toast.LENGTH_SHORT).show();
             }
         }
         }catch (Exception e){

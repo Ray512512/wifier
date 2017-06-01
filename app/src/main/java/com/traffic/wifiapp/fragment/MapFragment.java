@@ -96,6 +96,7 @@ public class MapFragment extends BaseFragment<BaiduMapPresenter> implements Baid
     }
 
     public void refresh(){
+        if(mPresenter!=null)
         mPresenter.showWifiPoint(WifiApplication.getInstance().getWifiProviders());
     }
 

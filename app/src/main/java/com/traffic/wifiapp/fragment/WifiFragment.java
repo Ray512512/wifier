@@ -84,8 +84,8 @@ public class WifiFragment extends BaseFragment implements WifiIView {
         adapter = new WifiAdapter(mContext);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener((view, position) -> {
-            WifiProvider wifiProvider=adapter.getItem(position);
+        adapter.setOnItemClickListener((view, position) -> WebViewActivity.start(mContext,adapter.getItem(position).getWl()));
+        adapter.setContectCallBack(wifiProvider -> {
             int type=wifiProvider.getType();
             switch (type){
                 case TYPE_SHOPER_FREE:
@@ -105,7 +105,6 @@ public class WifiFragment extends BaseFragment implements WifiIView {
                     break;
             }
         });
-
         banner.setOnBannerItemClickListener(position -> {
             if(slideImageUrlses!=null){
                String clickUrl= slideImageUrlses.get(position).getLink_url();

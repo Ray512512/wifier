@@ -11,8 +11,10 @@ import android.text.TextUtils;
 import com.traffic.wifiapp.base.BaseActivity;
 import com.traffic.wifiapp.bean.response.WifiProvider;
 import com.traffic.wifiapp.common.ConstantField;
+import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.manager.window.WindowUtils;
 import com.traffic.wifiapp.mvp.presenter.MainPresenter;
+import com.traffic.wifiapp.mvp.presenter.WifiAppPresenter;
 import com.traffic.wifiapp.mvp.view.MainIView;
 import com.traffic.wifiapp.service.WindowsService;
 import com.traffic.wifiapp.utils.AlertDialogUtil;
@@ -72,6 +74,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
     @Override
     protected void initPresenter() {
         mPresenter=new MainPresenter(this,this);
+        WifiApplication.getInstance().setmWifiPresenter(new WifiAppPresenter(this));
     }
 
     public MainPresenter getPresenter(){

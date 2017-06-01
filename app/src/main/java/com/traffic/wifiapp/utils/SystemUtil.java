@@ -127,6 +127,7 @@ public class SystemUtil {
 
     //进入应用设置
     public static void goToAppSetting(Context context){
+        if(!(context instanceof Activity))return;
         Uri packageURI = Uri.parse("package:" +context.getPackageName());
         Intent intent =  new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,packageURI);
         ((Activity)context).startActivityForResult(intent,SplashActivity.CHECK_PEERISSION_CODE);

@@ -39,13 +39,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//        SystemUtil.smoothSwitchScreen(this);
-//        SystemUtil.virtualStatusBar(this);
-//        ViewGroup contentFrameLayout = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
-//        View parentView = contentFrameLayout.getChildAt(0);
-//        if (parentView != null && Build.VERSION.SDK_INT >= 14) {
-//            parentView.setFitsSystemWindows(true);
-//        }
+
         initPresenter();
         setMainLayout();
         ButterKnife.bind(this);

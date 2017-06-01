@@ -17,11 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.mapapi.model.LatLng;
 import com.bumptech.glide.Glide;
 import com.traffic.wifiapp.MainActivity;
 import com.traffic.wifiapp.R;
-import com.traffic.wifiapp.bean.User;
 import com.traffic.wifiapp.bean.response.WifiProvider;
 import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.manager.WifiAdmin;
@@ -29,8 +27,6 @@ import com.traffic.wifiapp.mvp.presenter.WifiAppPresenter;
 import com.traffic.wifiapp.mvp.view.WifiServiceIView;
 import com.traffic.wifiapp.utils.AnimaUtil;
 import com.traffic.wifiapp.utils.L;
-import com.traffic.wifiapp.utils.LocationUtils;
-import com.traffic.wifiapp.utils.SPUtils;
 import com.traffic.wifiapp.utils.SystemUtil;
 import com.traffic.wifiapp.utils.ViewUtils;
 
@@ -44,8 +40,6 @@ import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_PAY;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_PAY;
-import static com.traffic.wifiapp.common.ConstantField.USER;
-import static com.traffic.wifiapp.manager.window.WindowUtils.getXinHaoStr;
 import static com.traffic.wifiapp.manager.window.WindowUtils.gotoApp;
 
 /**
@@ -127,6 +121,10 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
     ImageView percentTv;
     @Bind(R.id.window_root)
     RelativeLayout windowRoot;
+    View window_click;
+    ImageView call1;
+    ImageView call2;
+    ImageView call3;
 
     private WindowManager.LayoutParams wmParams;
     private WindowManager mWindowManager;
@@ -153,8 +151,8 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
     }
 
     public void init() {
-        initWindowParams();
         initView();
+        initWindowParams();
         addWindowView2Window();
         initClick();
         initPrestener();
@@ -188,6 +186,7 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
      * */
     private void initView() {
         mWindowView = LayoutInflater.from(mContext).inflate(R.layout.layout_window, null);
+        window_click=LayoutInflater.from(mContext).inflate(R.layout.window_click,null);
         //初始化悬浮球
         windowItem1Tvname=ButterKnife.findById(mWindowView,R.id.window_item1_tvname);
         windowItem1Imgphoto=ButterKnife.findById(mWindowView,R.id.window_item1_imgphoto);
@@ -225,12 +224,54 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         windowTvLoc1=ButterKnife.findById(mWindowView,R.id.window_tv_loc1);
         windowItem1Photo=ButterKnife.findById(mWindowView,R.id.window_item1_photo);
         windowMainChild=ButterKnife.findById(mWindowView,R.id.window_main_child);
+        call1=ButterKnife.findById(mWindowView,R.id.window_item_img_call1);
+        call2=ButterKnife.findById(mWindowView,R.id.window_item_img_call2);
+        call3=ButterKnife.findById(mWindowView,R.id.window_item_img_call3);
+    }
+
+    public void addWindowView2Window() {
+        mWindowManager.addView(window_click, wmParams);
+        mWindowManager.addView(mWindowView, wmParams);
+        mWindowManager.updateViewLayout(mWindowView, wmParams);
+
+
+    }
+
+    /**
+     * 控制悬浮窗展开与收缩
+     * */
+    private void changeMainView(){
+        if(windowMain.getVisibility()==View.GONE){
+            AnimaUtil.showRainBow(windowMainChild,windowMain,AnimaUtil.VERTICAL);
+            window_click.setVisibility(View.VISIBLE);
+        }
+        else{
+            AnimaUtil.goneRainBow(windowMainChild,windowMain,AnimaUtil.VERTICAL);
+            window_click.setVisibility(View.GONE);
+            checkItemViewStatus();
+        }
     }
 
 
-    public void addWindowView2Window() {
-        mWindowManager.addView(mWindowView, wmParams);
-        mWindowManager.updateViewLayout(mWindowView, wmParams);
+    private void checkItemViewStatus(){
+        if(windowItem1Show.getVisibility()==View.VISIBLE){
+            AnimaUtil.goneRainBow(windowItem1ShowChild,windowItem1Show,AnimaUtil.HORIZONTAL);
+        }
+        if(windowItem2Show.getVisibility()==View.VISIBLE){
+            AnimaUtil.goneRainBow(windowItem2ShowChild,windowItem2Show,AnimaUtil.HORIZONTAL);
+        }
+        if(windowItem3Show.getVisibility()==View.VISIBLE){
+            AnimaUtil.goneRainBow(windowItem3ShowChild,windowItem3Show,AnimaUtil.HORIZONTAL);
+        }
+    }
+
+    private void changeItemView(View view,View group){
+        if(group.getVisibility()==View.GONE){
+            checkItemViewStatus();
+            AnimaUtil.showRainBow(view,group,AnimaUtil.HORIZONTAL);
+        }
+        else
+            AnimaUtil.goneRainBow(view,group,AnimaUtil.HORIZONTAL);
     }
 
     private void initClick() {
@@ -240,8 +281,12 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         windowItem1ContectBtn1.setOnClickListener(this);
         windowItem1ContectBtn2.setOnClickListener(this);
         windowItem1ContectBtn3.setOnClickListener(this);
+        call1.setOnClickListener(this);
+        call2.setOnClickListener(this);
+        call3.setOnClickListener(this);
         imgCenter.setOnClickListener(this);
         imgSetting.setOnClickListener(this);
+        window_click.setOnClickListener(v -> changeMainView());
         GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDoubleTap(MotionEvent e) {     //双击事件
@@ -251,10 +296,7 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
 
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-                if(windowMain.getVisibility()==View.GONE)
-                 AnimaUtil.showRainBow(windowMainChild,windowMain,AnimaUtil.VERTICAL);
-                else
-                AnimaUtil.goneRainBow(windowMainChild,windowMain,AnimaUtil.VERTICAL);
+                changeMainView();
                 return true;
             }
         });
@@ -361,16 +403,16 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
      * */
     private void setItemData(int pos, WifiProvider w) {
         if (w == null) return;
-        LatLng latLng = null;
+      /*  LatLng latLng = null;
         User u = SPUtils.getObject(USER);
-        if (u != null) latLng = new LatLng(u.getLat(), u.getLng());
+        if (u != null) latLng = new LatLng(u.getLat(), u.getLng());*/
         switch (pos) {
             case 0:
                 Glide.with(mContext).load(w.getLogo()).placeholder(R.mipmap.ic_photo).
                         bitmapTransform(new CropCircleTransformation(mContext)).into(windowItem1Imgphoto);
-                windowItem1Tvname.setText(w.getShopname());
-                windowTvLoc1.setText(LocationUtils.getDistance(new LatLng(w.getLat(), w.getLng()), latLng));
-                windowItemXinhao1.setText(getXinHaoStr(w.getLevel()));
+//                windowItem1Tvname.setText(w.getShopname());
+                windowTvLoc1.setText(w.getShopname());
+                windowItemXinhao1.setText(w.getAddr());
                 if (currentW != null && currentW.getBSSID().equals(w.getBSSID())) {
                     windowItem1ContectBtn1.setText("已连");
                 } else {
@@ -380,9 +422,9 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
             case 1:
                 Glide.with(mContext).load(w.getLogo()).placeholder(R.mipmap.ic_photo).
                         bitmapTransform(new CropCircleTransformation(mContext)).into(windowItem2Imgphoto);
-                windowItem2Tvname.setText(w.getShopname());
-                windowTvLoc2.setText(LocationUtils.getDistance(new LatLng(w.getLat(), w.getLng()), latLng));
-                windowItemXinhao2.setText(getXinHaoStr(w.getLevel()));
+//                windowItem2Tvname.setText(w.getShopname());
+                windowTvLoc2.setText(w.getShopname());
+                windowItemXinhao2.setText(w.getAddr());
                 if (currentW != null && currentW.getBSSID().equals(w.getBSSID())) {
                     windowItem1ContectBtn2.setText("已连");
                 } else {
@@ -392,9 +434,9 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
             case 2:
                 Glide.with(mContext).load(w.getLogo()).placeholder(R.mipmap.ic_photo).
                         bitmapTransform(new CropCircleTransformation(mContext)).into(windowItem3Imgphoto);
-                windowItem3Tvname.setText(w.getShopname());
-                windowTvLoc3.setText(LocationUtils.getDistance(new LatLng(w.getLat(), w.getLng()), latLng));
-                windowItemXinhao3.setText(getXinHaoStr(w.getLevel()));
+//                windowItem3Tvname.setText(w.getShopname());
+                windowTvLoc3.setText(w.getShopname());
+                windowItemXinhao3.setText(w.getAddr());
                 if (currentW != null && currentW.getBSSID().equals(w.getBSSID())) {
                     windowItem1ContectBtn3.setText("已连");
                 } else {
@@ -417,22 +459,13 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.window_item1_photo:
-                if(windowItem1Show.getVisibility()==View.GONE)
-                AnimaUtil.showRainBow(windowItem1ShowChild,windowItem1Show,AnimaUtil.HORIZONTAL);
-                else
-                AnimaUtil.goneRainBow(windowItem1ShowChild,windowItem1Show,AnimaUtil.HORIZONTAL);
+                changeItemView(windowItem1ShowChild,windowItem1Show);
                 break;
             case R.id.window_item2_photo:
-                if(windowItem2Show.getVisibility()==View.GONE)
-                    AnimaUtil.showRainBow(windowItem2ShowChild,windowItem2Show,AnimaUtil.HORIZONTAL);
-                else
-                    AnimaUtil.goneRainBow(windowItem2ShowChild,windowItem2Show,AnimaUtil.HORIZONTAL);
+                changeItemView(windowItem2ShowChild,windowItem2Show);
                 break;
             case R.id.window_item3_photo:
-                if(windowItem3Show.getVisibility()==View.GONE)
-                    AnimaUtil.showRainBow(windowItem3ShowChild,windowItem3Show,AnimaUtil.HORIZONTAL);
-                else
-                    AnimaUtil.goneRainBow(windowItem3ShowChild,windowItem3Show,AnimaUtil.HORIZONTAL);
+                changeItemView(windowItem3ShowChild,windowItem3Show);
                 break;
             case R.id.window_item1_contect_btn1:
                 connectBtnClick(0,windowItem1ContectBtn1);
@@ -449,6 +482,23 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
             case R.id.img_setting:
                 MainActivity.start(mContext);
                 break;
+            case R.id.window_item_img_call1:
+                call(0);
+                break;
+            case R.id.window_item_img_call2:
+                call(1);
+                break;
+            case R.id.window_item_img_call3:
+                call(2);
+                break;
+        }
+    }
+
+    private void call(int pos){
+        try {
+            WindowUtils.call(mContext,ww.get(pos).getMobile());
+        }catch (Exception E){
+            L.e(TAG,E.toString());
         }
     }
 
