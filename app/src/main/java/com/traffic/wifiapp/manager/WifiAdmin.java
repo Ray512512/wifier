@@ -103,10 +103,14 @@ public class WifiAdmin {
     }   
    
     public void startScan() {
+        try {
         if(!GPSUtils.isOPen(mContext)){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 AlertDialogUtil.AlertDialog(mContext, "设置","请打开GPS否则无法获取附近Wifi信息", (dialog, which) -> GPSUtils.openGPS((Activity) mContext));
             }
+        }
+        }catch (Exception e){
+            L.v("startScan",e.toString());
         }
         mWifiManager.startScan();   
         // 得到扫描结果     

@@ -38,7 +38,12 @@ public class WifiApplication extends Application{
     private User user;
 
     public WifiAppPresenter getWifiAppPresenter() {
+        if(mWifiPresenter==null)mWifiPresenter=new WifiAppPresenter(this);
         return mWifiPresenter;
+    }
+
+    public void setmWifiPresenter(WifiAppPresenter mWifiPresenter) {
+        this.mWifiPresenter = mWifiPresenter;
     }
 
     public ArrayList<WifiProvider> getWifiProviders() {
@@ -78,7 +83,6 @@ public class WifiApplication extends Application{
 //        if(isOpenWifi())
         MoneyPresenter.openWifi(10*M1);//打开app 尝试打开免费wifi5min
 
-        mWifiPresenter=new WifiAppPresenter(this);
     }
 
     private boolean isOpenWifi(){

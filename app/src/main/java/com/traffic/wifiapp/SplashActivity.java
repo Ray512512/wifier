@@ -8,7 +8,9 @@ import android.text.TextUtils;
 
 import com.traffic.wifiapp.base.BaseActivity;
 import com.traffic.wifiapp.common.ConstantField;
+import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.login.LoginActivity;
+import com.traffic.wifiapp.mvp.presenter.WifiAppPresenter;
 import com.traffic.wifiapp.utils.AlertDialogUtil;
 import com.traffic.wifiapp.utils.SPUtils;
 import com.traffic.wifiapp.utils.SystemUtil;
@@ -51,7 +53,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initAfterData() {
-
+        WifiApplication.getInstance().setmWifiPresenter(new WifiAppPresenter(this));
     }
 
     @Override
