@@ -76,7 +76,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
             }
             Log.v(TAG, "errCode="+payResp.errCode+"\terrStr="+payResp.errStr+"\textData"+payResp.extData
             +"\treturnKey="+payResp.returnKey+"\tprepayId="+payResp.prepayId+"\tcheckArgs="+payResp.checkArgs()+
-            "\topenId="+payResp.openId+"\tgetType="+payResp.getType()+"\ttransaction="+payResp.transaction);
+            "\topenId="+payResp.openId+"\tgetmType="+payResp.getType()+"\ttransaction="+payResp.transaction);
                 MainActivity activity= AppManager.getInstance(mContext).getMainActivity();
                 if(activity!=null){
                     activity.getPresenter().getPayFragment().dealPayWifiR(transactionId,isPaySuccess);

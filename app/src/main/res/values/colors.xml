@@ -36,5 +36,7 @@
     <color name="black_half_press">#32000000</color>
     <color name="tran_bg">#1f797979</color>
     <color name="map_item_tv">#e3d9b2</color>
+    <color name="window_bg_start">#04b992</color>
+    <color name="window_bg_end">#42caac</color>
 
 </resources>

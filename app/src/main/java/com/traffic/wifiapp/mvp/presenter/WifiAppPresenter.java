@@ -36,6 +36,8 @@ import rx.schedulers.Schedulers;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_FREE;
 import static com.traffic.wifiapp.common.ConstantField.H1;
+import static com.traffic.wifiapp.manager.WifiUtils.isEqual;
+import static com.traffic.wifiapp.manager.WifiUtils.sortByLevel;
 
 /**
  * Created by Ray on 2017/5/7.
@@ -48,6 +50,7 @@ public class WifiAppPresenter {
     private WifiIView mFragmentView;//view接口
     private WifiServiceIView mServiceIView;
     private Context mContext;
+    public boolean isInit=false;
 
     public void setmFragmentView(WifiIView mFragmentView) {
         this.mFragmentView = mFragmentView;
@@ -64,10 +67,9 @@ public class WifiAppPresenter {
 
 
     private WifiAdmin wifiAdmin ;
-
     private List<ScanResult> list;//附近wifi列表
     private List<ScanResult> listCanUse=new ArrayList<>();//附近wifi列表中 可用的指定路由器
-    private List<String> wifiMacList;//服务器的mac池
+    private List<String> wifiMacList,showMacList;//wifiMacList 服务器的mac池  ;  showMacList展示在首页wifi列表中的mac地址集合
     private ArrayList<WifiProvider> mWifiProviders;
     public boolean isSearching=false;//是否正在更新wifi列表
 
@@ -104,6 +106,7 @@ public class WifiAppPresenter {
         });
     }
 
+
     /**
      * 获取服务器wifi mac池
      * 获取到后再与搜索到的wifi进行匹配出指定路由器wifi
@@ -127,14 +130,21 @@ public class WifiAppPresenter {
     private void getShowWifiList(List<String> wifiMacs){
         if (wifiMacs != null&&wifiMacs.size()!=0) {
             wifiMacList=wifiMacs;
-            List<String > showMaclist=new ArrayList<>();
-            SPUtils.setObject(ConstantField.WIFI_MAC_LIST,wifiMacs);
+            List<String > showMaclist=new ArrayList<>();//最新的展示在wifi列表的mac数据集合
+            listCanUse.clear();
             for (ScanResult scanResult:list){
                 if(wifiMacs.contains(scanResult.BSSID)){
                     showMaclist.add(scanResult.BSSID);
                     listCanUse.add(scanResult);
-                }
+               }
             }
+            if(isInit&&isEqual(showMacList,showMaclist)){//过滤查询重复数据
+                if(mFragmentView!=null)
+                    mFragmentView.showDataView();
+                return;
+            }
+            SPUtils.setObject(ConstantField.WIFI_MAC_LIST,wifiMacs);
+            showMacList=showMaclist;
             L.v(TAG,"getWifiMacList:"+ showMaclist.toString());
             if(showMaclist.size()>0) getWifiMsg(showMaclist);
             else {
@@ -156,28 +166,26 @@ public class WifiAppPresenter {
                 .subscribe(new RxSubscribe<ArrayList<WifiProvider>>() {
                     @Override
                     protected void _onNext(ArrayList<WifiProvider> wifiProviders) {
-                        ArrayList<WifiProvider> wifiProviders2=new ArrayList<WifiProvider>();
+                        ArrayList<WifiProvider> wifiProviders2= new ArrayList<>();
                         for (WifiProvider w:wifiProviders){
                             for (ScanResult s:listCanUse){
                                 if(s.BSSID.equals(w.getMac())){
-                                    L.v(TAG, "可用wifi的服务器信息:"+s.BSSID+"\n"+s.SSID);
+                                    L.v(TAG, "可用wifi的服务器信息:"+s.BSSID+"\r"+s.SSID);
                                     w.setSSID(s.SSID);
                                     w.setBSSID(s.BSSID);
-//                                    w.setIpAddr(s.);
                                     w.setLevel(WifiManager.calculateSignalLevel(s.level, 5));
                                     wifiProviders2.add(w);
                                     break;
                                 }
                             }
-                            
-                            /*w.setBSSID("a6:5e:60:78:e6:ad");
-                            wifiProviders2.add(w);*/
                         }
                         mWifiProviders=sortByLevel(wifiProviders2);
                         if(mServiceIView!=null)
                             mServiceIView.showWifiList((mWifiProviders));
-                        if(mFragmentView!=null)
+                        if(mFragmentView!=null){
                             mFragmentView.showWifiList(mWifiProviders);
+                            isInit=true;
+                        }
                         checkCurrentContect();
                         L.v(TAG,"搜索完成，打开搜索开关");
                     }
@@ -185,26 +193,13 @@ public class WifiAppPresenter {
                     @Override
                     protected void _onError(String message) {
                         L.v(TAG, "获取用户信息接口异常:"+message);
-                        showToast(message);
+//                        showToast(message);
                         if(mFragmentView!=null)
                             mFragmentView.showDataView();
                     }
                 });
     }
-    private ArrayList<WifiProvider> sortByLevel(ArrayList<WifiProvider> list) {
-        for(int i=0;i<list.size();i++)
-            for(int j=1;j<list.size();j++)
-            {
-                if(list.get(i).getLevel()<list.get(j).getLevel())    //level属性即为强度
-                {
-                    WifiProvider temp = null;
-                    temp = list.get(i);
-                    list.set(i, list.get(j));
-                    list.set(j, temp);
-                }
-            }
-        return list;
-    }
+
 
     private void registBordCast(){
         IntentFilter filter = new IntentFilter();
@@ -220,6 +215,7 @@ public class WifiAppPresenter {
         if(mRecaiver!=null)
             mContext.unregisterReceiver(mRecaiver);
     }
+
     private BroadcastReceiver mRecaiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -235,11 +231,6 @@ public class WifiAppPresenter {
                             e.printStackTrace();
                         }
                     }).start();
-                   /* if(isSystem){
-                       getScanWifiList();
-                    }else {
-                        isSystem=true;
-                    }*/
                     break;
                 case WifiManager.WIFI_STATE_CHANGED_ACTION://wifi开关状态变化
                     int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
@@ -258,7 +249,6 @@ public class WifiAppPresenter {
                     }
                     break;
                 case ConnectivityManager.CONNECTIVITY_ACTION://网络切换
-                    isChangeWifi=true;
                     int state= NetworkTools.getNetWorkType(context);
                     switch (state){
                         case NetworkTools.NETWORKTYPE_INVALID://断网
@@ -297,12 +287,9 @@ public class WifiAppPresenter {
         }
     };
 
-    public static boolean isChangeWifi=true;
     private void checkCurrentContect(){
-//        if(!isChangeWifi)return;
             WifiInfo wi=wifiAdmin.getConnectWifi();
             if(mWifiProviders!=null&&mWifiProviders.size()>0&&wi!=null){
-                isChangeWifi=false;
                 L.v(TAG,"当前已连接的网络状态："+wi.getBSSID());
                 boolean isCancle=false;//是否有连接到商家wifi
                 for (WifiProvider w:mWifiProviders){
@@ -350,7 +337,6 @@ public class WifiAppPresenter {
     }
 
     public void connect(String ssid){
-//        wifiAdmin.connect("“Administrator”的 iPhone", "78534plxx", 3);
         wifiAdmin.connect(ssid);
     }
 

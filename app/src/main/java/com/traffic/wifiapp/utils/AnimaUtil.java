@@ -22,6 +22,17 @@ public class AnimaUtil {
         view.startAnimation(anim);//开始动画
     }
 
+    public static void RotateViewByParent(View view,boolean isLeft){
+        Animation anim;
+        if(isLeft)
+            anim=new RotateAnimation(0f, 180f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.5f);
+        else
+            anim=new RotateAnimation(180f, 0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.5f);
+        anim.setDuration(5000);
+        anim.setFillAfter(true);//设置为true，动画转化结束后被应用
+        view.startAnimation(anim);//开始动画
+    }
+
     public static void TranslateShowViewSelfYup(final View view,View showView){
         showView.setVisibility(View.VISIBLE);
         TranslateAnimation animation = new TranslateAnimation(
@@ -245,6 +256,7 @@ public class AnimaUtil {
             }
         });
     }
+
 
 
 }

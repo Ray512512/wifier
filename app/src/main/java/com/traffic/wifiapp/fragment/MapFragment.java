@@ -1,6 +1,5 @@
 package com.traffic.wifiapp.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -78,10 +77,7 @@ public class MapFragment extends BaseFragment<BaiduMapPresenter> implements Baid
         mPresenter.getSlideUrls();
         banner.setOnBannerItemClickListener(position -> {
             if(slideImageUrlses!=null){
-                String clickUrl= slideImageUrlses.get(position).getLink_url();
-                Intent intent=new Intent(mContext, WebViewActivity.class);
-                intent.putExtra("url",clickUrl);
-                startActivity(intent);
+                WebViewActivity.start(mContext,slideImageUrlses.get(position).getLink_url());
             }
         });
     }

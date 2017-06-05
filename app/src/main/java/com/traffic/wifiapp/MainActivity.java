@@ -81,18 +81,21 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
         return mPresenter;
     }
 
-
     public static void start(Context context){
+        if(WindowUtils.canJumpMain(context)){
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+        }
     }
 
     public static void jumpPay(Context context, WifiProvider w){
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(JUMP_ACTION,w);
-        context.startActivity(intent);
+        if(WindowUtils.canJumpMain(context)) {
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(JUMP_ACTION, w);
+            context.startActivity(intent);
+        }
     }
     private static boolean isExit = false;
     @Override
@@ -110,7 +113,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
             }, 2000);
         } else {
             startService(new Intent(this, WindowsService.class));
-//            System.exit(0);
             finish();
         }
     }

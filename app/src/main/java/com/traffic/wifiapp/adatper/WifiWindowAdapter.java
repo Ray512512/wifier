@@ -75,10 +75,7 @@ public class WifiWindowAdapter extends RecyleAdapter<WifiProvider> {
         }
 
         helper.setOnClickListener(R.id.wifi_item_tv_connect, v -> {
-            Intent intent=new Intent(context, WebViewActivity.class);
-            intent.putExtra("url",item.getWl());
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+            WebViewActivity.start(context,item.getWl());
         });
     }
 

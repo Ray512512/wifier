@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 连框颜色值 --><item>
     <shape>
-        <solid android:color="@color/mainGreenHalf" />
+        <solid android:color="@color/window_bg_end" />
         <corners android:bottomRightRadius="5dp"
                  android:topRightRadius="5dp"/>
     </shape>

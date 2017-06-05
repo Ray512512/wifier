@@ -6,9 +6,9 @@
     <corners android:radius="1000dp"/>
     <gradient
     android:angle="270"
-    android:centerColor="@color/mainGreen2"
-    android:endColor="@color/mainGreen2"
-    android:startColor="@color/mainGreen"
+    android:centerColor="@color/window_bg_end"
+    android:endColor="@color/window_bg_end"
+    android:startColor="@color/window_bg_start"
     android:type="linear"  />//["linear" | "radial" | "sweep"]
 <!--    android:gradientRadius="1000"
 -->

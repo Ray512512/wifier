@@ -46,9 +46,6 @@ public class WindowsService extends Service {
         WifiWindowManager.getIntance(this).onDestory();
         Log.i(TAG, "onDestroy");
         stopForeground(true);
-       /* Intent intent=new Intent(this,PhoneReceiver.class);
-        intent.setAction(RELAODING_SERVICE);
-        sendBroadcast(intent);*/
     }
 
     @Nullable

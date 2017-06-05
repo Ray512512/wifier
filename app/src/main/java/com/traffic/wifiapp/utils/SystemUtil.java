@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,14 +89,19 @@ public class SystemUtil {
 
     }
 
+    private static  int SW=0,SH=0;
     public static int getScreenWidth(Context context) {
-        return ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).
+        if(SW==0)SW=((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).
                 getDefaultDisplay().getWidth();
+        L.v("WifiWindowManager","屏幕宽："+SW);
+        return SW;
     }
 
     public static int getScreenHeight(Context context) {
-        return ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).
+        if(SH==0)SH=((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).
                 getDefaultDisplay().getHeight();
+        L.v("WifiWindowManager","屏幕高："+SH);
+        return SH;
     }
 
     /**
@@ -131,5 +137,33 @@ public class SystemUtil {
         Uri packageURI = Uri.parse("package:" +context.getPackageName());
         Intent intent =  new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,packageURI);
         ((Activity)context).startActivityForResult(intent,SplashActivity.CHECK_PEERISSION_CODE);
+    }
+
+    /**
+     * 调用拨号界面
+     * @param phone 电话号码
+     */
+    public static void call(Context context,String phone) {
+        Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+phone));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+
+
+    /**
+     * 判断服务是否正在运行
+     * */
+    public static boolean isServiceRunning(Context context,Class className){
+        boolean isServiceRunning = false;
+        android.app.ActivityManager manager = (android.app.ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (android.app.ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (className.getCanonicalName().equals(service.service.getClassName())) {
+                isServiceRunning = true;
+                Log.v("isServiceRunning", className.getCanonicalName()+"正在运行中");
+                break;
+            }
+        }
+        return isServiceRunning;
     }
 }

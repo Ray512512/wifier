@@ -2,6 +2,7 @@ package com.traffic.wifiapp.manager.window;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -138,6 +139,11 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
     private Context mContext;
     private static WifiWindowManager windowManager;
     private WifiAppPresenter wifiAppPresenter;
+    private WindowHideManager windowHideManager;
+    private boolean isDestory=false,canHide=true;
+    private int mX,mY;
+
+//    private boolean isInit=false;
 
     public static WifiWindowManager getIntance(Context context) {
         if (windowManager == null) {
@@ -151,17 +157,20 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
     }
 
     public void init() {
+        isDestory=false;
         initView();
         initWindowParams();
         addWindowView2Window();
         initClick();
         initPrestener();
 
+//        isInit=true;
     }
 
     private void initPrestener(){
         wifiAppPresenter= WifiApplication.getInstance().getWifiAppPresenter();
         wifiAppPresenter.setmServiceIView(this);
+        windowHideManager=new WindowHideManager(percentTv);
     }
 
 
@@ -173,12 +182,14 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         wmParams = new WindowManager.LayoutParams();
         wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;
         wmParams.format = PixelFormat.TRANSLUCENT;
-        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN ;
         wmParams.gravity = Gravity.TOP | Gravity.LEFT;
         wmParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         wmParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         wmParams.x = SystemUtil.dip2px(mContext, 0);
         wmParams.y = SystemUtil.dip2px(mContext, 80);
+
+
     }
 
     /**
@@ -229,12 +240,17 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         call3=ButterKnife.findById(mWindowView,R.id.window_item_img_call3);
     }
 
-    public void addWindowView2Window() {
+    private void addWindowView2Window() {
         mWindowManager.addView(window_click, wmParams);
         mWindowManager.addView(mWindowView, wmParams);
         mWindowManager.updateViewLayout(mWindowView, wmParams);
+    }
 
-
+    private void removeWindowView() {
+        if (mWindowView != null) {
+            mWindowManager.removeView(mWindowView);
+            mWindowManager.removeView(window_click);
+        }
     }
 
     /**
@@ -265,13 +281,14 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         }
     }
 
-    private void changeItemView(View view,View group){
+    public void changeItemView(View view,View group){
         if(group.getVisibility()==View.GONE){
             checkItemViewStatus();
             AnimaUtil.showRainBow(view,group,AnimaUtil.HORIZONTAL);
         }
         else
-            AnimaUtil.goneRainBow(view,group,AnimaUtil.HORIZONTAL);
+//            AnimaUtil.RotateViewByParent(windowItem1Show,true);
+        AnimaUtil.goneRainBow(view,group,AnimaUtil.HORIZONTAL);
     }
 
     private void initClick() {
@@ -286,21 +303,25 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         call3.setOnClickListener(this);
         imgCenter.setOnClickListener(this);
         imgSetting.setOnClickListener(this);
+        windowRoot.setOnClickListener(this);
         window_click.setOnClickListener(v -> changeMainView());
         GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDoubleTap(MotionEvent e) {     //双击事件
+                if(windowHideManager.isMoving())return true;
                 gotoApp(mContext);
                 return true;
             }
 
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
+                if(windowHideManager.isMoving())return true;
                 changeMainView();
                 return true;
             }
         });
         percentTv.setOnTouchListener((v, event) -> {
+            if(windowHideManager.onTouchEvent())return true;
             gestureDetector.onTouchEvent(event);
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -311,19 +332,20 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
                     mEndX = (int) event.getRawX();
                     mEndY = (int) event.getRawY();
                     if (needIntercept()) {
+                        if(mX==0||mY==0){
+                            mX=percentTv.getMeasuredWidth();
+                            mY=percentTv.getMeasuredHeight();
+                        }
                         //getRawX是触摸位置相对于屏幕的坐标，getX是相对于按钮的坐标
-                        int mX=percentTv.getMeasuredWidth(),mY=percentTv.getMeasuredHeight();
-                        L.v(TAG,"窗口大小：X->"+mX+"\tY->"+mY);
-                        wmParams.x = (int) event.getRawX() - mX/2;
-                        wmParams.y = (int) event.getRawY() - mY/2;
-                        mWindowManager.updateViewLayout(mWindowView, wmParams);
+                        updateWindow(mEndX - mX/2,mEndY - mY/2);
                         return true;
                     }
                     break;
                 case MotionEvent.ACTION_UP:
                     mEndX = (int) event.getRawX();
                     mEndY = (int) event.getRawY();
-                    if (needIntercept()) {
+                    L.v(TAG,"当前位置：X->"+mEndX+"&Y->"+mEndY);
+                    if (checkHide()||needIntercept()) {
                         return true;
                     }
                     break;
@@ -332,6 +354,33 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         });
     }
 
+    private void updateWindow(int x,int y){
+        wmParams.x =x ;
+        wmParams.y =y ;
+        mWindowManager.updateViewLayout(mWindowView, wmParams);
+    }
+    private synchronized boolean checkHide(){
+        if(!canHide)return true;
+        new Handler().postDelayed(() -> {
+            canHide=true;
+            if(isDestory||windowMain.getVisibility()==View.VISIBLE)return;
+            if(mEndX<50){
+                updateWindow(0,wmParams.y);
+                windowHideManager.post(WindowHideManager.TYPE_LEFT_IN);
+            }else if(SystemUtil.getScreenWidth(mContext)-mEndX<50){
+                updateWindow(SystemUtil.getScreenWidth(mContext),wmParams.y);
+                windowHideManager.post(WindowHideManager.TYPE_RIGHT_IN);
+            }else if(mEndY<50){
+                updateWindow(wmParams.x,0);
+                windowHideManager.post(WindowHideManager.TYPE_TOP_IN);
+            }else if(SystemUtil.getScreenHeight(mContext)-mEndY<50){
+                updateWindow(wmParams.x,SystemUtil.getScreenHeight(mContext));
+                windowHideManager.post(WindowHideManager.TYPE_BOTTOM_IN);
+            }
+        },500);
+        canHide=false;
+        return mEndX<50||SystemUtil.getScreenWidth(mContext)-mEndX<50||mEndY<50||SystemUtil.getScreenHeight(mContext)-mEndY<50;
+    }
     /**
      * 是否拦截
      *
@@ -448,12 +497,11 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
 
 
     public void onDestory() {
-        if (mWindowView != null) {
-            //移除悬浮窗口
-            Log.i(TAG, "removeView");
-            mWindowManager.removeView(mWindowView);
-        }
+        Log.i(TAG, "onDestory");
+        isDestory=true;
+        removeWindowView();
     }
+
 
     @Override
     public void onClick(View v) {
@@ -491,6 +539,9 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
             case R.id.window_item_img_call3:
                 call(2);
                 break;
+            case R.id.window_root:
+                changeMainView();
+                break;
         }
     }
 
@@ -509,12 +560,11 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
             Toast.makeText(mContext,"wifi信息已丢失",Toast.LENGTH_SHORT).show();
             return;
         }
-//        if(button.getText().equals("已连"))return;
+            WifiAdmin.getIntance(mContext).connect(wifiProvider.getSSID());
         switch (wifiProvider.getType()){
             case TYPE_SHOPER_FREE:
             case TYPE_SINGLE_FREE:
                 if(button.getText().equals("已连"))return;
-                WifiAdmin.getIntance(mContext).connect(wifiProvider.getSSID());
                 break;
             case TYPE_SHOPER_PAY:
             case TYPE_SINGLE_PAY:
@@ -534,7 +584,7 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
 
     @Override
     public void wifiConnectSuccess(WifiProvider s) {
-          currentW=s;
+        currentW=s;
         getDataFromWifiFragment();
     }
 
@@ -550,4 +600,5 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         currentW=null;
         getDataFromWifiFragment();
     }
+
 }

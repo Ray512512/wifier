@@ -1,6 +1,8 @@
 package com.traffic.wifiapp.common;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -17,6 +19,7 @@ import com.traffic.wifiapp.utils.L;
 import com.traffic.wifiapp.utils.SPUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.traffic.wifiapp.common.ConstantField.H1;
 import static com.traffic.wifiapp.common.ConstantField.M1;
@@ -38,7 +41,6 @@ public class WifiApplication extends Application{
     private User user;
 
     public WifiAppPresenter getWifiAppPresenter() {
-        if(mWifiPresenter==null)mWifiPresenter=new WifiAppPresenter(this);
         return mWifiPresenter;
     }
 
@@ -71,18 +73,16 @@ public class WifiApplication extends Application{
     public static WifiApplication getInstance() {
         return instance;
     }
-
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        L.isDebug = false;//日志调试开关
+        L.isDebug = true;//日志调试开关
         MyHotFixManager.init(this);
         CrashHandler.getInstance().init(this);
         SDKInitializer.initialize(this);//初始化百度地图
 //        if(isOpenWifi())
-        MoneyPresenter.openWifi(10*M1);//打开app 尝试打开免费wifi5min
-
+        MoneyPresenter.openWifi(10*M1);//打开app 尝试打开免费wifi10min
     }
 
     private boolean isOpenWifi(){
@@ -101,7 +101,7 @@ public class WifiApplication extends Application{
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
-        if(DeviceUtils.isAppAtBackground(this)){
+        if(DeviceUtils.isAppAtBackground(this)&&mWifiPresenter!=null){
 //            mWifiPresenter.setIView(this);
             Intent intent=new Intent(this, WindowsService.class);
             startService(intent);

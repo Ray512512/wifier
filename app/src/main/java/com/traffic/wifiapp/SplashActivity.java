@@ -31,7 +31,7 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        SplashActivityPermissionsDispatcher.locationPermissionPassWithCheck(this);
+        SplashActivityPermissionsDispatcher.callPermissionPassWithCheck(this);
     }
 
     @Override
@@ -56,6 +56,16 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void initPresenter() {
 
+    }
+
+    @NeedsPermission({Manifest.permission.CALL_PHONE})
+    public void callPermissionPass(){
+        SplashActivityPermissionsDispatcher.locationPermissionPassWithCheck(this);
+    }
+
+    @OnPermissionDenied({Manifest.permission.CALL_PHONE})
+    public void callPermissionRefuse(){
+        SplashActivityPermissionsDispatcher.locationPermissionPassWithCheck(this);
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE})

@@ -38,24 +38,6 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
     }
     private WXManager wxManager;
 
-/*
-
-    public void getSlideUrls(String shopId){
-        ApiManager.mApiService.getMoneyPageSlide(shopId).compose(RxHelper.handleResult())
-                .subscribe(new RxSubscribe<List<SlideImageUrls>>() {
-                    @Override
-                    protected void _onNext(List<SlideImageUrls> wifiProviders) {
-                        mView.showSlide(wifiProviders);
-                    }
-
-                    @Override
-                    protected void _onError(String message) {
-                        showToast(message);
-                    }
-            });
-    }
-*/
-
     public void getgetShowGoods(String shopId){
         L.v(TAG,shopId);
         ApiManager.mApiService.getShowGoods(shopId).compose(RxHelper.handleResult())
@@ -140,7 +122,7 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-//                    FileUtils.writeTxtToFile("尝试打开失败"+"url:+"+url+"失败原因："+e.toString(),FileUtils.path,"wifi开关调试日志");
+                    L.f(TAG,"尝试打开失败"+"url:+"+url+"失败原因："+e.toString());
                 }
             }
         }.start();
