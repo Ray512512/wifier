@@ -27,7 +27,6 @@ import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.ui.view.MapItemView;
 import com.traffic.wifiapp.utils.AlertDialogUtil;
 import com.traffic.wifiapp.utils.AppManager;
-import com.traffic.wifiapp.utils.FileUtils;
 import com.traffic.wifiapp.utils.L;
 import com.traffic.wifiapp.utils.SPUtils;
 
@@ -39,6 +38,9 @@ import java.util.ArrayList;
  */
 
 public class BaiduMapManager {
+    public static final String ADDR_TAG="addR";
+    public static final String BAIDU_CODE="bd09ll";
+
     private BaiduMap mBaiduMap;
     private Context mContext;
     private BDLocation myLocation;
@@ -61,7 +63,7 @@ public class BaiduMapManager {
     public void initLocation(){
         mLocationClient = new LocationClient(mContext.getApplicationContext());
         LocationClientOption option = new LocationClientOption();
-        option.setCoorType("bd09ll");
+        option.setCoorType(BAIDU_CODE);
         //可选，默认gcj02，设置返回的定位结果坐标系
 //        int span=10*1000;
 //        option.setScanSpan(span);
@@ -89,9 +91,9 @@ public class BaiduMapManager {
         mBaiduMap.setOnMarkerClickListener((Marker marker) -> {
             Bundle bundle=marker.getExtraInfo();
             if(bundle==null)return true;
-            String add=bundle.getString("addR");
+            String add=bundle.getString(ADDR_TAG);
             if(!TextUtils.isEmpty(add))
-                AlertDialogUtil.AlertDialog(mContext,"详细地址："+add,"确定");
+                AlertDialogUtil.AlertDialog(mContext,String .format(mContext.getString(R.string.addr_detail),add),mContext.getString(R.string.tag_sure));
             return false;
         });
 //        initOrientation();
@@ -129,7 +131,7 @@ public class BaiduMapManager {
         for (WifiProvider w:wifiProviders){
             BitmapDescriptor bitmap=BitmapDescriptorFactory.fromView(new MapItemView(mContext,w));
             Bundle bundle = new Bundle();
-            bundle.putString("addR",w.getAddr());
+            bundle.putString(ADDR_TAG,w.getAddr());
             addOverView(new LatLng(w.getLat(),w.getLng()),bundle,bitmap);
         }
         }catch (Exception e){
@@ -194,8 +196,6 @@ public class BaiduMapManager {
             showMyLocation();
 //            showNewLocation(location);
             WifiApplication.getInstance().getUser().setLocationInfo(myLocation);
-            FileUtils.writeTxtToFile("当前用户坐标："+myLocation.getLatitude()+
-                    "\n"+myLocation.getLongitude(),FileUtils.path,"wifi首页日志");
         }
     }
 

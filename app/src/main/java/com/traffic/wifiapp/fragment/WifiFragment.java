@@ -12,7 +12,7 @@ import com.traffic.wifiapp.base.BaseFragment;
 import com.traffic.wifiapp.bean.response.SlideImageUrls;
 import com.traffic.wifiapp.bean.response.WifiProvider;
 import com.traffic.wifiapp.common.WifiApplication;
-import com.traffic.wifiapp.data.WifiUtils;
+import com.traffic.wifiapp.manager.WifiUtils;
 import com.traffic.wifiapp.mvp.presenter.WifiAppPresenter;
 import com.traffic.wifiapp.mvp.view.WifiIView;
 import com.traffic.wifiapp.ui.view.BannerLayout;
@@ -77,7 +77,7 @@ public class WifiFragment extends BaseFragment implements WifiIView {
         initHelperView(recyclerView);
         showLoadingView();
         mPresenter.getSlideUrls();
-        tvTitle.setText("WIFI");
+        tvTitle.setText(mRes.getString(R.string.tab_one));
 
         //初始化wifi列表控件
         adapter = new WifiAdapter(mContext);
@@ -150,7 +150,7 @@ public class WifiFragment extends BaseFragment implements WifiIView {
 
     @Override
     public void wifiConnectSuccess(WifiProvider s) {
-        boolean isFree=WifiUtils.isFreeWifiAndOpenIt(s,false);
+        boolean isFree= WifiUtils.isFreeWifiAndOpenIt(s,false);
         if(isJump) {
             isJump=false;
             if (!isFree) {

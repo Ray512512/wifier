@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.traffic.wifiapp.MainActivity;
+import com.traffic.wifiapp.R;
 import com.traffic.wifiapp.bean.response.WifiProvider;
 import com.traffic.wifiapp.common.ConstantField;
 import com.traffic.wifiapp.common.WifiApplication;
@@ -33,9 +34,9 @@ public class WindowUtils {
      * 根据信号强度获取对应显示文本内容
      * */
     public static String getXinHaoStr(int l) {
-        if (l >= 3) return "强";
-        if (l >= 2) return "中";
-        return "弱";
+        if (l >= 3) return WifiApplication.getInstance().getString(R.string.sign_good);
+        if (l >= 2) return WifiApplication.getInstance().getString(R.string.sign_normal);
+        return WifiApplication.getInstance().getString(R.string.sign_bad);
     }
 
     public static void gotoApp(Context context) {
@@ -67,13 +68,13 @@ public class WindowUtils {
 
     public static void call(Context context,String phone){
         if(TextUtils.isEmpty(phone)){
-            Toast.makeText(context,"该用户暂未预留电话",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,context.getString(R.string.user_no_phone),Toast.LENGTH_SHORT).show();
             return;
         }
         if (PermissionUtils.hasSelfPermissions(context, Manifest.permission.CALL_PHONE)) {
             SystemUtil.call(context,phone);
         } else {
-            AlertSystemCall(context,"你拒绝了应用拨打电话权限，请前往设置开启");
+            AlertSystemCall(context,context.getString(R.string.perimmsion_refuse_call_phone));
         }
     }
 

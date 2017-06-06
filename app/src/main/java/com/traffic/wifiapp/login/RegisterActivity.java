@@ -47,7 +47,7 @@ public class RegisterActivity extends BaseActivity<RegistPresenter> implements R
 
     @Override
     protected void initBeforeData() {
-        tvTitle.setText("注册");
+        tvTitle.setText(getString(R.string.tag_register));
         registAuth.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG);
     }
 
@@ -74,7 +74,7 @@ public class RegisterActivity extends BaseActivity<RegistPresenter> implements R
 
     @OnPermissionDenied({Manifest.permission.READ_PHONE_STATE})
     public void readPhoneRefuse() {
-        showShortToast("拒绝了读取设备信息权限，您将无法进行注册");
+        showShortToast(getString(R.string.perimmsion_refuse_phone_register));
     }
 
     @OnClick({R.id.btn_login, R.id.img_back})
@@ -83,10 +83,10 @@ public class RegisterActivity extends BaseActivity<RegistPresenter> implements R
             case R.id.btn_login:
                 phone = exitPhone.getText().toString().trim();
                 if (TextUtils.isEmpty(phone)) {
-                    showShortToast("请输入手机号");
+                    showShortToast(getString(R.string.login_phone_empty));
                 }
                 if (!CommonUtils.isMobile(phone)) {
-                    showShortToast("请输入正确的手机号");
+                    showShortToast(getString(R.string.login_phone_error));
                 } else {
                     RegisterActivityPermissionsDispatcher.getDeviceIdPerssionWithCheck(this);
                 }
@@ -100,7 +100,7 @@ public class RegisterActivity extends BaseActivity<RegistPresenter> implements R
 
     @Override
     public void onRegistSuccess() {
-        showShortToast("注册成功");
+        showShortToast(getString(R.string.register_success));
         SPUtils.put(ConstantField.USER_NAME, exitPhone.getText().toString().trim());
         AppManager.getInstance(this).killAllActivity();
         startActivity(new Intent(RegisterActivity.this, MainActivity.class));

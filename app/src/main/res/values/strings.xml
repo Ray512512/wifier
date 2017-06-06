@@ -1,5 +1,49 @@
 <resources>
-    <string name="app_name">WiFi范儿</string>
+    <string name="app_name">灵通WiFi</string>
+
+    <string name="tab_one">WiFi</string>
+    <string name="tab_two">附近</string>
+    <string name="tab_three">商品</string>
+    <string name="tab_four">个人</string>
+
+
+    <string name="connect_status_ok">已连接</string>
+    <string name="status_has_connect">已连</string>
+    <string name="connect">连接</string>
+    <string name="sign_good">强</string>
+    <string name="sign_normal">中</string>
+    <string name="sign_bad">弱</string>
+    <string name="connecting">连接中，请稍后...</string>
+    <string name="connect_success">连接成功，可以免费上网了</string>
+    <string name="no_wifi_msg">附近暂无可用wifi</string>
+
+
+    <string name="pay_platfm">打赏给平台</string>
+    <string name="pay_what">购买了%swifi使用</string>
+    <string name="pay_success2">支付成功</string>
+    <string name="pay_success">打赏成功,感谢您的支持！</string>
+    <string name="pay_query_result">查询支付结果中，请稍后...</string>
+    <string name="pay_get_order">下单中，请稍后...</string>
+    <string name="show_goods_price">价格：%s元</string>
+
+    <string name="login_phone_empty">请输入手机号</string>
+    <string name="login_phone_error">请输入正确的手机号</string>
+    <string name="user_no_phone">该用户暂未预留电话</string>
+    <string name="login_success">登录成功</string>
+    <string name="register_success">注册成功</string>
+
+    <string name="tag_register">注册</string>
+    <string name="tag_sure">确定</string>
+    <string name="tag_setting">设置</string>
+    <string name="tag_waiting">请稍后...</string>
+
+    <string name="perimmsion_refuse_phone_login">拒绝了读取设备信息权限，您将无法进行登录</string>
+    <string name="perimmsion_refuse_phone_register">拒绝了读取设备信息权限，您将无法进行注册</string>
+    <string name="perimmsion_refuse_call_phone">你拒绝了应用拨打电话权限，请前往设置开启</string>
+    <string name="perimmsion_ask_gps">请打开GPS否则无法获取附近Wifi信息</string>
+    <string name="perimmsion_ask_must">请同意应用必要权限，否则应用无法正常使用</string>
+
+    <string name="addr_detail">详细地址：%s</string>
 
     <string name="no_content">啊哦，出错了</string>
     <string name="alertdialog_title">Wifier提示</string>

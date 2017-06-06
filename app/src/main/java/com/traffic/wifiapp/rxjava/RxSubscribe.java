@@ -3,6 +3,8 @@ package com.traffic.wifiapp.rxjava;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.traffic.wifiapp.R;
+import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.retrofit.ServerException;
 import com.traffic.wifiapp.utils.L;
 import com.traffic.wifiapp.utils.NetUtil;
@@ -47,7 +49,7 @@ public abstract class RxSubscribe<T> extends Subscriber<T> {
      * @param context context
      */
     public RxSubscribe(Context context) {
-        this(context, "请稍后...");
+        this(context,context.getString(R.string.tag_waiting));
     }
 
     @Override
@@ -78,11 +80,11 @@ public abstract class RxSubscribe<T> extends Subscriber<T> {
     public void onError(Throwable e) {
         e.printStackTrace();
         if (!NetUtil.checkNetWork()) { //这里自行替换判断网络的代码
-            _onError("网络不可用");
+            _onError(WifiApplication.getInstance().getString(R.string.e_no_network));
         } else if (e instanceof ServerException) {
             _onError(e.getMessage());
         } else {
-            _onError("请求失败，请稍后再试...");
+            _onError(WifiApplication.getInstance().getString(R.string.e_proxy_failed));
             L.v(TAG, e.toString());
         }
         if (showDialog())

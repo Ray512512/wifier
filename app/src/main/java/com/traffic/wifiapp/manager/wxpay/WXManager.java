@@ -6,6 +6,7 @@ import android.widget.Toast;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.traffic.wifiapp.R;
 import com.traffic.wifiapp.bean.response.WXOrderInfo;
 import com.traffic.wifiapp.common.ConstantField;
 import com.traffic.wifiapp.utils.L;
@@ -39,7 +40,7 @@ public static final String TAG="WXManager";
 
     public void startPay(WXOrderInfo wxOrderInfo){
         if(wxOrderInfo==null){
-            Toast.makeText(mContext,"未获取到订单信息，请稍后再试",Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext,mContext.getString(R.string.e_no_order_msg),Toast.LENGTH_SHORT).show();
             return;
         }
         PayReq request = new PayReq();

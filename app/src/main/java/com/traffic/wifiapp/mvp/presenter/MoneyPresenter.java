@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.traffic.wifiapp.R;
 import com.traffic.wifiapp.base.BasePresenter;
 import com.traffic.wifiapp.bean.entry.OderEntry;
 import com.traffic.wifiapp.bean.response.Goods;
@@ -58,7 +59,7 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
     public void getWXOrderInfo(OderEntry o){
         if(o==null)return;
         ApiManager.mApiService.getOrderInfo(o).compose(RxHelper.handleResult())
-                .subscribe(new RxSubscribe<WXOrderInfo>(mContext,"下单中，请稍后...") {
+                .subscribe(new RxSubscribe<WXOrderInfo>(mContext,mContext.getString(R.string.pay_get_order)) {
                     @Override
                     protected void _onNext(WXOrderInfo wxOrderInfo) {
                         wxOrderInfo.setOderEntry(o);
@@ -78,14 +79,14 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
     public void queryPayResult(String transactionId){
         String logid=transactionId.split("&")[0];
         if(TextUtils.isEmpty(logid)){
-            showToast("支付成功");
+            showToast(mContext.getString(R.string.pay_success2));
             return;
         }
         HashMap map=new HashMap();
         map.put("user_id", WifiApplication.getInstance().getUser().getUser_id());
         map.put("log_id",logid);
         ApiManager.mApiService.queryPayResult(map).compose(RxHelper.handleResult())
-                .subscribe(new RxSubscribe<Object>(mContext,"查询支付结果中，请稍后...") {
+                .subscribe(new RxSubscribe<Object>(mContext,mContext.getString(R.string.pay_query_result)) {
                     @Override
                     protected void _onNext(Object wxOrderInfo) {
                         mView.paySuccess();
@@ -115,7 +116,7 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
                     if (response.isSuccessful()) {
                         L.f(TAG,"开启免费wifi成功："+url);
                         SPUtils.put(finalIp,System.currentTimeMillis());
-                        Toast.makeText(WifiApplication.getInstance(),"连接成功，可以免费上网了",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WifiApplication.getInstance(),WifiApplication.getInstance().getString(R.string.connect_success),Toast.LENGTH_SHORT).show();
 //                        FileUtils.writeTxtToFile("接口访问成功:"+response.toString(),FileUtils.path,"wifi开关调试日志");
                     }else if(response.isRedirect()){
 //                        FileUtils.writeTxtToFile("接口重定向:"+response.toString(),FileUtils.path,"wifi开关调试日志");

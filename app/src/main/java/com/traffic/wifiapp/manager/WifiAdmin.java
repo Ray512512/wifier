@@ -9,6 +9,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.widget.Toast;
 
+import com.traffic.wifiapp.R;
 import com.traffic.wifiapp.utils.AlertDialogUtil;
 import com.traffic.wifiapp.utils.GPSUtils;
 import com.traffic.wifiapp.utils.L;
@@ -86,11 +87,11 @@ public class WifiAdmin {
         mWifiLock = mWifiManager.createWifiLock("Test");   
     }   
    
-    // 得到配置好的网络     
-    public List<WifiConfiguration> getConfiguration() {   
-        return mWifiConfiguration;   
-    }   
-   
+    // 得到配置好的网络
+    public List<WifiConfiguration> getConfiguration() {
+        return mWifiConfiguration;
+    }
+
     // 指定配置好的网络进行连接     
     public void connectConfiguration(int index) {   
         // 索引大于配置好的网络索引返回     
@@ -107,9 +108,10 @@ public class WifiAdmin {
         if(!GPSUtils.isOPen(mContext)){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if(mContext instanceof Activity)
-                AlertDialogUtil.AlertDialog(mContext, "设置","请打开GPS否则无法获取附近Wifi信息", (dialog, which) -> GPSUtils.openGPS((Activity) mContext));
+                AlertDialogUtil.AlertDialog(mContext, mContext.getString(R.string.tag_setting),
+                        mContext.getString(R.string.perimmsion_ask_gps), (dialog, which) -> GPSUtils.openGPS((Activity) mContext));
                else
-                Toast.makeText(mContext,"请打开GPS否则无法获取附近Wifi信息",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,mContext.getString(R.string.perimmsion_ask_gps),Toast.LENGTH_SHORT).show();
             }
         }
         }catch (Exception e){
@@ -167,17 +169,17 @@ public class WifiAdmin {
         return (mWifiInfo == null) ? "NULL" : mWifiInfo.toString();   
     }   
    
-    // 添加一个网络并连接     
-    public void addNetwork(WifiConfiguration wcg) {   
-     int wcgID = mWifiManager.addNetwork(wcg);   
-     boolean b =  mWifiManager.enableNetwork(wcgID, true);   
+    // 添加一个网络并连接
+    public void addNetwork(WifiConfiguration wcg) {
+     int wcgID = mWifiManager.addNetwork(wcg);
+     boolean b =  mWifiManager.enableNetwork(wcgID, true);
      System.out.println("a--" + wcgID);  
      System.out.println("b--" + b);  
     }
 
     public void connect(String ssid){
         L.v("connect","正在尝试链接："+ssid);
-        Toast.makeText(mContext,"连接中，请稍后...",Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext,mContext.getString(R.string.connecting),Toast.LENGTH_SHORT).show();
         addNetwork(CreateWifiInfo(ssid,"",1));
     }
     public void connect(String ssid, String psw,int type){

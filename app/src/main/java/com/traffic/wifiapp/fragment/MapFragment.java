@@ -71,7 +71,7 @@ public class MapFragment extends BaseFragment<BaiduMapPresenter> implements Baid
     @Override
     protected void initView(Bundle savedInstanceSate) {
         imgBack.setVisibility(View.INVISIBLE);
-        tvTitle.setText("附近");
+        tvTitle.setText(mRes.getString(R.string.tab_two));
 
         mPresenter.initLocation();
         mPresenter.getSlideUrls();

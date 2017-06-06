@@ -211,7 +211,7 @@ public class AnimaUtil {
         viewGroup.startAnimation(trAniamAnimation1);
     }
 
-    public static void goneRainBow(View view,View viewGroup,int gravity) {
+    public static void goneRainBow(View view,View viewGroup,int gravity,animaEndCallBack endCallBack) {
         float fromX=0.0f,fromY=0.0f,toX=0.0f,toY=0.0f;
         float fromX1=0.0f,fromY1=0.0f,toX1=0.0f,toY1=0.0f;
         if(gravity==1){
@@ -248,6 +248,7 @@ public class AnimaUtil {
             @Override
             public void onAnimationEnd(Animation animation) {
                 viewGroup.setVisibility(View.GONE);
+                if(endCallBack!=null)endCallBack.animaEnd();
             }
 
             @Override
@@ -257,6 +258,8 @@ public class AnimaUtil {
         });
     }
 
-
+ public interface animaEndCallBack{
+     void animaEnd();
+ }
 
 }

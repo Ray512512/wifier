@@ -23,7 +23,7 @@
         android:background="@color/background_main"
         android:orientation="horizontal"
         android:padding="10dp"
-        android:weightSum="3">
+        android:weightSum="4">
 
         <RadioButton
             android:id="@+id/radio_button_one"
@@ -65,6 +65,20 @@
             android:background="@color/transparency"
             android:text="商品"
             android:drawableTop="@drawable/seletor_tab_money"
+            android:textColor="@color/tab_textcolor"
+            android:textSize="16dp"/>
+
+        <RadioButton
+            android:id="@+id/radio_button_four"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:background="@color/transparency"
+            android:text="个人"
+            android:drawableTop="@drawable/seletor_tab_mine"
             android:textColor="@color/tab_textcolor"
             android:textSize="16dp"/>
     </RadioGroup>

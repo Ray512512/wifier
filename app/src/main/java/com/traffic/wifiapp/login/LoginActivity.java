@@ -67,7 +67,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @OnPermissionDenied({android.Manifest.permission.READ_PHONE_STATE})
     public void readPhoneRefuse(){
-        showShortToast("拒绝了读取设备信息权限，您将无法进行登录");
+        showShortToast(getString(R.string.perimmsion_refuse_phone_login));
     }
 
     @OnClick({R.id.btn_login, R.id.tv_register})
@@ -76,10 +76,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             case R.id.btn_login:
                 phone = exitPhone.getText().toString().trim();
                 if (TextUtils.isEmpty(phone)) {
-                    showShortToast("请输入手机号");
+                    showShortToast(getString(R.string.login_phone_empty));
                 }
                 if (!CommonUtils.isMobile(phone)) {
-                    showShortToast("请输入正确的手机号");
+                    showShortToast(getString(R.string.login_phone_error));
                 } else {
                     LoginActivityPermissionsDispatcher.getDeviceIdPerssionWithCheck(this);
                 }
@@ -92,7 +92,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void onLoginSuccess() {
-        showShortToast("登录成功");
+        showShortToast(getString(R.string.login_success));
         SPUtils.put(ConstantField.USER_NAME, phone);
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();

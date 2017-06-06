@@ -25,7 +25,7 @@ public class GoodsAdapter extends BaseQuickAdapter<Goods> {
         boolean isShowPrice=item.getPrice()!=null&&!item.getPrice().equals("0")&&!item.getPrice().equals("");
         helper.setVisibleVGone(R.id.good_item_tv_price, isShowPrice);
         if(isShowPrice){
-            helper.setText(R.id.good_item_tv_price,"价格："+item.getPrice()+"元");
+            helper.setText(R.id.good_item_tv_price,String.format(mContext.getString(R.string.show_goods_price),item.getPrice()));
         }
     }
 }

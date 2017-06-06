@@ -38,7 +38,7 @@ public class WifiAdapter extends RecyleAdapter<WifiProvider> {
         helper.setText(R.id.item_wifi_tv_title,item.getShopname());
         User u= SPUtils.getObject(USER);
         if(contectWifi!=null&&contectWifi.getBSSID().equals(item.getBSSID())){
-        helper.setText(R.id.item_wifi_tv_state, "已连接");
+        helper.setText(R.id.item_wifi_tv_state, context.getString(R.string.connect_status_ok));
         }else {
         LatLng latLng=null;
         if(u!=null)

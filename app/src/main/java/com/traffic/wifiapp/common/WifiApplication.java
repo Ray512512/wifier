@@ -102,7 +102,6 @@ public class WifiApplication extends Application{
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
         if(DeviceUtils.isAppAtBackground(this)&&mWifiPresenter!=null){
-//            mWifiPresenter.setIView(this);
             Intent intent=new Intent(this, WindowsService.class);
             startService(intent);
         }

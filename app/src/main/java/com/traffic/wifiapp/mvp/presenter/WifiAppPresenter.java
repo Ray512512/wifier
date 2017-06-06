@@ -10,6 +10,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
+import com.traffic.wifiapp.R;
 import com.traffic.wifiapp.bean.entry.MacStr;
 import com.traffic.wifiapp.bean.response.SlideImageUrls;
 import com.traffic.wifiapp.bean.response.WifiProvider;
@@ -50,7 +51,7 @@ public class WifiAppPresenter {
     private WifiIView mFragmentView;//view接口
     private WifiServiceIView mServiceIView;
     private Context mContext;
-    public boolean isInit=false;
+    private boolean isInit=false;
 
     public void setmFragmentView(WifiIView mFragmentView) {
         this.mFragmentView = mFragmentView;
@@ -99,7 +100,7 @@ public class WifiAppPresenter {
                     getShowWifiList(wifiMacList);
                 }
             }else {
-                showToast("附近暂无可用wifi");
+                showToast(mContext.getString(R.string.no_wifi_msg));
                 if(mFragmentView!=null)
                     mFragmentView.showDataView();
             }
@@ -150,13 +151,13 @@ public class WifiAppPresenter {
             else {
                 if(mFragmentView!=null)
                     mFragmentView.showDataView();
-                showToast("附近暂无可用wifi");
+                showToast(mContext.getString(R.string.no_wifi_msg));
             }
         }else {
             L.v(TAG, "服务器返回mac池为空:");
             if(mFragmentView!=null)
                 mFragmentView.showDataView();
-            showToast("附近暂无可用wifi");
+            showToast(mContext.getString(R.string.no_wifi_msg));
         }
     }
     //得到可用wifi
@@ -182,10 +183,10 @@ public class WifiAppPresenter {
                         mWifiProviders=sortByLevel(wifiProviders2);
                         if(mServiceIView!=null)
                             mServiceIView.showWifiList((mWifiProviders));
-                        if(mFragmentView!=null){
+                        if(mFragmentView!=null)
                             mFragmentView.showWifiList(mWifiProviders);
+                        if(null!=mServiceIView&&null!=mFragmentView)
                             isInit=true;
-                        }
                         checkCurrentContect();
                         L.v(TAG,"搜索完成，打开搜索开关");
                     }
