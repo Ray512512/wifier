@@ -58,6 +58,7 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
 
     public void getWXOrderInfo(OderEntry o){
         if(o==null)return;
+        L.v(TAG,o.toString());
         ApiManager.mApiService.getOrderInfo(o).compose(RxHelper.handleResult())
                 .subscribe(new RxSubscribe<WXOrderInfo>(mContext,mContext.getString(R.string.pay_get_order)) {
                     @Override
@@ -70,6 +71,7 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
 
                     @Override
                     protected void _onError(String message) {
+                        L.v(TAG,message);
                         showToast(message);
                     }
                 });

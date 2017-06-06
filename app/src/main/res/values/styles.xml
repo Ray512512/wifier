@@ -5,18 +5,14 @@
     <!-- Customize your theme here. -->
     <item name="colorPrimary">@color/white</item>
     <item name="colorPrimaryDark">@color/mainGreen</item>
-    <item name="colorAccent">@color/white</item>
+    <item name="colorAccent">@color/mainGreen</item>
 </style>
 
     <style name="LoginTheme" parent="AppTheme">
-        <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/background_main</item>
-        <item name="colorAccent">@color/white</item>
     </style>
     <style name="RegistTheme" parent="AppTheme">
-        <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/mainGreen</item>
-        <item name="colorAccent">@color/white</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

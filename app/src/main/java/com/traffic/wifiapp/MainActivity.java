@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.provider.Settings;
 import android.text.TextUtils;
 
 import com.traffic.wifiapp.base.BaseActivity;
@@ -52,7 +53,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
 
     @Override
     protected void initAfterData() {
-        MainActivityPermissionsDispatcher.windowPermissionPassWithCheck(this);
+//        MainActivityPermissionsDispatcher.windowPermissionPassWithCheck(this);
         checkWindowPerission();
         checkJump();
     }
@@ -139,34 +140,23 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
 
     @OnPermissionDenied({Manifest.permission.SYSTEM_ALERT_WINDOW})
     public void windowDenied(){
-        AlertDialogUtil.AlertDialog(mContext, "设置", "为给您提供更好的服务，请授予应用悬浮窗权限", (dialog, which) -> SystemUtil.goToAppSetting(mContext));
+        AlertDialogUtil.AlertDialog(mContext, getString(R.string.tag_setting), getString(R.string.perimmsion_ask_window), (dialog, which) -> SystemUtil.goToWindow(mContext));
     }
 
     /**
      * 检测悬浮窗权限
      * */
     private void checkWindowPerission(){
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(!Settings.canDrawOverlays(this)){
+                AlertDialogUtil.AlertDialog(mContext, getString(R.string.tag_setting), getString(R.string.perimmsion_ask_window), (dialog, which) -> SystemUtil.goToWindow(mContext));
+            }
+          }else {
             if(!SPUtils.getBooleanValue(ConstantField.IS_HINT_SYSTEM_WINDOW)){
                 SPUtils.put(ConstantField.IS_HINT_SYSTEM_WINDOW,true);
-                AlertDialogUtil.AlertDialog(mContext, "设置", "为给您提供更好的服务，请授予应用悬浮窗权限", (dialog, which) -> SystemUtil.goToAppSetting(mContext));
+                AlertDialogUtil.AlertDialog(mContext, getString(R.string.tag_setting), getString(R.string.perimmsion_ask_window), (dialog, which) -> SystemUtil.goToWindow(mContext));
             }
-          /*  AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-            int checkResult = appOpsManager.checkOpNoThrow(
-                    AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW, Binder.getCallingUid(), context.getPackageName());
-            if(checkResult == AppOpsManager.MODE_ALLOWED){
-                Log.e("jijiaxin","有权限");
-            }else if(checkResult == AppOpsManager.MODE_IGNORED){
-                // TODO: 只需要依此方法判断退出就可以了，这时是没有权限的。
-                AlertDialogUtil.AlertDialog(mContext, "设置", "为给您提供更好的服务，请授予应用悬浮窗权限", (dialog, which) -> SystemUtil.goToAppSetting(mContext));
-                Log.e("jijiaxin","被禁止了");
-            }else if(checkResult == AppOpsManager.MODE_ERRORED){
-                Log.e("jijiaxin","出错了");
-            }else if(checkResult == 4){
-                Log.e("jijiaxin","权限需要询问");
-            }*/
         }
-        //4个状态，0默认 1可用 2禁止 3user disable
     }
     private BroadcastReceiver mHomeKeyEventReceiver = new BroadcastReceiver() {
         String SYSTEM_REASON = "reason";

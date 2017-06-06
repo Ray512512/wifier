@@ -128,6 +128,8 @@ public class BaiduMapManager {
      * */
     public void showWifiPoint(ArrayList<WifiProvider> wifiProviders){
         try {
+            mBaiduMap.clear();
+            showMyLocation();isShowMyLoc=false;
         for (WifiProvider w:wifiProviders){
             BitmapDescriptor bitmap=BitmapDescriptorFactory.fromView(new MapItemView(mContext,w));
             Bundle bundle = new Bundle();

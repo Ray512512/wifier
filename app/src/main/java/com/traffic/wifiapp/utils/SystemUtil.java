@@ -139,6 +139,12 @@ public class SystemUtil {
         ((Activity)context).startActivityForResult(intent,SplashActivity.CHECK_PEERISSION_CODE);
     }
 
+    public static void goToWindow(Context context){
+        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + context.getPackageName()));
+        context.startActivity(intent);
+    }
+
     /**
      * 调用拨号界面
      * @param phone 电话号码
