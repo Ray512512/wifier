@@ -43,10 +43,6 @@ public interface ApiService {
     @GET("backstage/adsite/getnearlb.html")
     Observable<BaseModel<List<SlideImageUrls>>> getMapPageSlide();
 
-
-   /* @GET("backstage/adsite/getrewardlb.html?{shop_id}")
-    Observable<BaseModel<List<SlideImageUrls>>> getMoneyPageSlide(@Path("shop_id")String shop_id);//// TODO: 2017/5/24  换地址
-*/
     @POST("wap/mall/orderwifi.html")
     Observable<BaseModel<WXOrderInfo>> getOrderInfo(@Body OderEntry o);
 

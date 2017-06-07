@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">灵通WiFi</string>
+    <string name="alertdialog_title">灵通WiFi提示</string>
 
     <string name="tab_one">WiFi</string>
     <string name="tab_two">附近</string>
@@ -47,7 +48,6 @@
     <string name="addr_detail">详细地址：%s</string>
 
     <string name="no_content">啊哦，出错了</string>
-    <string name="alertdialog_title">Wifier提示</string>
     <string name="you_can_try">你可以尝试</string>
     <string name="reload">重新加载</string>
     <string name="up">收  起</string>
@@ -64,6 +64,18 @@
     <string name="xlistview_footer_hint_ready">松开立即加载更多</string>
     <string name="xlistview_footer_hint_loading">正在加载更多的数据...</string>
 
+
+    <string name="mine_foot">我的足迹</string>
+    <string name="mine_collect">我的收藏</string>
+    <string name="mine_cheap">我的优惠劵</string>
+
+    <string name="mine_item_account">账户管理</string>
+    <string name="mine_item_message">消息中心</string>
+    <string name="mine_item_mytask">我的任务</string>
+    <string name="mine_item_shop">积分商城</string>
+    <string name="mine_item_help">帮助与反馈</string>
+    <string name="mine_item_join">我要加入</string>
+    <string name="mine_item_share">分享灵通WiFi</string>
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 

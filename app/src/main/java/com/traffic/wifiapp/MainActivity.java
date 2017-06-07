@@ -145,6 +145,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
 
     /**
      * 检测悬浮窗权限
+     * 兼容6.0及以下
      * */
     private void checkWindowPerission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
