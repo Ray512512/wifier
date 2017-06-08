@@ -22,12 +22,14 @@ import com.bumptech.glide.Glide;
 import com.traffic.wifiapp.MainActivity;
 import com.traffic.wifiapp.R;
 import com.traffic.wifiapp.bean.response.WifiProvider;
+import com.traffic.wifiapp.common.ConstantField;
 import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.manager.WifiAdmin;
 import com.traffic.wifiapp.mvp.presenter.WifiAppPresenter;
 import com.traffic.wifiapp.mvp.view.WifiServiceIView;
 import com.traffic.wifiapp.utils.AnimaUtil;
 import com.traffic.wifiapp.utils.L;
+import com.traffic.wifiapp.utils.SPUtils;
 import com.traffic.wifiapp.utils.SystemUtil;
 import com.traffic.wifiapp.utils.ViewUtils;
 
@@ -265,6 +267,7 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
      * */
     private void changeMainView(){
         if(windowMain.getVisibility()==View.GONE){
+            SPUtils.put(ConstantField.IS_HINT_SYSTEM_WINDOW,true);
             AnimaUtil.showRainBow(windowMainChild,windowMain,AnimaUtil.VERTICAL);
             window_click.setVisibility(View.VISIBLE);
         }else{
@@ -384,6 +387,7 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         mWindowManager.updateViewLayout(mWindowView, wmParams);
     }
     private synchronized boolean checkHide(){
+        //50 作为手指滑动偏差值
         if(!canHide)return true;
         new Handler().postDelayed(() -> {
             canHide=true;

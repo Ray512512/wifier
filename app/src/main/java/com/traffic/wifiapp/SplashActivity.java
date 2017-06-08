@@ -89,12 +89,18 @@ public class SplashActivity extends BaseActivity {
     @OnPermissionDenied({Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void locationDenied(){
         AlertDialogUtil.AlertDialog(mContext, getString(R.string.tag_setting),
-               getString(R.string.perimmsion_ask_must), (dialog, which) -> SystemUtil.goToAppSetting(mContext));
+               getString(R.string.perimmsion_ask_must), (dialog, which) -> {
+                   dialog.dismiss();
+                   SystemUtil.goToAppSetting(mContext);
+               });
     }
 
     @OnNeverAskAgain({Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void onNeverAsk(){
-        AlertDialogUtil.AlertDialog(mContext,  getString(R.string.tag_setting),  getString(R.string.perimmsion_ask_must), (dialog, which) -> SystemUtil.goToAppSetting(mContext));
+        AlertDialogUtil.AlertDialog(mContext,  getString(R.string.tag_setting),  getString(R.string.perimmsion_ask_must), (dialog, which) -> {
+            dialog.dismiss();
+            SystemUtil.goToAppSetting(mContext);
+        });
     }
 
 

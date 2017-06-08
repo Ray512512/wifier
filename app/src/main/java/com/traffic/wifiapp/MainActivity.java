@@ -5,8 +5,6 @@ import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.provider.Settings;
 import android.text.TextUtils;
 
 import com.traffic.wifiapp.base.BaseActivity;
@@ -148,7 +146,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
      * 兼容6.0及以下
      * */
     private void checkWindowPerission(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if(!SPUtils.getBooleanValue(ConstantField.IS_HINT_SYSTEM_WINDOW)){
+            AlertDialogUtil.AlertDialog(mContext, getString(R.string.perimmsion_ask_window),getString(R.string.tag_setting), getString(R.string.tag_cancle), (dialog, which) -> {
+                dialog.dismiss();
+                SystemUtil.goToWindow(mContext);
+            });
+        }
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(!Settings.canDrawOverlays(this)){
                 AlertDialogUtil.AlertDialog(mContext, getString(R.string.tag_setting), getString(R.string.perimmsion_ask_window), (dialog, which) -> SystemUtil.goToWindow(mContext));
             }
@@ -157,7 +161,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
                 SPUtils.put(ConstantField.IS_HINT_SYSTEM_WINDOW,true);
                 AlertDialogUtil.AlertDialog(mContext, getString(R.string.tag_setting), getString(R.string.perimmsion_ask_window), (dialog, which) -> SystemUtil.goToWindow(mContext));
             }
-        }
+        }*/
     }
     private BroadcastReceiver mHomeKeyEventReceiver = new BroadcastReceiver() {
         String SYSTEM_REASON = "reason";

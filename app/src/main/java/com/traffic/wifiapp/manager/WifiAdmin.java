@@ -109,7 +109,10 @@ public class WifiAdmin {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if(mContext instanceof Activity)
                 AlertDialogUtil.AlertDialog(mContext, mContext.getString(R.string.tag_setting),
-                        mContext.getString(R.string.perimmsion_ask_gps), (dialog, which) -> GPSUtils.openGPS((Activity) mContext));
+                        mContext.getString(R.string.perimmsion_ask_gps), (dialog, which) -> {
+                            dialog.dismiss();
+                            GPSUtils.openGPS((Activity) mContext);
+                        });
                else
                 Toast.makeText(mContext,mContext.getString(R.string.perimmsion_ask_gps),Toast.LENGTH_SHORT).show();
             }
@@ -201,8 +204,8 @@ public class WifiAdmin {
            config.allowedGroupCiphers.clear();   
            config.allowedKeyManagement.clear();   
            config.allowedPairwiseCiphers.clear();   
-           config.allowedProtocols.clear();   
-          config.SSID = "\"" + SSID + "\"";     
+           config.allowedProtocols.clear();
+          config.SSID = "\"" + SSID + "\"";
             
           WifiConfiguration tempConfig = this.IsExsits(SSID);             
           if(tempConfig != null) {    

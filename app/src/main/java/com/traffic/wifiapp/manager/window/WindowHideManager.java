@@ -32,7 +32,7 @@ public class WindowHideManager {
 
     public WindowHideManager(View view) {
         this.view = view;
-        new Handler().postDelayed(() -> action(mType,null),500);
+        new Handler().postDelayed(() -> WindowHideManager.this.action(mType, null),500);
     }
 
     private View view;

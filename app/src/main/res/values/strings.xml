@@ -36,6 +36,7 @@
     <string name="tag_register">注册</string>
     <string name="tag_sure">确定</string>
     <string name="tag_setting">设置</string>
+    <string name="tag_cancle">取消</string>
     <string name="tag_waiting">请稍后...</string>
 
     <string name="perimmsion_refuse_phone_login">拒绝了读取设备信息权限，您将无法进行登录</string>
