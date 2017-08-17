@@ -12,8 +12,9 @@ import java.io.Serializable;
  */
 
 public class User implements Serializable{
-
+    private static final long serialVersionUID=1L;
     private double lng,lat;
+
     /**
      * user_id : 617
      * account : null
@@ -61,9 +62,9 @@ public class User implements Serializable{
     private Object account;
     private String password;
     private Object pay_password;
-    private Object face;
     private String ext0; // 这个代表白名单 0-否 1-可以访问任意wifi
-    private Object nickname;
+    private String  nickname;
+    private String  face;//头像
     private String integral;
     private String prestige;
     private String money;
@@ -98,6 +99,50 @@ public class User implements Serializable{
     private String cleartime;
     private Object yhmonth;
     private int ext01;
+    /**
+     * account : null
+     * pay_password : null
+     * face : null
+     * nickname : null
+     * frozen_money : null
+     * frozen_gold : null
+     * reg_ip : null
+     * last_time : null
+     * frozen_money_time : null
+     * frozen_gold_time : null
+     * email : null
+     * invite1 : null
+     * invite2 : null
+     * invite3 : null
+     * invite4 : null
+     * invite5 : null
+     * is_lock_time : null
+     * yhmonth : null
+     * ext01 : 1
+     * provinceid : 0
+     * cityid : 0
+     */
+
+    private String provinceid;
+    private String cityid;
+    private String provinceName;
+    private String cityName;
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
 
     public int getExt01() {
         return ext01;
@@ -123,6 +168,16 @@ public class User implements Serializable{
         this.lat = lat;
     }
 
+
+    private BDLocation bdLocation;
+
+    public BDLocation getBdLocation() {
+        return bdLocation;
+    }
+
+    public void setBdLocation(BDLocation bdLocation) {
+        this.bdLocation = bdLocation;
+    }
 
     public void setLocationInfo(BDLocation bdLocation){
         if(bdLocation!=null){
@@ -164,11 +219,11 @@ public class User implements Serializable{
         this.pay_password = pay_password;
     }
 
-    public Object getFace() {
+    public String getFace() {
         return face;
     }
 
-    public void setFace(Object face) {
+    public void setFace(String  face) {
         this.face = face;
     }
 
@@ -180,11 +235,11 @@ public class User implements Serializable{
         this.ext0 = ext0;
     }
 
-    public Object getNickname() {
+    public String  getNickname() {
         return nickname;
     }
 
-    public void setNickname(Object nickname) {
+    public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
@@ -450,5 +505,21 @@ public class User implements Serializable{
 
     public void setYhmonth(Object yhmonth) {
         this.yhmonth = yhmonth;
+    }
+
+    public String getProvinceid() {
+        return provinceid;
+    }
+
+    public void setProvinceid(String provinceid) {
+        this.provinceid = provinceid;
+    }
+
+    public String getCityid() {
+        return cityid;
+    }
+
+    public void setCityid(String cityid) {
+        this.cityid = cityid;
     }
 }

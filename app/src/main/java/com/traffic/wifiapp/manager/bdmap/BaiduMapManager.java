@@ -43,7 +43,7 @@ public class BaiduMapManager {
 
     private BaiduMap mBaiduMap;
     private Context mContext;
-    private BDLocation myLocation;
+    public static BDLocation myLocation;
     private LocationClient mLocationClient;
     private MyLocationListener myLocationListener;
     private boolean isShowMyLoc=false;

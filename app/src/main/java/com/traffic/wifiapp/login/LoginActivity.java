@@ -30,9 +30,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Bind(R.id.exit_phone)
     EditText exitPhone;
 
-    String phone = "";
+    String phone = "",psw="";
     @Bind(R.id.tv_register)
     TextView tvRegister;
+    @Bind(R.id.exit_psw)
+    TextView tvPsw;
 
     @Override
     protected void setMainLayout() {
@@ -62,7 +64,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @NeedsPermission({android.Manifest.permission.READ_PHONE_STATE})
     public void getDeviceIdPerssion(){
-        mPresenter.login(phone);
+        mPresenter.login(phone,psw);
     }
 
     @OnPermissionDenied({android.Manifest.permission.READ_PHONE_STATE})
@@ -75,14 +77,20 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         switch (view.getId()) {
             case R.id.btn_login:
                 phone = exitPhone.getText().toString().trim();
+                psw = tvPsw.getText().toString().trim();
                 if (TextUtils.isEmpty(phone)) {
                     showShortToast(getString(R.string.login_phone_empty));
+                    return;
                 }
                 if (!CommonUtils.isMobile(phone)) {
                     showShortToast(getString(R.string.login_phone_error));
-                } else {
-                    LoginActivityPermissionsDispatcher.getDeviceIdPerssionWithCheck(this);
+                    return;
                 }
+                if(TextUtils.isEmpty(psw)){
+                    showShortToast(getString(R.string.login_psw_empty));
+                    return;
+                }
+                LoginActivityPermissionsDispatcher.getDeviceIdPerssionWithCheck(this);
                 break;
             case R.id.tv_register:
                 startActivity(new Intent(this, RegisterActivity.class));

@@ -111,8 +111,7 @@ public class RoundImageView extends android.support.v7.widget.AppCompatImageView
   
         if (drawable.getClass() == NinePatchDrawable.class)
   
-            return;  
-  
+            return;
         Bitmap b = ((BitmapDrawable) drawable).getBitmap();
   
         Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);

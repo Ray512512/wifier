@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
     <!-- Customize your theme here. -->
-    <item name="colorPrimary">@color/mainGreen</item>
+    <item name="colorPrimary">@color/white</item>
     <item name="colorPrimaryDark">@color/mainGreen</item>
     <item name="colorAccent">@color/mainGreen</item>
 </style>
@@ -64,5 +64,13 @@
         <attr name="border_inside_color" format="color" />
         <attr name="border_outside_color" format="color"></attr>
     </declare-styleable>
+
+
+    <style name="MineTopTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/mainGreen</item>
+        <item name="colorPrimaryDark">@color/mainGreen</item>
+        <item name="colorAccent">@color/mainGreen</item>
+    </style>
 
 </resources>

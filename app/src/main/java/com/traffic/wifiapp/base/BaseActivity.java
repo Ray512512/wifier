@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.traffic.wifiapp.R;
 import com.traffic.wifiapp.common.ConstantField;
+import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.service.WindowsService;
 import com.traffic.wifiapp.ui.viewhelper.VaryViewHelper;
 import com.traffic.wifiapp.utils.AppManager;
@@ -180,10 +181,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         if (mPresenter != null) {
             mPresenter.onDetachView();
         }
-//        RxBus.getInstance().unSubscribe(mContext);
         AppManager.getInstance(mContext).killActivity(this);
     }
-
 
 
     @Override
@@ -192,4 +191,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         stopService(new Intent(this, WindowsService.class));
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        WifiApplication.getInstance().startService();
+    }
 }

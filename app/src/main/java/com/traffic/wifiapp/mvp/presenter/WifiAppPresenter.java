@@ -8,6 +8,8 @@ import android.net.ConnectivityManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 import com.traffic.wifiapp.R;
@@ -51,7 +53,7 @@ public class WifiAppPresenter {
     private WifiIView mFragmentView;//view接口
     private WifiServiceIView mServiceIView;
     private Context mContext;
-    private boolean isInit=false;
+    private boolean isInited =false;
 
     public void setmFragmentView(WifiIView mFragmentView) {
         this.mFragmentView = mFragmentView;
@@ -74,9 +76,19 @@ public class WifiAppPresenter {
     private ArrayList<WifiProvider> mWifiProviders;
     public boolean isSearching=false;//是否正在更新wifi列表
 
+    private Handler mHandler;
+    private Runnable scanWifiRunnable=new Runnable() {
+        @Override
+        public void run() {
+            mHandler.postDelayed(this, 5000);
+            getScanWifiList();
+        }
+    };
     private void init(){
         wifiAdmin=WifiAdmin.getIntance(mContext);
         registBordCast();
+        mHandler=new Handler(Looper.getMainLooper());
+        mHandler.postDelayed(scanWifiRunnable,5000);
     }
     private void showToast(String msg){
         Toast.makeText(mContext,msg,Toast.LENGTH_SHORT).show();
@@ -100,6 +112,7 @@ public class WifiAppPresenter {
                     getShowWifiList(wifiMacList);
                 }
             }else {
+                if(!isInited)
                 showToast(mContext.getString(R.string.no_wifi_msg));
                 if(mFragmentView!=null)
                     mFragmentView.showDataView();
@@ -139,7 +152,7 @@ public class WifiAppPresenter {
                     listCanUse.add(scanResult);
                }
             }
-            if(isInit&&isEqual(showMacList,showMaclist)){//过滤查询重复数据
+            if(isInited &&isEqual(showMacList,showMaclist)){//过滤查询重复数据
                 if(mFragmentView!=null)
                     mFragmentView.showDataView();
                 return;
@@ -151,12 +164,14 @@ public class WifiAppPresenter {
             else {
                 if(mFragmentView!=null)
                     mFragmentView.showDataView();
+                if(!isInited)
                 showToast(mContext.getString(R.string.no_wifi_msg));
             }
         }else {
             L.v(TAG, "服务器返回mac池为空:");
             if(mFragmentView!=null)
                 mFragmentView.showDataView();
+            if(!isInited)
             showToast(mContext.getString(R.string.no_wifi_msg));
         }
     }
@@ -186,7 +201,7 @@ public class WifiAppPresenter {
                         if(mFragmentView!=null)
                             mFragmentView.showWifiList(mWifiProviders);
                         if(null!=mServiceIView&&null!=mFragmentView)
-                            isInit=true;
+                            isInited =true;
                         checkCurrentContect();
                         L.v(TAG,"搜索完成，打开搜索开关");
                     }
@@ -197,6 +212,11 @@ public class WifiAppPresenter {
 //                        showToast(message);
                         if(mFragmentView!=null)
                             mFragmentView.showDataView();
+                        if(!isInited){
+                            if(listCanUse.size()>0){
+                                connect(listCanUse.get(0).SSID);
+                            }
+                        }
                     }
                 });
     }
@@ -217,6 +237,7 @@ public class WifiAppPresenter {
             mContext.unregisterReceiver(mRecaiver);
     }
 
+
     private BroadcastReceiver mRecaiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -224,14 +245,13 @@ public class WifiAppPresenter {
             switch (action){
                 case WifiManager.SCAN_RESULTS_AVAILABLE_ACTION://wifi已成功扫描到可用wifi。
                     L.v(TAG, "成功扫描到可用wifi");
-                    new Thread(() -> {
-                        try {
-                            Thread.sleep(3000);
-                            getScanWifiList();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }).start();
+//                    new Thread(() -> {
+//                        try {
+//                            Thread.sleep(3000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }).start();
                     break;
                 case WifiManager.WIFI_STATE_CHANGED_ACTION://wifi开关状态变化
                     int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
@@ -302,7 +322,7 @@ public class WifiAppPresenter {
                             mServiceIView.wifiConnectSuccess(w);
                         if(mFragmentView!=null)
                             mFragmentView.wifiConnectSuccess(w);
-                        if(w.getType()==TYPE_SHOPER_FREE||w.getType()==TYPE_SINGLE_FREE|| ShopAndPayFragment.isOpenWifi){//当链接是免费wifi
+                        if(w.getType()==TYPE_SHOPER_FREE||w.getType()==TYPE_SINGLE_FREE){//当链接是免费wifi
                             MoneyPresenter.openWifi(24*H1);//打开24小时
                         }
                         if(ShopAndPayFragment.isOpenWifi){

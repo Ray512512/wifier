@@ -26,11 +26,14 @@ import rx.schedulers.Schedulers;
 @RuntimePermissions
 public class SplashActivity extends BaseActivity {
 
-    public static final int CHECK_PEERISSION_CODE=1;
+    public static final int CHECK_PEERISSION_CODE = 1;
+    private static final java.lang.String TAG ="SplashActivity" ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
         SplashActivityPermissionsDispatcher.callPermissionPassWithCheck(this);
     }
 
@@ -59,17 +62,17 @@ public class SplashActivity extends BaseActivity {
     }
 
     @NeedsPermission({Manifest.permission.CALL_PHONE})
-    public void callPermissionPass(){
+    public void callPermissionPass() {
         SplashActivityPermissionsDispatcher.locationPermissionPassWithCheck(this);
     }
 
     @OnPermissionDenied({Manifest.permission.CALL_PHONE})
-    public void callPermissionRefuse(){
+    public void callPermissionRefuse() {
         SplashActivityPermissionsDispatcher.locationPermissionPassWithCheck(this);
     }
 
-    @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE})
-    public void locationPermissionPass(){
+    @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void locationPermissionPass() {
         Observable.just(SPUtils.getStrValue(ConstantField.USER_NAME)).subscribeOn(Schedulers.io()).flatMap(user -> {
             if (TextUtils.isEmpty(user)) {
                 return Observable.just(Boolean.FALSE).delay(2, TimeUnit.SECONDS).subscribeOn(Schedulers.newThread());
@@ -86,18 +89,17 @@ public class SplashActivity extends BaseActivity {
         });
     }
 
-    @OnPermissionDenied({Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE})
-    public void locationDenied(){
-        AlertDialogUtil.AlertDialog(mContext, getString(R.string.tag_setting),
-               getString(R.string.perimmsion_ask_must), (dialog, which) -> {
-                   dialog.dismiss();
-                   SystemUtil.goToAppSetting(mContext);
-               });
+    @OnPermissionDenied({Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void locationDenied() {
+        AlertDialogUtil.AlertDialog(mContext, getString(R.string.tag_setting), getString(R.string.perimmsion_ask_must), (dialog, which) -> {
+            dialog.dismiss();
+            SystemUtil.goToAppSetting(mContext);
+        });
     }
 
-    @OnNeverAskAgain({Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE})
-    public void onNeverAsk(){
-        AlertDialogUtil.AlertDialog(mContext,  getString(R.string.tag_setting),  getString(R.string.perimmsion_ask_must), (dialog, which) -> {
+    @OnNeverAskAgain({Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void onNeverAsk() {
+        AlertDialogUtil.AlertDialog(mContext, getString(R.string.tag_setting), getString(R.string.perimmsion_ask_must), (dialog, which) -> {
             dialog.dismiss();
             SystemUtil.goToAppSetting(mContext);
         });
@@ -107,13 +109,13 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        SplashActivityPermissionsDispatcher.onRequestPermissionsResult(this,requestCode,grantResults);
+        SplashActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==CHECK_PEERISSION_CODE){
+        if (requestCode == CHECK_PEERISSION_CODE) {
             SplashActivityPermissionsDispatcher.locationPermissionPassWithCheck(this);
         }
     }

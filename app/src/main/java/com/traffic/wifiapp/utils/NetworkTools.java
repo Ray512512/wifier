@@ -11,6 +11,8 @@ import android.text.TextUtils;
 
 import com.traffic.wifiapp.common.WifiApplication;
 
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -154,18 +156,63 @@ private static boolean isFastMobileNetwork(Context context) {
    }
 
 
+   /**
+    * 获取ip
+    * */
    public static String getWifiIp(Context context){
       String  ip="";
-      WifiManager wifiManager = (WifiManager)context. getSystemService(Context.WIFI_SERVICE);
+      WifiManager wifiManager = (WifiManager)context.getApplicationContext(). getSystemService(Context.WIFI_SERVICE);
       //判断wifi是否开启
       if (wifiManager.isWifiEnabled()) {
           DhcpInfo d=wifiManager.getDhcpInfo();
-          int ipAddress=d.gateway;
+          int ipAddress=d.ipAddress;
           ip = intToIp(ipAddress);
           L.v("getWifiIp",d.toString());
       }
       return ip;
    }
+
+   /**
+    * 获取网关
+    * */
+   public static String getWifiGateWay(Context context){
+      String  ip="";
+      WifiManager wifiManager = (WifiManager)context.getApplicationContext(). getSystemService(Context.WIFI_SERVICE);
+      //判断wifi是否开启
+      if (wifiManager.isWifiEnabled()) {
+         DhcpInfo d=wifiManager.getDhcpInfo();
+         int ipAddress=d.gateway;
+         ip = intToIp(ipAddress);
+         L.v("getWifiGateWay",d.toString());
+      }
+      return ip;
+   }
+
+   /**
+    * 获取mac
+    * */
+   public static String getMacAddress() {
+      String str="";
+      String macSerial="";
+      try {
+         Process pp = Runtime.getRuntime().exec(
+                 "cat /sys/class/net/wlan0/address ");
+         InputStreamReader ir = new InputStreamReader(pp.getInputStream());
+         LineNumberReader input = new LineNumberReader(ir);
+         for (; null != str;) {
+            str = input.readLine();
+            if (str != null) {
+               macSerial = str.trim();// 去空格
+               break;
+            }
+         }
+      } catch (Exception ex) {
+         ex.printStackTrace();
+      }
+      L.v("getMacAddress",macSerial);
+      return macSerial;
+   }
+
    private static String intToIp(int i) {
       return (i & 0xFF ) + "." +
               ((i >> 8 ) & 0xFF) + "." +

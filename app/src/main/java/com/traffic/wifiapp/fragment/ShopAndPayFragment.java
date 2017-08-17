@@ -181,9 +181,11 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
         wifiRecycler.setAdapter(goodsAdapter);
         wifiRecycler.initLayout(wifiRefresh, goodsAdapter);
         wifiRecycler.openMoreEnabled(false, false);
+        wifiRefresh.setColorSchemeColors(getResources().getColor(R.color.mainGreen));
         wifiRecycler.setLoadingListener(() -> {
             wifiRecycler.loadMoreComplete();
         });
+
         wifiRefresh.setOnRefreshListener(() -> {
             if (mWifiProvider != null){
                 mPresenter.getgetShowGoods(mWifiProvider.getShop_id());

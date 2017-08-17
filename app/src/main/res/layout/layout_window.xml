@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@+id/window_root"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -538,6 +539,27 @@
         </RelativeLayout>
     </RelativeLayout>
 
+   <!-- <com.scalified.fab.ActionButton
+        android:id="@+id/percentTv"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        fab:type="DEFAULT"
+        fab:button_color="@color/fab_material_lime_500"
+        fab:button_colorPressed="@color/fab_material_lime_900"
+        fab:image="@mipmap/ic_app_window"
+        fab:image_size="33dp"
+        fab:shadow_color="#757575"
+        fab:shadow_radius="1.0dp"
+        fab:shadow_xOffset="0.5dp"
+        fab:shadow_yOffset="1.0dp"
+        fab:stroke_color="@color/fab_material_blue_grey_500"
+        fab:stroke_width="1.0dp"
+        fab:button_colorRipple="@color/fab_material_black"
+        fab:rippleEffect_enabled="false"
+        fab:shadowResponsiveEffect_enabled="true"
+        fab:show_animation="@anim/fab_jump_to_right"
+        fab:hide_animation="@anim/fab_jump_from_right"
+        />-->
     <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
                android:id="@+id/percentTv"
                android:layout_width="33dp"

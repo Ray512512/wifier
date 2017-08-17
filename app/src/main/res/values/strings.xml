@@ -29,6 +29,12 @@
 
     <string name="login_phone_empty">请输入手机号</string>
     <string name="login_phone_error">请输入正确的手机号</string>
+    <string name="login_psw_empty">请输入密码</string>
+    <string name="login_sure_psw_empty">请确认密码</string>
+    <string name="login_psw_not_equals">两次密码输入不一致</string>
+    <string name="login_psw_error">密码错误</string>
+    <string name="login_code_empty">请输入验证码</string>
+    <string name="login_code_error">验证码错误</string>
     <string name="user_no_phone">该用户暂未预留电话</string>
     <string name="login_success">登录成功</string>
     <string name="register_success">注册成功</string>
@@ -71,13 +77,63 @@
     <string name="mine_cheap">我的优惠劵</string>
 
     <string name="mine_item_account">账户管理</string>
-    <string name="mine_item_message">消息中心</string>
+    <string name="mine_item_message">信息中心</string>
     <string name="mine_item_mytask">我的任务</string>
     <string name="mine_item_shop">积分商城</string>
-    <string name="mine_item_help">帮助与反馈</string>
+    <string name="mine_item_help">意见反馈</string>
     <string name="mine_item_join">我要加入</string>
     <string name="mine_item_share">分享灵通WiFi</string>
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+
+    <string name="mine_info_avatar">头像</string>
+    <string name="mine_info_nickname">昵称</string>
+    <string name="mine_info_address">地区</string>
+    <string name="mine_info_title">个人信息</string>
+    <string name="mine_info_save">保存</string>
+    <string name="mine_info_default_address">暂无位置信息</string>
+    <string name="mine_info_get_addressing">获取信息中，请稍后...</string>
+    <string name="mine_info_saving">保存信息中，请稍后...</string>
+    <string name="mine_info_no_addr">未获取到地址信息</string>
+    <string name="mine_info_hint_name">昵称不能为空</string>
+    <string name="mine_info_hint_avatar">请选择头像</string>
+    <string name="mine_info_hint_address">请选择地址</string>
+    <!--<string name="mine_info_map_address">%s-%s-%s</string>-->
+
+    <string name="mine_join_title">我要加入</string>
+    <string name="mine_join_name">姓名</string>
+    <string name="mine_join_phone">电话</string>
+    <string name="mine_join_shop_name">店铺名称</string>
+    <string name="mine_join_addr">地址</string>
+    <string name="mine_join_hint_name">请输入您的姓名</string>
+    <string name="mine_join_hint_phone">请输入联系电话</string>
+    <string name="mine_join_hint_shop_name">请输入店铺名称</string>
+    <string name="mine_join_hint_addr">请输入店铺地址</string>
+
+    <string name="submit">提交</string>
+    <string name="loginout">退出登录</string>
+
+
+    <string name="mine_join_empty_name">姓名不能为空</string>
+    <string name="mine_join_empty_phone">请输入正确的电话号码</string>
+    <string name="mine_join_empty_shop_name">店铺名称不能为空</string>
+    <string name="mine_join_empty_addr">店铺地址不能为空</string>
+    <string name="mine_join_submit_success">提交中，请稍后...</string>
+
+    <string name="system_feedback_title">意见反馈。</string>
+    <string name="system_feedback_input_hint">请输入您遇到的问题或建议。</string>
+    <string name="system_feedback_input_hint_title">请输入主题。</string>
+    <string name="system_feedback_input_limit">意见反馈最多只能输入200字</string>
+    <string name="system_feedback_limit_hint">(最多可输入200字)</string>
+    <string name="system_feedback_limit_hint_input">您还可以输入%1$d字</string>
+    <string name="system_feedback_hint_content">请输入反馈内容</string>
+    <string name="system_feedback_hint_title">请输入反馈主题</string>
+
+    <string name="setting_close_msg">消息免打扰</string>
+    <string name="setting_window">设置悬浮窗</string>
+
+    <string name="msg_center_title">信息中心</string>
+    <string name="msg_center_waiting">加载中，请稍后...</string>
+    <string name="msg_save_info_success">保存信息成功</string>
 
 </resources>

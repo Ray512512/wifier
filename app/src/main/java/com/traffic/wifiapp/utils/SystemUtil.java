@@ -1,8 +1,10 @@
 package com.traffic.wifiapp.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -17,6 +19,9 @@ import android.view.WindowManager;
 
 import com.traffic.wifiapp.SplashActivity;
 import com.traffic.wifiapp.common.WifiApplication;
+
+import java.util.Iterator;
+import java.util.List;
 
 import static com.traffic.wifiapp.utils.StringUtil.isEmpty;
 
@@ -140,9 +145,14 @@ public class SystemUtil {
     }
 
     public static void goToWindow(Context context){
-        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:" + context.getPackageName()));
-        context.startActivity(intent);
+        JumpPermissionManagement.GoToSetting((Activity) context);
+//        try {
+//        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                Uri.parse("package:" + context.getPackageName()));
+//        context.startActivity(intent);
+//        }catch (ActivityNotFoundException e){
+//            goToAppSetting(context);
+//        }
     }
 
     /**
@@ -171,5 +181,29 @@ public class SystemUtil {
             }
         }
         return isServiceRunning;
+    }
+
+    /**
+     * 获取当前运行程序包名
+     * */
+    public static String getCurrentRuningProgress(Context context, int pID) {
+        String processName = null;
+        ActivityManager am = (ActivityManager) context
+                .getSystemService(context.ACTIVITY_SERVICE);
+        List l = am.getRunningAppProcesses();
+        Iterator i = l.iterator();
+        PackageManager pm = context.getPackageManager();
+        while (i.hasNext()) {
+            ActivityManager.RunningAppProcessInfo info = (ActivityManager.RunningAppProcessInfo) (i
+                    .next());
+            try {
+                if (info.pid == pID) {
+                    processName = info.processName;
+                    return processName;
+                }
+            } catch (Exception e) {
+            }
+        }
+        return processName;
     }
 }

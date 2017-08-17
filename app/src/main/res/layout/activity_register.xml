@@ -43,6 +43,130 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginTop="1dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="登录密码"
+            android:textSize="18sp"
+            android:textColor="@color/text_black_high"
+            />
+
+        <EditText
+            android:id="@+id/exit_psw"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="请输入密码"
+            android:maxLength="11"
+            android:background="@color/white"
+            android:paddingLeft="20dp"
+            android:inputType="textPassword"
+            android:textColor="@color/text_black_high"
+            android:textColorHint="#9fb7bd"
+            android:singleLine="true"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginTop="1dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确认密码"
+            android:textSize="18sp"
+            android:textColor="@color/text_black_high"
+            />
+
+        <EditText
+            android:id="@+id/exit_psw2"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="请确认密码"
+            android:maxLength="11"
+            android:background="@color/white"
+            android:paddingLeft="20dp"
+            android:inputType="textPassword"
+            android:textColor="@color/text_black_high"
+            android:textColorHint="#9fb7bd"
+            android:singleLine="true"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginTop="1dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="验证码"
+            android:textSize="18sp"
+            android:textColor="@color/text_black_high"
+            />
+
+        <EditText
+            android:id="@+id/exit_code"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="60dp"
+            android:hint="输入验证码"
+            android:maxLength="11"
+            android:background="@color/white"
+            android:paddingLeft="20dp"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/text_black_high"
+            android:textColorHint="#9fb7bd"
+            android:singleLine="true"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/regist_img_code"
+            android:scaleType="centerInside"
+            android:src="@color/bgGreen"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="换一张"
+            android:id="@+id/regist_change_verifyimg"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/text_black_high"
+            />
+    </LinearLayout>
+
+
+
+
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"

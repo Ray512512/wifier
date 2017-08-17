@@ -31,16 +31,16 @@
         android:textColor="@color/white"
         android:textSize="18sp"/>
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="13dp"
-        android:paddingBottom="13dp"
-        android:id="@+id/img_action"
-        android:visibility="invisible"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/seletor_btn_press"
-        />
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:paddingRight="20dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:id="@+id/img_action"
+            android:visibility="invisible"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/seletor_btn_press"
+            />
+
 </LinearLayout>

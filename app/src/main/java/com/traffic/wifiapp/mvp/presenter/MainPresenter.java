@@ -138,6 +138,8 @@ public class MainPresenter extends BasePresenter {
         return (ShopAndPayFragment) mFragments[FRAGMENT_INDEX_THREE];
     }
 
-
+    public MineFragment getMineFragment(){
+        return (MineFragment) mFragments[FRAGMENT_INDEX_FOUR];
+    }
 
 }

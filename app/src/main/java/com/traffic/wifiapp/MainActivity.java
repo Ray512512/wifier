@@ -151,18 +151,21 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
                 dialog.dismiss();
                 SystemUtil.goToWindow(mContext);
             });
+        }else {
+            MainActivityPermissionsDispatcher.windowPermissionPassWithCheck(this);
         }
-     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if(!Settings.canDrawOverlays(this)){
-                AlertDialogUtil.AlertDialog(mContext, getString(R.string.tag_setting), getString(R.string.perimmsion_ask_window), (dialog, which) -> SystemUtil.goToWindow(mContext));
-            }
-          }else {
-            if(!SPUtils.getBooleanValue(ConstantField.IS_HINT_SYSTEM_WINDOW)){
-                SPUtils.put(ConstantField.IS_HINT_SYSTEM_WINDOW,true);
-                AlertDialogUtil.AlertDialog(mContext, getString(R.string.tag_setting), getString(R.string.perimmsion_ask_window), (dialog, which) -> SystemUtil.goToWindow(mContext));
-            }
-        }*/
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case ConstantField.REQUEST_USER://查看个人信息
+                mPresenter.getMineFragment().onActivityResult(requestCode,resultCode,data);
+                break;
+        }
+    }
+
     private BroadcastReceiver mHomeKeyEventReceiver = new BroadcastReceiver() {
         String SYSTEM_REASON = "reason";
         String SYSTEM_HOME_KEY = "homekey";

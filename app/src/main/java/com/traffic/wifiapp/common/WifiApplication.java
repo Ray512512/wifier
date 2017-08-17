@@ -1,8 +1,6 @@
 package com.traffic.wifiapp.common;
 
-import android.app.AlarmManager;
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -17,9 +15,9 @@ import com.traffic.wifiapp.utils.CrashHandler;
 import com.traffic.wifiapp.utils.DeviceUtils;
 import com.traffic.wifiapp.utils.L;
 import com.traffic.wifiapp.utils.SPUtils;
+import com.traffic.wifiapp.utils.SystemUtil;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import static com.traffic.wifiapp.common.ConstantField.H1;
 import static com.traffic.wifiapp.common.ConstantField.M1;
@@ -78,6 +76,11 @@ public class WifiApplication extends Application{
         super.onCreate();
         instance = this;
         L.isDebug = true;//日志调试开关
+        String processAppName = SystemUtil.getCurrentRuningProgress(this, android.os.Process.myPid());
+        if (processAppName == null || !processAppName.equalsIgnoreCase(getPackageName())) {
+            L.e("远程服务", "enter the service process!");
+            return;
+        }
         MyHotFixManager.init(this);
         CrashHandler.getInstance().init(this);
         SDKInitializer.initialize(this);//初始化百度地图
@@ -101,11 +104,17 @@ public class WifiApplication extends Application{
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
-        if(DeviceUtils.isAppAtBackground(this)&&mWifiPresenter!=null){
-            Intent intent=new Intent(this, WindowsService.class);
-            startService(intent);
-        }
+        startService();
         isVisblerToUser=false;
         SophixManager.getInstance().queryAndLoadNewPatch();
+    }
+
+
+    public void startService(){
+        boolean isAppAtBackGround=DeviceUtils.isAppAtBackground(this);
+//        boolean isServiceRunning=SystemUtil.isServiceRunning(instance,WindowsService.class);
+        if(isAppAtBackGround&&mWifiPresenter!=null){
+            startService(new Intent(this, WindowsService.class));
+        }
     }
 }

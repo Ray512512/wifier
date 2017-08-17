@@ -26,9 +26,10 @@ public class RegistPresenter extends BasePresenter<RegistIView> {
     }
 
     //注册
-    public void regist(String phone) {
+    public void regist(String phone,String psw) {
         RegistEntry registEntry=new RegistEntry(REG_REGIST);
         registEntry.setMobile(phone);
+        registEntry.setPassword(psw);
         registEntry.setExt0(SystemUtil.getDeviceId());
 
         ApiManager.mApiService.registerAndLogin(registEntry).compose(RxHelper.handleResult())

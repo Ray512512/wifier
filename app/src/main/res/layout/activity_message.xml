@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.traffic.wifiapp.mine.MessageActivity">
+
+
+    <include layout="@layout/common_title"/>
+
+    <com.traffic.wifiapp.ui.view.swipefreshReccycleview.MySwipeRefreshLayout
+        android:id="@+id/msg_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.traffic.wifiapp.ui.view.swipefreshReccycleview.MyRecyclerView
+            android:id="@+id/msg_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </com.traffic.wifiapp.ui.view.swipefreshReccycleview.MySwipeRefreshLayout>
+
+</LinearLayout>

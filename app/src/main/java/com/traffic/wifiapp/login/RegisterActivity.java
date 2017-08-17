@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.traffic.wifiapp.MainActivity;
@@ -17,6 +18,7 @@ import com.traffic.wifiapp.common.ConstantField;
 import com.traffic.wifiapp.mvp.presenter.RegistPresenter;
 import com.traffic.wifiapp.mvp.view.RegistIView;
 import com.traffic.wifiapp.utils.AppManager;
+import com.traffic.wifiapp.utils.CodeUtils;
 import com.traffic.wifiapp.utils.CommonUtils;
 import com.traffic.wifiapp.utils.SPUtils;
 
@@ -36,8 +38,18 @@ public class RegisterActivity extends BaseActivity<RegistPresenter> implements R
     TextView tvTitle;
     @Bind(R.id.regist_auth)
     TextView registAuth;
+    @Bind(R.id.exit_psw)
+    EditText exitPsw;
+    @Bind(R.id.exit_psw2)
+    EditText exitPsw2;
+    @Bind(R.id.exit_code)
+    EditText exitCode;
+    @Bind(R.id.regist_img_code)
+    ImageView registImgCode;
 
-    private String phone = "";
+    private String phone = "",psw="",psw2="",code="";
+
+    private CodeUtils codeUtils;
 
     @Override
     protected void setMainLayout() {
@@ -48,12 +60,12 @@ public class RegisterActivity extends BaseActivity<RegistPresenter> implements R
     @Override
     protected void initBeforeData() {
         tvTitle.setText(getString(R.string.tag_register));
-        registAuth.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG);
+        registAuth.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
     }
 
     @Override
     protected void initEvents() {
-
+        registImgCode.setImageBitmap(codeUtils.createBitmap());
     }
 
     @Override
@@ -64,12 +76,13 @@ public class RegisterActivity extends BaseActivity<RegistPresenter> implements R
     @Override
     protected void initPresenter() {
         mPresenter = new RegistPresenter(this, this);
+        codeUtils=CodeUtils.getInstance();
     }
 
 
     @NeedsPermission({Manifest.permission.READ_PHONE_STATE})
     public void getDeviceIdPerssion() {
-        mPresenter.regist(phone);
+        mPresenter.regist(phone,psw);
     }
 
     @OnPermissionDenied({Manifest.permission.READ_PHONE_STATE})
@@ -77,22 +90,49 @@ public class RegisterActivity extends BaseActivity<RegistPresenter> implements R
         showShortToast(getString(R.string.perimmsion_refuse_phone_register));
     }
 
-    @OnClick({R.id.btn_login, R.id.img_back})
+    @OnClick({R.id.btn_login, R.id.img_back,R.id.regist_img_code})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
                 phone = exitPhone.getText().toString().trim();
+                psw = exitPsw.getText().toString().trim();
+                psw2 = exitPsw2.getText().toString().trim();
+                code = exitCode.getText().toString().trim();
                 if (TextUtils.isEmpty(phone)) {
                     showShortToast(getString(R.string.login_phone_empty));
+                    return;
                 }
                 if (!CommonUtils.isMobile(phone)) {
                     showShortToast(getString(R.string.login_phone_error));
-                } else {
-                    RegisterActivityPermissionsDispatcher.getDeviceIdPerssionWithCheck(this);
+                    return;
                 }
+                if (TextUtils.isEmpty(psw)) {
+                    showShortToast(getString(R.string.login_psw_empty));
+                    return;
+                }
+                if (TextUtils.isEmpty(psw2)) {
+                    showShortToast(getString(R.string.login_sure_psw_empty));
+                    return;
+                }
+                if (!psw.equals(psw2)) {
+                    showShortToast(getString(R.string.login_psw_not_equals));
+                    return;
+                }
+                if (TextUtils.isEmpty(code)) {
+                    showShortToast(getString(R.string.login_code_empty));
+                    return;
+                }
+                if (!codeUtils.getCode().toLowerCase().equals(code.toLowerCase())) {
+                    showShortToast(getString(R.string.login_code_error));
+                    return;
+                }
+                    RegisterActivityPermissionsDispatcher.getDeviceIdPerssionWithCheck(this);
                 break;
             case R.id.img_back:
                 finish();
+                break;
+            case R.id.regist_img_code:
+                registImgCode.setImageBitmap(codeUtils.createBitmap());
                 break;
         }
     }
