@@ -116,6 +116,8 @@ public class UserInfoPresenter extends BasePresenter<UserInfoIView> {
         User u = WifiApplication.getInstance().getUser();
         u.setNickname(nickname);
         u.setFace(avatarPath);
+        u.setProvinceid(curentProvince);
+        u.setCityid(currentCity);
         u.setProvinceName(curentProvince);
         u.setCityName(currentCity);
         SPUtils.setObject(ConstantField.USER, u);

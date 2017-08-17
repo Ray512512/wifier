@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -134,7 +135,7 @@ public class MineFragment extends BaseFragment<MinePresenter> implements MineIVi
 
     private void intData(){
         user= WifiApplication.getInstance().getUser();
-        mineUsername.setText(user.getMobile());
+        mineUsername.setText(TextUtils.isEmpty(user.getNickname())?user.getMobile():user.getNickname());
         Glide.with(mContext).load(user.getFace()).asBitmap().placeholder(R.drawable.ic_app).into(mineAvatar);
     }
 
