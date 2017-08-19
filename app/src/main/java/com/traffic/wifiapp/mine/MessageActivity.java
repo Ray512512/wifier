@@ -51,7 +51,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter> implements M
                 helper.setText(R.id.msg_content,item.getIntro());
                 helper.setOnClickListener(R.id.msg_root, v -> {
                     if(!TextUtils.isEmpty(item.getLink_url())){
-                        WebViewActivity.start(mContext,item.getLink_url());
+                        WebViewActivity.start(mContext,item.getLink_url(),getString(R.string.msg_center_title));
                     }else {
                         showShortToast("暂无消息详情");
                     }

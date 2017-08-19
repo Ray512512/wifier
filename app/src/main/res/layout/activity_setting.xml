@@ -78,4 +78,24 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/text_black_gray"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/transparency"/>
+
+    <Button
+        android:id="@+id/info_btn_out"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/loginout"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:background="@drawable/seletor_main_green"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="50dp"
+        />
+
 </LinearLayout>

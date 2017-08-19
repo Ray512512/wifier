@@ -149,6 +149,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
         if(!SPUtils.getBooleanValue(ConstantField.IS_HINT_SYSTEM_WINDOW)){
             AlertDialogUtil.AlertDialog(mContext, getString(R.string.perimmsion_ask_window),getString(R.string.tag_setting), getString(R.string.tag_cancle), (dialog, which) -> {
                 dialog.dismiss();
+                SPUtils.put(ConstantField.IS_HINT_SYSTEM_WINDOW,true);
                 SystemUtil.goToWindow(mContext);
             });
         }else {

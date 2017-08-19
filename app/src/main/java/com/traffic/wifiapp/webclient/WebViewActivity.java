@@ -24,6 +24,7 @@ public class WebViewActivity extends BaseActivity {
     WebView webview;
 
     private String  url;
+    private static String  mTitle="商品";
 
 
     @Override
@@ -33,7 +34,7 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected void initBeforeData() {
-        tvTitle.setText("商品");
+        tvTitle.setText(mTitle);
     }
 
     @Override
@@ -61,6 +62,13 @@ public class WebViewActivity extends BaseActivity {
         webview.loadUrl(url);
     }
 
+    public static void start(Context context,String url,String title){
+        mTitle=title;
+        Intent intent=new Intent(context, WebViewActivity.class);
+        intent.putExtra("url",url);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
     public static void start(Context context,String url){
         Intent intent=new Intent(context, WebViewActivity.class);
         intent.putExtra("url",url);

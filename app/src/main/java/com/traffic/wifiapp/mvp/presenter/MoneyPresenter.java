@@ -125,13 +125,12 @@ public class MoneyPresenter extends BasePresenter<MoneyIView> {
                         if (response.isSuccessful()) {//
                             L.f(TAG, "开启wifi成功：" + login);
                             SPUtils.put(finalIp, System.currentTimeMillis());
-                            Toast.makeText(WifiApplication.getInstance(), WifiApplication.getInstance().getString(R.string.connect_success), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(WifiApplication.getInstance(), WifiApplication.getInstance().getString(R.string.connect_success), Toast.LENGTH_SHORT).show();
                         }
-
                       }
                     } catch (Exception e) {
                     e.printStackTrace();
-                    L.f(TAG, "尝试打开失败" + "url:+" + (request != null ? request.url() : null) + "失败原因：" + e.toString());
+                    L.f(TAG, "尝试打开失败" + "url:" + (request != null ? request.url() : null) + "失败原因：" + e.toString());
                 }
             }
         }.start();

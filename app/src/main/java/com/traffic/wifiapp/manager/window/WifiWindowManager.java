@@ -267,7 +267,6 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
      * */
     private void changeMainView(){
         if(windowMain.getVisibility()==View.GONE){
-            SPUtils.put(ConstantField.IS_HINT_SYSTEM_WINDOW,true);
             AnimaUtil.showRainBow(windowMainChild,windowMain,AnimaUtil.VERTICAL);
             window_click.setVisibility(View.VISIBLE);
         }else{

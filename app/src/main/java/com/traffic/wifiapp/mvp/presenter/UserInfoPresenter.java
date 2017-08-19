@@ -80,15 +80,16 @@ public class UserInfoPresenter extends BasePresenter<UserInfoIView> {
             RequestBody provinceId = RequestBody.create(MediaType.parse("text/plain"), curentProvince);
             RequestBody cityId = RequestBody.create(MediaType.parse("text/plain"), currentCity);
 
-            File file = FileUtils.getCompressFile(avatarPath);
-            L.v("saveInfo", file.length() + "");
-            RequestBody fileAvatar = RequestBody.create(MediaType.parse("image/*"), file);
-
+            if(!TextUtils.isEmpty(avatarPath)){
+                File file = FileUtils.getCompressFile(avatarPath);
+                L.v("saveInfo", file.length() + "");
+                RequestBody fileAvatar = RequestBody.create(MediaType.parse("image/*"), file);
+                map.put("uploadfile[]\"; filename=\"" + file.getName(), fileAvatar);
+            }
             map.put("uid", userId);
             map.put("nickname", nickName);
             map.put("provinceid", provinceId);
             map.put("cityid", cityId);
-            map.put("uploadfile[]\"; filename=\"" + file.getName(), fileAvatar);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -173,12 +174,6 @@ public class UserInfoPresenter extends BasePresenter<UserInfoIView> {
         });
     }
 
-    public void loginOut() {
-        SPUtils.put(ConstantField.USER, null);
-        SPUtils.put(ConstantField.USER_NAME, null);
-        AppManager.getInstance(mContext).killAllActivity();
-        mContext.startActivity(new Intent(mContext, LoginActivity.class));
-    }
 
     public void chooseImage() {
         Matisse.from(mContext)

@@ -19,6 +19,7 @@ import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.mvp.presenter.UserInfoPresenter;
 import com.traffic.wifiapp.mvp.view.UserInfoIView;
 import com.traffic.wifiapp.utils.FileUtils;
+import com.traffic.wifiapp.utils.ViewUtils;
 import com.zhihu.matisse.Matisse;
 
 import java.util.List;
@@ -38,8 +39,6 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresenter> implements
     LinearLayout infoLinerName;
     @Bind(R.id.info_liner_address)
     LinearLayout infoLinerAddress;
-    @Bind(R.id.info_btn_out)
-    Button infoBtnOut;
     @Bind(R.id.tv_action)
     TextView tvAction;
     @Bind(R.id.info_img_avatar)
@@ -88,8 +87,9 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresenter> implements
 
 
 
-    @OnClick({R.id.img_back, R.id.tv_action, R.id.info_liner_avatar, R.id.info_liner_name, R.id.info_liner_address, R.id.info_btn_out})
+    @OnClick({R.id.img_back, R.id.tv_action, R.id.info_liner_avatar, R.id.info_liner_address})
     public void onViewClicked(View view) {
+        ViewUtils.EditloseInputAndFocus(mContext,infoTvName);
         switch (view.getId()) {
             case R.id.img_back:
                 finish();
@@ -102,11 +102,13 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresenter> implements
                 String  p=user.getFace();
                if(avatarUri!=null){
                     p= FileUtils.getRealPathFromURI(mContext,avatarUri);
-                }
-                if(TextUtils.isEmpty(p)){
+                }else{
+                    p="";
+               }
+                /*if(TextUtils.isEmpty(p)){
                     showShortToast(R.string.mine_info_hint_avatar);
                     return;
-                }
+                }*/
                 if(!infoTvAddress.getText().toString().contains("-")){
                     showShortToast(R.string.mine_info_hint_address);
                     return;
@@ -119,9 +121,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresenter> implements
             case R.id.info_liner_address:
                 mPresenter.showAddrChoose();
                 break;
-            case R.id.info_btn_out:
-                mPresenter.loginOut();
-                break;
+
         }
     }
 
