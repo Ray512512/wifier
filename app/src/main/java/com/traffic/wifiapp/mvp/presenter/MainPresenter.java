@@ -14,6 +14,7 @@ import com.traffic.wifiapp.base.BasePresenter;
 import com.traffic.wifiapp.bean.response.WifiProvider;
 import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.fragment.MapFragment;
+import com.traffic.wifiapp.fragment.MineFragment;
 import com.traffic.wifiapp.fragment.ShopAndPayFragment;
 import com.traffic.wifiapp.fragment.WifiFragment;
 
@@ -34,10 +35,11 @@ public class MainPresenter extends BasePresenter {
         mainActivity = (MainActivity) mContext;
     }
 
-    public static final int FRAGMENT_COUNT = 3;
+    public static final int FRAGMENT_COUNT = 4;
     public static final int FRAGMENT_INDEX_ONE = 0;
     public static final int FRAGMENT_INDEX_TWO = 1;
     public static final int FRAGMENT_INDEX_THREE = 2;
+    public static final int FRAGMENT_INDEX_FOUR = 3;
     private Fragment[] mFragments = new Fragment[FRAGMENT_COUNT];
     private RadioGroup mRadioGroup;
     private RadioButton[] mRadioButtons = new RadioButton[FRAGMENT_COUNT];
@@ -50,10 +52,12 @@ public class MainPresenter extends BasePresenter {
         mRadioButtons[FRAGMENT_INDEX_ONE] = (RadioButton) mainActivity.findViewById(R.id.radio_button_one);
         mRadioButtons[FRAGMENT_INDEX_TWO] = (RadioButton) mainActivity.findViewById(R.id.radio_button_two);
         mRadioButtons[FRAGMENT_INDEX_THREE] = (RadioButton) mainActivity.findViewById(R.id.radio_button_third);
+        mRadioButtons[FRAGMENT_INDEX_FOUR] = (RadioButton) mainActivity.findViewById(R.id.radio_button_four);
 
         mFragments[FRAGMENT_INDEX_ONE] = WifiFragment.newInstance();
         mFragments[FRAGMENT_INDEX_TWO] = MapFragment.newInstance();
         mFragments[FRAGMENT_INDEX_THREE] = ShopAndPayFragment.newInstance();
+        mFragments[FRAGMENT_INDEX_FOUR] = MineFragment.newInstance();
 
         viewpager.setOffscreenPageLimit(FRAGMENT_COUNT);
         FragmentStatePagerAdapter paperAdapter = new FragmentStatePagerAdapter(mainActivity.getSupportFragmentManager()) {
@@ -95,6 +99,9 @@ public class MainPresenter extends BasePresenter {
                     break;
                 case R.id.radio_button_third:
                     break;
+                case R.id.radio_button_four:
+                    viewpager.setCurrentItem(FRAGMENT_INDEX_FOUR);
+                    break;
                 default:
                     break;
             }
@@ -131,6 +138,8 @@ public class MainPresenter extends BasePresenter {
         return (ShopAndPayFragment) mFragments[FRAGMENT_INDEX_THREE];
     }
 
-
+    public MineFragment getMineFragment(){
+        return (MineFragment) mFragments[FRAGMENT_INDEX_FOUR];
+    }
 
 }

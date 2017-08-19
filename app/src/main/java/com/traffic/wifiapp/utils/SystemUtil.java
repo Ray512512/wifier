@@ -1,13 +1,16 @@
 package com.traffic.wifiapp.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,9 @@ import android.view.WindowManager;
 
 import com.traffic.wifiapp.SplashActivity;
 import com.traffic.wifiapp.common.WifiApplication;
+
+import java.util.Iterator;
+import java.util.List;
 
 import static com.traffic.wifiapp.utils.StringUtil.isEmpty;
 
@@ -88,14 +94,19 @@ public class SystemUtil {
 
     }
 
+    private static  int SW=0,SH=0;
     public static int getScreenWidth(Context context) {
-        return ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).
+        if(SW==0)SW=((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).
                 getDefaultDisplay().getWidth();
+        L.v("WifiWindowManager","屏幕宽："+SW);
+        return SW;
     }
 
     public static int getScreenHeight(Context context) {
-        return ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).
+        if(SH==0)SH=((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).
                 getDefaultDisplay().getHeight();
+        L.v("WifiWindowManager","屏幕高："+SH);
+        return SH;
     }
 
     /**
@@ -127,8 +138,72 @@ public class SystemUtil {
 
     //进入应用设置
     public static void goToAppSetting(Context context){
+        if(!(context instanceof Activity))return;
         Uri packageURI = Uri.parse("package:" +context.getPackageName());
         Intent intent =  new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,packageURI);
         ((Activity)context).startActivityForResult(intent,SplashActivity.CHECK_PEERISSION_CODE);
+    }
+
+    public static void goToWindow(Context context){
+        JumpPermissionManagement.GoToSetting((Activity) context);
+//        try {
+//        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                Uri.parse("package:" + context.getPackageName()));
+//        context.startActivity(intent);
+//        }catch (ActivityNotFoundException e){
+//            goToAppSetting(context);
+//        }
+    }
+
+    /**
+     * 调用拨号界面
+     * @param phone 电话号码
+     */
+    public static void call(Context context,String phone) {
+        Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+phone));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+
+
+    /**
+     * 判断服务是否正在运行
+     * */
+    public static boolean isServiceRunning(Context context,Class className){
+        boolean isServiceRunning = false;
+        android.app.ActivityManager manager = (android.app.ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (android.app.ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (className.getCanonicalName().equals(service.service.getClassName())) {
+                isServiceRunning = true;
+                Log.v("isServiceRunning", className.getCanonicalName()+"正在运行中");
+                break;
+            }
+        }
+        return isServiceRunning;
+    }
+
+    /**
+     * 获取当前运行程序包名
+     * */
+    public static String getCurrentRuningProgress(Context context, int pID) {
+        String processName = null;
+        ActivityManager am = (ActivityManager) context
+                .getSystemService(context.ACTIVITY_SERVICE);
+        List l = am.getRunningAppProcesses();
+        Iterator i = l.iterator();
+        PackageManager pm = context.getPackageManager();
+        while (i.hasNext()) {
+            ActivityManager.RunningAppProcessInfo info = (ActivityManager.RunningAppProcessInfo) (i
+                    .next());
+            try {
+                if (info.pid == pID) {
+                    processName = info.processName;
+                    return processName;
+                }
+            } catch (Exception e) {
+            }
+        }
+        return processName;
     }
 }

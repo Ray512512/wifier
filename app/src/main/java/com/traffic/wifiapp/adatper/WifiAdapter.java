@@ -1,7 +1,6 @@
 package com.traffic.wifiapp.adatper;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 
 import com.baidu.mapapi.model.LatLng;
@@ -12,7 +11,6 @@ import com.traffic.wifiapp.common.adapter.RecyleAdapter;
 import com.traffic.wifiapp.common.adapter.base.BaseAdapterHelper;
 import com.traffic.wifiapp.utils.LocationUtils;
 import com.traffic.wifiapp.utils.SPUtils;
-import com.traffic.wifiapp.webclient.WebViewActivity;
 
 import static com.traffic.wifiapp.bean.response.WifiProvider.AUTH_NO;
 import static com.traffic.wifiapp.common.ConstantField.USER;
@@ -40,7 +38,7 @@ public class WifiAdapter extends RecyleAdapter<WifiProvider> {
         helper.setText(R.id.item_wifi_tv_title,item.getShopname());
         User u= SPUtils.getObject(USER);
         if(contectWifi!=null&&contectWifi.getBSSID().equals(item.getBSSID())){
-        helper.setText(R.id.item_wifi_tv_state, "已连接");
+        helper.setText(R.id.item_wifi_tv_state, context.getString(R.string.connect_status_ok));
         }else {
         LatLng latLng=null;
         if(u!=null)
@@ -74,12 +72,17 @@ public class WifiAdapter extends RecyleAdapter<WifiProvider> {
             helper.setVisible(R.id.wifi_item_auth, View.VISIBLE);
         }
 
-        helper.setOnClickListener(R.id.wifi_item_tv_connect, v -> {
-            Intent intent=new Intent(context, WebViewActivity.class);
-            intent.putExtra("url",item.getWl());
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+        helper.setOnClickListener(R.id.wifi_item_rl_main, v -> {
+            if(contectCallBack!=null)contectCallBack.contectItem(item);
         });
+    }
+
+    public interface contectCallBack{
+        void contectItem(WifiProvider w);
+    }
+    private contectCallBack contectCallBack;
+    public void setContectCallBack(contectCallBack c){
+        contectCallBack=c;
     }
 
 }

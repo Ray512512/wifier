@@ -17,8 +17,18 @@ public class OderEntry {
     private WifiProvider provider;
     private long allowTime;
 
+    @Override
+    public String toString() {
+        return "total_price"+total_price+"\t"+
+                "user_id"+user_id+"\t"+
+                "ip"+ip+"\t"+
+                "message"+message+"\t"+
+                "shop_id"+shop_id+"\t"+
+                "allowTime"+allowTime+"\t"
+                ;
+    }
 
-    public OderEntry(String shopId,String total_price, String message) {
+    public OderEntry(String shopId, String total_price, String message) {
         this.total_price = total_price;
         this.shop_id=shopId;
         this.message = message;

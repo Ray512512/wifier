@@ -18,12 +18,10 @@
         android:id="@+id/wifi_bg"/>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:background="@color/mainGreen"
                     android:gravity="center"
-                  android:paddingTop="15dp"
                   android:id="@+id/wifi_liner_title"
-                  android:paddingBottom="15dp"
                   android:orientation="vertical">
 
 

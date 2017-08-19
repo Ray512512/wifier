@@ -1,6 +1,5 @@
 package com.traffic.wifiapp.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -72,16 +71,13 @@ public class MapFragment extends BaseFragment<BaiduMapPresenter> implements Baid
     @Override
     protected void initView(Bundle savedInstanceSate) {
         imgBack.setVisibility(View.INVISIBLE);
-        tvTitle.setText("附近");
+        tvTitle.setText(mRes.getString(R.string.tab_two));
 
         mPresenter.initLocation();
         mPresenter.getSlideUrls();
         banner.setOnBannerItemClickListener(position -> {
             if(slideImageUrlses!=null){
-                String clickUrl= slideImageUrlses.get(position).getLink_url();
-                Intent intent=new Intent(mContext, WebViewActivity.class);
-                intent.putExtra("url",clickUrl);
-                startActivity(intent);
+                WebViewActivity.start(mContext,slideImageUrlses.get(position).getLink_url());
             }
         });
     }
@@ -96,6 +92,7 @@ public class MapFragment extends BaseFragment<BaiduMapPresenter> implements Baid
     }
 
     public void refresh(){
+        if(mPresenter!=null)
         mPresenter.showWifiPoint(WifiApplication.getInstance().getWifiProviders());
     }
 

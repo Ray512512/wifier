@@ -35,6 +35,23 @@
         android:singleLine="true"
         />
 
+    <EditText
+        android:id="@+id/exit_psw"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_c_gray"
+        android:drawablePadding="20dp"
+        android:drawableLeft="@mipmap/icon_psw"
+        android:hint="密码"
+        android:inputType="textPassword"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
+        android:layout_marginTop="20dp"
+        android:maxLength="11"
+        android:paddingLeft="20dp"
+        android:singleLine="true"
+        />
+
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"

@@ -30,9 +30,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Bind(R.id.exit_phone)
     EditText exitPhone;
 
-    String phone = "";
+    String phone = "",psw="";
     @Bind(R.id.tv_register)
     TextView tvRegister;
+    @Bind(R.id.exit_psw)
+    TextView tvPsw;
 
     @Override
     protected void setMainLayout() {
@@ -62,12 +64,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @NeedsPermission({android.Manifest.permission.READ_PHONE_STATE})
     public void getDeviceIdPerssion(){
-        mPresenter.login(phone);
+        mPresenter.login(phone,psw);
     }
 
     @OnPermissionDenied({android.Manifest.permission.READ_PHONE_STATE})
     public void readPhoneRefuse(){
-        showShortToast("拒绝了读取设备信息权限，您将无法进行登录");
+        showShortToast(getString(R.string.perimmsion_refuse_phone_login));
     }
 
     @OnClick({R.id.btn_login, R.id.tv_register})
@@ -75,14 +77,20 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         switch (view.getId()) {
             case R.id.btn_login:
                 phone = exitPhone.getText().toString().trim();
+                psw = tvPsw.getText().toString().trim();
                 if (TextUtils.isEmpty(phone)) {
-                    showShortToast("请输入手机号");
+                    showShortToast(getString(R.string.login_phone_empty));
+                    return;
                 }
                 if (!CommonUtils.isMobile(phone)) {
-                    showShortToast("请输入正确的手机号");
-                } else {
-                    LoginActivityPermissionsDispatcher.getDeviceIdPerssionWithCheck(this);
+                    showShortToast(getString(R.string.login_phone_error));
+                    return;
                 }
+                if(TextUtils.isEmpty(psw)){
+                    showShortToast(getString(R.string.login_psw_empty));
+                    return;
+                }
+                LoginActivityPermissionsDispatcher.getDeviceIdPerssionWithCheck(this);
                 break;
             case R.id.tv_register:
                 startActivity(new Intent(this, RegisterActivity.class));
@@ -92,7 +100,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void onLoginSuccess() {
-        showShortToast("登录成功");
+        showShortToast(getString(R.string.login_success));
         SPUtils.put(ConstantField.USER_NAME, phone);
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();

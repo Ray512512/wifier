@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="e_no_shoper_msg">未获取到wifi商户信息</string>
+    <string name="e_wifi_msg_lost">wifi信息已丢失</string>
+    <string name="e_no_order_msg">未获取到订单信息，请稍后再试</string>
+    <string name="e_no_network">网络不可用</string>
+    <string name="e_proxy_failed">请求失败，请稍后再试...</string>
+
+</resources>

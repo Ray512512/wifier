@@ -4,7 +4,8 @@
               android:layout_width="match_parent"
                 android:background="@color/white"
                 android:paddingTop="3dp"
-               android:descendantFocusability="blocksDescendants"
+                android:id="@+id/wifi_item_root"
+               android:descendantFocusability="beforeDescendants"
               android:layout_height="wrap_content">
 
     <ImageView
@@ -88,11 +89,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
         android:id="@+id/wifi_item_tv_connect"
         android:layout_alignParentRight="true"
         android:text="链接"
-        android:layout_marginRight="10dp"
+        android:textSize="12sp"
+        android:layout_marginRight="5dp"
         android:layout_alignBottom="@+id/wifi_item_rl_main"
         android:background="@drawable/tv_bg_orange"
         android:textColor="@color/colorOranger"

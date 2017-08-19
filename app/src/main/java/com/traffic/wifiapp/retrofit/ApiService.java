@@ -1,10 +1,15 @@
 package com.traffic.wifiapp.retrofit;
 
 
+import com.lljjcoder.citypickerview.model.ProvinceModel;
 import com.traffic.wifiapp.bean.User;
+import com.traffic.wifiapp.bean.entry.AddShop;
+import com.traffic.wifiapp.bean.entry.FeedBack;
 import com.traffic.wifiapp.bean.entry.MacStr;
 import com.traffic.wifiapp.bean.entry.OderEntry;
 import com.traffic.wifiapp.bean.response.Goods;
+import com.traffic.wifiapp.bean.response.Message;
+import com.traffic.wifiapp.bean.response.SimpleResult;
 import com.traffic.wifiapp.bean.response.SlideImageUrls;
 import com.traffic.wifiapp.bean.response.WXOrderInfo;
 import com.traffic.wifiapp.bean.response.WifiProvider;
@@ -12,16 +17,20 @@ import com.traffic.wifiapp.bean.response.WifiProvider;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import rx.Observable;
 
 /**
- * Created by Jam on 16-5-17
+ * Created by ray on 17-5-17
  * Description:
  */
 public interface ApiService {
@@ -43,10 +52,6 @@ public interface ApiService {
     @GET("backstage/adsite/getnearlb.html")
     Observable<BaseModel<List<SlideImageUrls>>> getMapPageSlide();
 
-
-   /* @GET("backstage/adsite/getrewardlb.html?{shop_id}")
-    Observable<BaseModel<List<SlideImageUrls>>> getMoneyPageSlide(@Path("shop_id")String shop_id);//// TODO: 2017/5/24  换地址
-*/
     @POST("wap/mall/orderwifi.html")
     Observable<BaseModel<WXOrderInfo>> getOrderInfo(@Body OderEntry o);
 
@@ -58,6 +63,23 @@ public interface ApiService {
 
     @GET("wap/news/article.html")
     Observable<BaseModel<ArrayList<Goods>>> getShowGoods(@Query("shop_id") String shop_id);
+
+    @GET("backstage/adsite/citywifiall.html")
+    Observable<BaseModel<ArrayList<ProvinceModel>>> getAddrList();
+
+    @Multipart
+    @POST("backstage/adsite/upinfowifise.html")
+    Observable<BaseModel<SimpleResult>> saveUserInfo(@PartMap Map<String, RequestBody> params);
+
+    @POST("backstage/adsite/shopapplywifi.html")
+    Observable<BaseModel<SimpleResult>> addShop(@Body AddShop addShop);
+
+    @POST("backstage/adsite/reportwifi.html")
+    Observable<BaseModel<SimpleResult>> feedBack(@Body FeedBack feedBack);
+
+    @GET("backstage/adsite/infolistwifi.html")
+    Observable<BaseModel<ArrayList<Message>>> getMessageList();
+
 }
 
 

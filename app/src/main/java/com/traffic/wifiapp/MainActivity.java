@@ -5,14 +5,15 @@ import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.text.TextUtils;
 
 import com.traffic.wifiapp.base.BaseActivity;
 import com.traffic.wifiapp.bean.response.WifiProvider;
 import com.traffic.wifiapp.common.ConstantField;
+import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.manager.window.WindowUtils;
 import com.traffic.wifiapp.mvp.presenter.MainPresenter;
+import com.traffic.wifiapp.mvp.presenter.WifiAppPresenter;
 import com.traffic.wifiapp.mvp.view.MainIView;
 import com.traffic.wifiapp.service.WindowsService;
 import com.traffic.wifiapp.utils.AlertDialogUtil;
@@ -50,7 +51,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
 
     @Override
     protected void initAfterData() {
-        MainActivityPermissionsDispatcher.windowPermissionPassWithCheck(this);
+//        MainActivityPermissionsDispatcher.windowPermissionPassWithCheck(this);
         checkWindowPerission();
         checkJump();
     }
@@ -72,24 +73,28 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
     @Override
     protected void initPresenter() {
         mPresenter=new MainPresenter(this,this);
+        WifiApplication.getInstance().setmWifiPresenter(new WifiAppPresenter(this));
     }
 
     public MainPresenter getPresenter(){
         return mPresenter;
     }
 
-
     public static void start(Context context){
+        if(WindowUtils.canJumpMain(context)){
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+        }
     }
 
     public static void jumpPay(Context context, WifiProvider w){
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(JUMP_ACTION,w);
-        context.startActivity(intent);
+        if(WindowUtils.canJumpMain(context)) {
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(JUMP_ACTION, w);
+            context.startActivity(intent);
+        }
     }
     private static boolean isExit = false;
     @Override
@@ -107,7 +112,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
             }, 2000);
         } else {
             startService(new Intent(this, WindowsService.class));
-//            System.exit(0);
             finish();
         }
     }
@@ -134,35 +138,34 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainIVi
 
     @OnPermissionDenied({Manifest.permission.SYSTEM_ALERT_WINDOW})
     public void windowDenied(){
-        AlertDialogUtil.AlertDialog(mContext, "设置", "为给您提供更好的服务，请授予应用悬浮窗权限", (dialog, which) -> SystemUtil.goToAppSetting(mContext));
+        AlertDialogUtil.AlertDialog(mContext, getString(R.string.tag_setting), getString(R.string.perimmsion_ask_window), (dialog, which) -> SystemUtil.goToWindow(mContext));
     }
 
     /**
      * 检测悬浮窗权限
+     * 兼容6.0及以下
      * */
     private void checkWindowPerission(){
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            if(!SPUtils.getBooleanValue(ConstantField.IS_HINT_SYSTEM_WINDOW)){
-                SPUtils.put(ConstantField.IS_HINT_SYSTEM_WINDOW,true);
-                AlertDialogUtil.AlertDialog(mContext, "设置", "为给您提供更好的服务，请授予应用悬浮窗权限", (dialog, which) -> SystemUtil.goToAppSetting(mContext));
-            }
-          /*  AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-            int checkResult = appOpsManager.checkOpNoThrow(
-                    AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW, Binder.getCallingUid(), context.getPackageName());
-            if(checkResult == AppOpsManager.MODE_ALLOWED){
-                Log.e("jijiaxin","有权限");
-            }else if(checkResult == AppOpsManager.MODE_IGNORED){
-                // TODO: 只需要依此方法判断退出就可以了，这时是没有权限的。
-                AlertDialogUtil.AlertDialog(mContext, "设置", "为给您提供更好的服务，请授予应用悬浮窗权限", (dialog, which) -> SystemUtil.goToAppSetting(mContext));
-                Log.e("jijiaxin","被禁止了");
-            }else if(checkResult == AppOpsManager.MODE_ERRORED){
-                Log.e("jijiaxin","出错了");
-            }else if(checkResult == 4){
-                Log.e("jijiaxin","权限需要询问");
-            }*/
+        if(!SPUtils.getBooleanValue(ConstantField.IS_HINT_SYSTEM_WINDOW)){
+            AlertDialogUtil.AlertDialog(mContext, getString(R.string.perimmsion_ask_window),getString(R.string.tag_setting), getString(R.string.tag_cancle), (dialog, which) -> {
+                dialog.dismiss();
+                SystemUtil.goToWindow(mContext);
+            });
+        }else {
+            MainActivityPermissionsDispatcher.windowPermissionPassWithCheck(this);
         }
-        //4个状态，0默认 1可用 2禁止 3user disable
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case ConstantField.REQUEST_USER://查看个人信息
+                mPresenter.getMineFragment().onActivityResult(requestCode,resultCode,data);
+                break;
+        }
+    }
+
     private BroadcastReceiver mHomeKeyEventReceiver = new BroadcastReceiver() {
         String SYSTEM_REASON = "reason";
         String SYSTEM_HOME_KEY = "homekey";

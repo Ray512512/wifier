@@ -31,4 +31,10 @@ public class ConstantField {
     public static final String IS_HINT_SYSTEM_WINDOW = "systemDialogPerrmison";//系统弹窗权限
     public static final String JUMP_ACTION= "jumpAction";
 
+
+    public static final String ADDRESS_KEY= "addressData";
+
+    public static final int REQUEST_USER = 0;
+
+
 }

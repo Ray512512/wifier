@@ -1,6 +1,5 @@
 package com.traffic.wifiapp.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,7 @@ import com.traffic.wifiapp.base.BaseFragment;
 import com.traffic.wifiapp.bean.response.SlideImageUrls;
 import com.traffic.wifiapp.bean.response.WifiProvider;
 import com.traffic.wifiapp.common.WifiApplication;
-import com.traffic.wifiapp.data.WifiUtils;
+import com.traffic.wifiapp.manager.WifiUtils;
 import com.traffic.wifiapp.mvp.presenter.WifiAppPresenter;
 import com.traffic.wifiapp.mvp.view.WifiIView;
 import com.traffic.wifiapp.ui.view.BannerLayout;
@@ -78,14 +77,14 @@ public class WifiFragment extends BaseFragment implements WifiIView {
         initHelperView(recyclerView);
         showLoadingView();
         mPresenter.getSlideUrls();
-        tvTitle.setText("WIFI");
+        tvTitle.setText(mRes.getString(R.string.tab_one));
 
         //初始化wifi列表控件
         adapter = new WifiAdapter(mContext);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener((view, position) -> {
-            WifiProvider wifiProvider=adapter.getItem(position);
+        adapter.setOnItemClickListener((view, position) -> WebViewActivity.start(mContext,adapter.getItem(position).getWl()));
+        adapter.setContectCallBack(wifiProvider -> {
             int type=wifiProvider.getType();
             switch (type){
                 case TYPE_SHOPER_FREE:
@@ -101,17 +100,15 @@ public class WifiFragment extends BaseFragment implements WifiIView {
                     break;
                 case TYPE_SHOPER_PAY:
                 case TYPE_SINGLE_PAY:
+                    isJump=true;
+                    mPresenter.connect(wifiProvider.getSSID());
                     AppManager.getInstance(mContext).getMainActivity().getPresenter().setMoneyPage(ShopAndPayFragment.TYPE_SHOW_PAYS,wifiProvider);
                     break;
             }
         });
-
         banner.setOnBannerItemClickListener(position -> {
             if(slideImageUrlses!=null){
-               String clickUrl= slideImageUrlses.get(position).getLink_url();
-                Intent intent=new Intent(mContext, WebViewActivity.class);
-                intent.putExtra("url",clickUrl);
-                startActivity(intent);
+                WebViewActivity.start(mContext,slideImageUrlses.get(position).getLink_url());
             }
         });
     }
@@ -153,7 +150,7 @@ public class WifiFragment extends BaseFragment implements WifiIView {
 
     @Override
     public void wifiConnectSuccess(WifiProvider s) {
-        boolean isFree=WifiUtils.isFreeWifiAndOpenIt(s,false);
+        boolean isFree= WifiUtils.isFreeWifiAndOpenIt(s,false);
         if(isJump) {
             isJump=false;
             if (!isFree) {

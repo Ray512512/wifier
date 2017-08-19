@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by xy on 16/5/11.
  */
 public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements
-        VaryViewHelper.NetWorkErrorListener, VaryViewHelper.TransferListener ,BaseIView{
+        VaryViewHelper.NetWorkErrorListener,BaseIView{
     protected Context mContext;
     public P mPresenter;
     /**
@@ -153,6 +153,9 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mPresenter != null) {
+            mPresenter.onDetachView();
+        }
     }
 
     public void setHasData(boolean hasData) {
@@ -169,7 +172,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
                 .setNetWorkErrorView(LayoutInflater.from(getActivity()).inflate(R.layout.view_neterror, null))//网络错误页
 //                .setTransferMineView(LayoutInflater.from(getActivity()).inflate(R.layout.view_transfer_mine, null))//我的中转页
                 .setRefreshListener(this)//错误页点击刷新实现
-                .setTransferListener(this)//点击跳转登录页实现
                 .build();
     }
 
@@ -234,8 +236,5 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         }
     }
 
-    //跳转去登录
-    @Override
-    public void onLoginAction() {
-    }
+
 }

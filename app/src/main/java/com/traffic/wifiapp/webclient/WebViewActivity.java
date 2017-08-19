@@ -1,5 +1,7 @@
 package com.traffic.wifiapp.webclient;
 
+import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -59,6 +61,12 @@ public class WebViewActivity extends BaseActivity {
         webview.loadUrl(url);
     }
 
+    public static void start(Context context,String url){
+        Intent intent=new Intent(context, WebViewActivity.class);
+        intent.putExtra("url",url);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
     @Override
     protected void initAfterData() {
 

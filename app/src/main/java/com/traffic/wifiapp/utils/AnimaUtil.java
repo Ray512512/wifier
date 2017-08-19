@@ -22,6 +22,17 @@ public class AnimaUtil {
         view.startAnimation(anim);//开始动画
     }
 
+    public static void RotateViewByParent(View view,boolean isLeft){
+        Animation anim;
+        if(isLeft)
+            anim=new RotateAnimation(0f, 180f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.5f);
+        else
+            anim=new RotateAnimation(180f, 0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.5f);
+        anim.setDuration(5000);
+        anim.setFillAfter(true);//设置为true，动画转化结束后被应用
+        view.startAnimation(anim);//开始动画
+    }
+
     public static void TranslateShowViewSelfYup(final View view,View showView){
         showView.setVisibility(View.VISIBLE);
         TranslateAnimation animation = new TranslateAnimation(
@@ -200,7 +211,7 @@ public class AnimaUtil {
         viewGroup.startAnimation(trAniamAnimation1);
     }
 
-    public static void goneRainBow(View view,View viewGroup,int gravity) {
+    public static void goneRainBow(View view,View viewGroup,int gravity,animaEndCallBack endCallBack) {
         float fromX=0.0f,fromY=0.0f,toX=0.0f,toY=0.0f;
         float fromX1=0.0f,fromY1=0.0f,toX1=0.0f,toY1=0.0f;
         if(gravity==1){
@@ -237,6 +248,7 @@ public class AnimaUtil {
             @Override
             public void onAnimationEnd(Animation animation) {
                 viewGroup.setVisibility(View.GONE);
+                if(endCallBack!=null)endCallBack.animaEnd();
             }
 
             @Override
@@ -246,5 +258,8 @@ public class AnimaUtil {
         });
     }
 
+ public interface animaEndCallBack{
+     void animaEnd();
+ }
 
 }

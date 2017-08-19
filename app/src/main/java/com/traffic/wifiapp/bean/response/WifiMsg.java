@@ -1,11 +1,14 @@
 package com.traffic.wifiapp.bean.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Ray on 2017/5/11.
  * email：1452011874@qq.com
  */
 
-public class WifiMsg {
+public class WifiMsg implements Parcelable{
     private long id;
     private String name;
     private String status;
@@ -45,4 +48,38 @@ public class WifiMsg {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.status);
+        dest.writeInt(this.bgurl);
+    }
+
+    public WifiMsg() {
+    }
+
+    protected WifiMsg(Parcel in) {
+        this.id = in.readLong();
+        this.name = in.readString();
+        this.status = in.readString();
+        this.bgurl = in.readInt();
+    }
+
+    public static final Creator<WifiMsg> CREATOR = new Creator<WifiMsg>() {
+        @Override
+        public WifiMsg createFromParcel(Parcel source) {
+            return new WifiMsg(source);
+        }
+
+        @Override
+        public WifiMsg[] newArray(int size) {
+            return new WifiMsg[size];
+        }
+    };
 }

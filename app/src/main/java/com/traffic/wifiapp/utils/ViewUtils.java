@@ -1,7 +1,10 @@
 package com.traffic.wifiapp.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 /**
  * Created by Ray on 2017/5/18.
@@ -49,5 +52,13 @@ public class ViewUtils {
         view.measure(width,height);
         height=view.getMeasuredHeight();
         return height;
+    }
+    /**
+     * 清除edittext焦点以及输入框c
+     * */
+    public static void EditloseInputAndFocus(Context c, EditText editText){
+        InputMethodManager imm = (InputMethodManager)c.getApplicationContext().getSystemService(c.getApplicationContext().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        editText.clearFocus();
     }
 }

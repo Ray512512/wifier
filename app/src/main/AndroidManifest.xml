@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.traffic.wifiapp">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.traffic.wifiapp">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.NETWORK_PROVIDER"/>
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.NETWORK_PROVIDER" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <!-- 开机广播 -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".common.WifiApplication"
@@ -37,57 +37,56 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-
         <meta-data
             android:name="com.taobao.android.hotfix.IDSECRET"
             android:value="114265-1" />
         <meta-data
             android:name="com.taobao.android.hotfix.APPSECRET"
-            android:value="c6bda59c02b660050c573ed6754aefd8"/>
+            android:value="c6bda59c02b660050c573ed6754aefd8" />
         <meta-data
             android:name="com.taobao.android.hotfix.RSASECRET"
             android:value="MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCVjkNcsG/6Z5fdwQuNuuLNh1y8yKSEXV7rGAkNrpd76JzWJHJC/l79sXtBeGkHX7iuS9KO08XRyFu1H7VguL/7B4CG2dgjSU/8USf/1ia3oX1QR/wXncCKb/KZiFTNdAqZ12jfUmN0lsRXqjRYTaxJNgybGWIqmysUS2OIHj2BIQ56TiOrf1f13NQg6/oj6/d723nrAH33WHzXajV8Jo4gaNdpE+OGV6V7W8hF3vBwmCwCcN4F7DSzGJe88SCRvWZNev5BT4iHIADs3wh6Sn8XHCKzqKkWHePD/3UiPSsoKX3LWZCc9iu8Clh1tpwAo3AgYlBJoZkdxzNfM1oa2ewlAgMBAAECggEBAIJEqb5J3S/zHiBFb4fjmnzGBGxYJJ07K1uB0xj80+xVQI9yrahXI2y9NIxhkrKemSIQ33YTVsMVT3RkCzwVkPvanARaKl8KE8bG9h1tbsoSuzG7kgUMHtM3EczUKHHROw6nyCyF+iVq0dk+Y1vrRD98+dv7bzuHby29QRQmqxIW3WV/EjlF5vLAUL8aZJEFbqGDHuG/4myPvH6iVIi9pEK64mR20wWZV23v0hEmGAFtNjd4wApCe5xM7WUnU/FApFdRNQ8EsnLI6H3BY7E0Fu8/dsc4yajcuA8xP3uQmaUF/oakRcwW6rZHMvja/UgMopiE0d76idUY4ZVYd0d/U2ECgYEA428yvo0Yf+qsGwiqlR8vQUsASPBgzOKM7L3ChDqJa5uFldLJbkgjNXcMxwXVTVD2q9Y/5JU3IYf75DkPJ0sHOnxsp6fQX9weJP5eWzUYipPrSXJxqpLcS4tNkB6Ca58oJdepurUxPYSVHjphECiDaQR8uk9rByWZmrTmPvQn+kkCgYEAqFb/LfUVyOxjqkjwYgMSyh2sJrXBeRXTbbO+oUzMJpgIFSutzB6+gMPta9fkdtKrshUeVZarzSprSQLuVSu64JRlSY/g42uIDsiKoo79PkOCMGrtb084bJCaneZJwTf0Cjo76/MhQAuQSmFfSTw0/FGHsh1DMxLfEs9FgsxLAv0CgYAYGtcD/yxTkmm/S8HYoD9/6hUTpfZ8gJ5zEQGmxhV+hDM6V+ble1vP9Ngz19hto2EhgUmwTmhTc3gtDicfAQK5Hird8hlRr6C6RwN1I0GAnoDXffuyGnKixxbnaXRlN68no53nngCkBoNPetyCu+iBnuohTP2I+mE3Vmj4zyPVkQKBgH7mdh8y7mU0rj0kFvIL1xI+JBRaV6rr5SKBqWb2+b7uRMmQz8dcNcfj6wqtCTD5xyzL9r4WgxR6sb2sU/YorQu3UlON/r3xxfM/AiNhH07cnTvan3qVgbd1mtkFTPw3LeS32YwZECuzi+ZGWQpgNKEw5NZEcPADfd40GfZsAvARAoGBAKEK9gGd3vWZGU6LfPxLiOXvJ951rM8gPHH78KFPdS9HjXkh7Qlur1NYkFuyRnwckTJcaZubS5Na9WkRBEyCsZnDN2LtLRbMKk/pZ9ivwgbZy3feJa5rRfGw3+2bWGhBvAjJn/dHqdvtyMGXd67QiGEkwSFTF+OcGJ6sQ/podAUR" />
-
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="4oo1vmKdcFzzBUoPFTaF5w3mXlFoyWpI"/>
+            android:value="4oo1vmKdcFzzBUoPFTaF5w3mXlFoyWpI" />
 
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote">
-        </service>
+            android:process=":remote" />
 
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"
-           >
-        </activity>
+            android:launchMode="singleTask" />
 
         <service
             android:name=".service.WindowsService"
-            android:enabled="true"/>
+            android:enabled="true" />
 
         <activity android:name=".SplashActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.RegisterActivity"
-                  android:theme="@style/LoginTheme"/>
-        <activity android:name=".login.LoginActivity"
-            android:theme="@style/LoginTheme">
-        </activity>
-        <activity android:name=".webclient.WebViewActivity">
-        </activity>
-
+        <activity
+            android:name=".login.RegisterActivity"
+            android:theme="@style/RegistTheme" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:theme="@style/LoginTheme" />
+        <activity android:name=".webclient.WebViewActivity" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".mine.UserInfoActivity" />
+        <activity android:name=".mine.MessageActivity" />
+        <activity android:name=".mine.JoinActivity" />
+        <activity android:name=".mine.FeedBackActivity" />
+        <activity android:name=".mine.SettingActivity"></activity>
     </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import com.traffic.wifiapp.utils.CrashHandler;
 import com.traffic.wifiapp.utils.DeviceUtils;
 import com.traffic.wifiapp.utils.L;
 import com.traffic.wifiapp.utils.SPUtils;
+import com.traffic.wifiapp.utils.SystemUtil;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,10 @@ public class WifiApplication extends Application{
 
     public WifiAppPresenter getWifiAppPresenter() {
         return mWifiPresenter;
+    }
+
+    public void setmWifiPresenter(WifiAppPresenter mWifiPresenter) {
+        this.mWifiPresenter = mWifiPresenter;
     }
 
     public ArrayList<WifiProvider> getWifiProviders() {
@@ -66,19 +71,21 @@ public class WifiApplication extends Application{
     public static WifiApplication getInstance() {
         return instance;
     }
-
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        L.isDebug = false;//日志调试开关
+        L.isDebug = true;//日志调试开关
+        String processAppName = SystemUtil.getCurrentRuningProgress(this, android.os.Process.myPid());
+        if (processAppName == null || !processAppName.equalsIgnoreCase(getPackageName())) {
+            L.e("远程服务", "enter the service process!");
+            return;
+        }
         MyHotFixManager.init(this);
         CrashHandler.getInstance().init(this);
         SDKInitializer.initialize(this);//初始化百度地图
 //        if(isOpenWifi())
-        MoneyPresenter.openWifi(10*M1);//打开app 尝试打开免费wifi5min
-
-        mWifiPresenter=new WifiAppPresenter(this);
+        MoneyPresenter.openWifi(10*M1);//打开app 尝试打开免费wifi10min
     }
 
     private boolean isOpenWifi(){
@@ -97,12 +104,17 @@ public class WifiApplication extends Application{
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
-        if(DeviceUtils.isAppAtBackground(this)){
-//            mWifiPresenter.setIView(this);
-            Intent intent=new Intent(this, WindowsService.class);
-            startService(intent);
-        }
+        startService();
         isVisblerToUser=false;
         SophixManager.getInstance().queryAndLoadNewPatch();
+    }
+
+
+    public void startService(){
+        boolean isAppAtBackGround=DeviceUtils.isAppAtBackground(this);
+//        boolean isServiceRunning=SystemUtil.isServiceRunning(instance,WindowsService.class);
+        if(isAppAtBackGround&&mWifiPresenter!=null){
+            startService(new Intent(this, WindowsService.class));
+        }
     }
 }

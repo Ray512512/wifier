@@ -6,10 +6,12 @@ import com.traffic.wifiapp.R;
 import com.traffic.wifiapp.base.BasePresenter;
 import com.traffic.wifiapp.bean.User;
 import com.traffic.wifiapp.bean.entry.RegistEntry;
+import com.traffic.wifiapp.common.ConstantField;
 import com.traffic.wifiapp.mvp.view.RegistIView;
 import com.traffic.wifiapp.retrofit.ApiManager;
 import com.traffic.wifiapp.rxjava.RxHelper;
 import com.traffic.wifiapp.rxjava.RxSubscribe;
+import com.traffic.wifiapp.utils.SPUtils;
 import com.traffic.wifiapp.utils.SystemUtil;
 
 import static com.traffic.wifiapp.bean.entry.RegistEntry.REG_REGIST;
@@ -24,15 +26,17 @@ public class RegistPresenter extends BasePresenter<RegistIView> {
     }
 
     //注册
-    public void regist(String phone) {
+    public void regist(String phone,String psw) {
         RegistEntry registEntry=new RegistEntry(REG_REGIST);
         registEntry.setMobile(phone);
+        registEntry.setPassword(psw);
         registEntry.setExt0(SystemUtil.getDeviceId());
 
         ApiManager.mApiService.registerAndLogin(registEntry).compose(RxHelper.handleResult())
                 .subscribe(new RxSubscribe<User>(mContext, R.string.regist_load) {
                     @Override
                     protected void _onNext(User u) {
+                        SPUtils.setObject(ConstantField.USER,u);
                         mView.onRegistSuccess();
                     }
 

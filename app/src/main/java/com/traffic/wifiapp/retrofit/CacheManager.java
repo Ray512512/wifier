@@ -16,10 +16,7 @@ import java.io.Serializable;
 public class CacheManager {
 
     private static final String TAG = "CacheManager";
-    // wifi缓存时间为5分钟
-    private static long wifi_cache_time = 5 * 60 * 1000;
-    // 其他网络环境为1小时
-    private static long other_cache_time = 60 * 60 * 1000;
+    public static final long ADDRESS_CACHE_TIME = 24 * 60 * 60 * 1000;//一天
 
     /**
      * 保存对象

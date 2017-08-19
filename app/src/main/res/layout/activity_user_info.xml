@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.traffic.wifiapp.mine.UserInfoActivity">
+
+    <include layout="@layout/common_title2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@drawable/white_item_press"
+        android:id="@+id/info_liner_avatar"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_black_high"
+            android:text="@string/mine_info_avatar"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_launcher"
+            android:id="@+id/info_img_avatar"
+            />
+
+        </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_black_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@drawable/white_item_press"
+        android:id="@+id/info_liner_name"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_black_high"
+            android:text="@string/mine_info_nickname"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:id="@+id/info_tv_name"
+            android:maxLength="10"
+            android:background="@color/transparency"
+            android:textColor="@color/text_black_middle"
+            android:text="Ray"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_black_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@drawable/white_item_press"
+        android:id="@+id/info_liner_address"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_black_high"
+            android:text="@string/mine_info_address"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:id="@+id/info_tv_address"
+            android:textColor="@color/text_black_middle"
+            android:text="四川省成都市双流区"
+            />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_black_gray"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/transparency"/>
+
+
+    <Button
+        android:id="@+id/info_btn_out"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/loginout"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:background="@drawable/seletor_main_green"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="50dp"
+        />
+</LinearLayout>

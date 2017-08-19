@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.traffic.wifiapp.R;
 import com.traffic.wifiapp.common.ConstantField;
+import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.service.WindowsService;
 import com.traffic.wifiapp.ui.viewhelper.VaryViewHelper;
 import com.traffic.wifiapp.utils.AppManager;
@@ -39,13 +40,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//        SystemUtil.smoothSwitchScreen(this);
-//        SystemUtil.virtualStatusBar(this);
-//        ViewGroup contentFrameLayout = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
-//        View parentView = contentFrameLayout.getChildAt(0);
-//        if (parentView != null && Build.VERSION.SDK_INT >= 14) {
-//            parentView.setFitsSystemWindows(true);
-//        }
+
         initPresenter();
         setMainLayout();
         ButterKnife.bind(this);
@@ -186,10 +181,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         if (mPresenter != null) {
             mPresenter.onDetachView();
         }
-//        RxBus.getInstance().unSubscribe(mContext);
         AppManager.getInstance(mContext).killActivity(this);
     }
-
 
 
     @Override
@@ -198,4 +191,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         stopService(new Intent(this, WindowsService.class));
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        WifiApplication.getInstance().startService();
+    }
 }

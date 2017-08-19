@@ -56,7 +56,6 @@
                 android:layout_height="45dp"
                 android:layout_gravity="bottom"
                 android:gravity="bottom"
-                android:paddingBottom="1dp"
                 app:layout_collapseMode="pin">
             <TextView
                 android:layout_width="match_parent"

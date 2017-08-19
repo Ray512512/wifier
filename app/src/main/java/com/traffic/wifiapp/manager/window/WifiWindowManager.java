@@ -2,6 +2,7 @@ package com.traffic.wifiapp.manager.window;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -17,19 +18,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.mapapi.model.LatLng;
 import com.bumptech.glide.Glide;
 import com.traffic.wifiapp.MainActivity;
 import com.traffic.wifiapp.R;
-import com.traffic.wifiapp.bean.User;
 import com.traffic.wifiapp.bean.response.WifiProvider;
+import com.traffic.wifiapp.common.ConstantField;
 import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.manager.WifiAdmin;
 import com.traffic.wifiapp.mvp.presenter.WifiAppPresenter;
 import com.traffic.wifiapp.mvp.view.WifiServiceIView;
 import com.traffic.wifiapp.utils.AnimaUtil;
 import com.traffic.wifiapp.utils.L;
-import com.traffic.wifiapp.utils.LocationUtils;
 import com.traffic.wifiapp.utils.SPUtils;
 import com.traffic.wifiapp.utils.SystemUtil;
 import com.traffic.wifiapp.utils.ViewUtils;
@@ -40,12 +39,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
+import static com.traffic.wifiapp.R.id.window_root;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SHOPER_PAY;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_FREE;
 import static com.traffic.wifiapp.bean.response.WifiProvider.TYPE_SINGLE_PAY;
-import static com.traffic.wifiapp.common.ConstantField.USER;
-import static com.traffic.wifiapp.manager.window.WindowUtils.getXinHaoStr;
+import static com.traffic.wifiapp.manager.window.WindowHideManager.TYPE_LEFT_IN;
+import static com.traffic.wifiapp.manager.window.WindowHideManager.TYPE_MOVE_TO_LEFT;
+import static com.traffic.wifiapp.manager.window.WindowHideManager.TYPE_MOVE_TO_RIGHT;
+import static com.traffic.wifiapp.manager.window.WindowHideManager.TYPE_RIGHT_IN;
 import static com.traffic.wifiapp.manager.window.WindowUtils.gotoApp;
 
 /**
@@ -125,8 +127,12 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
     RelativeLayout windowMainChild;
     @Bind(R.id.percentTv)
     ImageView percentTv;
-    @Bind(R.id.window_root)
+    @Bind(window_root)
     RelativeLayout windowRoot;
+    View window_click;
+    ImageView call1;
+    ImageView call2;
+    ImageView call3;
 
     private WindowManager.LayoutParams wmParams;
     private WindowManager mWindowManager;
@@ -140,6 +146,11 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
     private Context mContext;
     private static WifiWindowManager windowManager;
     private WifiAppPresenter wifiAppPresenter;
+    private WindowHideManager windowHideManager;
+    private boolean isDestory=false,canHide=true;
+    private int mX,mY,SW,SH;
+
+//    private boolean isInit=false;
 
     public static WifiWindowManager getIntance(Context context) {
         if (windowManager == null) {
@@ -153,17 +164,20 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
     }
 
     public void init() {
-        initWindowParams();
+        isDestory=false;
         initView();
+        initWindowParams();
         addWindowView2Window();
         initClick();
         initPrestener();
 
+//        isInit=true;
     }
 
     private void initPrestener(){
         wifiAppPresenter= WifiApplication.getInstance().getWifiAppPresenter();
         wifiAppPresenter.setmServiceIView(this);
+        windowHideManager=new WindowHideManager(percentTv);
     }
 
 
@@ -175,12 +189,16 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         wmParams = new WindowManager.LayoutParams();
         wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;
         wmParams.format = PixelFormat.TRANSLUCENT;
-        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN ;
         wmParams.gravity = Gravity.TOP | Gravity.LEFT;
         wmParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         wmParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         wmParams.x = SystemUtil.dip2px(mContext, 0);
         wmParams.y = SystemUtil.dip2px(mContext, 80);
+
+        SW=SystemUtil.getScreenWidth(mContext);
+        SH=SystemUtil.getScreenHeight(mContext);
+
     }
 
     /**
@@ -188,6 +206,7 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
      * */
     private void initView() {
         mWindowView = LayoutInflater.from(mContext).inflate(R.layout.layout_window, null);
+        window_click=LayoutInflater.from(mContext).inflate(R.layout.window_click,null);
         //初始化悬浮球
         windowItem1Tvname=ButterKnife.findById(mWindowView,R.id.window_item1_tvname);
         windowItem1Imgphoto=ButterKnife.findById(mWindowView,R.id.window_item1_imgphoto);
@@ -195,7 +214,7 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         windowRecyclerview=ButterKnife.findById(mWindowView,R.id.window_recyclerview);
         imgCenter=ButterKnife.findById(mWindowView,R.id.img_center);
         percentTv=ButterKnife.findById(mWindowView,R.id.percentTv);
-        windowRoot=ButterKnife.findById(mWindowView,R.id.window_root);
+        windowRoot=ButterKnife.findById(mWindowView, window_root);
         windowMain=ButterKnife.findById(mWindowView,R.id.window_main);
         windowItem3=ButterKnife.findById(mWindowView,R.id.window_item3);
         windowItem3Show=ButterKnife.findById(mWindowView,R.id.window_item3_show);
@@ -225,12 +244,78 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         windowTvLoc1=ButterKnife.findById(mWindowView,R.id.window_tv_loc1);
         windowItem1Photo=ButterKnife.findById(mWindowView,R.id.window_item1_photo);
         windowMainChild=ButterKnife.findById(mWindowView,R.id.window_main_child);
+        call1=ButterKnife.findById(mWindowView,R.id.window_item_img_call1);
+        call2=ButterKnife.findById(mWindowView,R.id.window_item_img_call2);
+        call3=ButterKnife.findById(mWindowView,R.id.window_item_img_call3);
+    }
+
+    private void addWindowView2Window() {
+        mWindowManager.addView(window_click, wmParams);
+        mWindowManager.addView(mWindowView, wmParams);
+        mWindowManager.updateViewLayout(mWindowView, wmParams);
+    }
+
+    private void removeWindowView() {
+        if (mWindowView != null) {
+            mWindowManager.removeView(mWindowView);
+            mWindowManager.removeView(window_click);
+        }
+    }
+
+    /**
+     * 控制悬浮窗展开与收缩
+     * */
+    private void changeMainView(){
+        if(windowMain.getVisibility()==View.GONE){
+            SPUtils.put(ConstantField.IS_HINT_SYSTEM_WINDOW,true);
+            AnimaUtil.showRainBow(windowMainChild,windowMain,AnimaUtil.VERTICAL);
+            window_click.setVisibility(View.VISIBLE);
+        }else{
+            AnimaUtil.goneRainBow(windowMainChild, windowMain,AnimaUtil.VERTICAL, () -> {
+                switch (windowHideManager.getHideType(mEndX)){
+                    case TYPE_MOVE_TO_LEFT:
+                        while (mEndX>=0){
+                            mEndX-=10;
+                            updateWindow(mEndX,wmParams.y);
+                        }
+                        mEndX=0;
+                        windowHideManager.post(TYPE_LEFT_IN);
+                        break;
+                    case TYPE_MOVE_TO_RIGHT:
+                        while (mEndX<=SW){
+                            mEndX+=10;
+                            updateWindow(mEndX,wmParams.y);
+                        }
+                        mEndX=SW;
+                        windowHideManager.post(TYPE_RIGHT_IN);
+                        break;
+                }
+            });
+            window_click.setVisibility(View.GONE);
+            checkItemViewStatus();
+        }
     }
 
 
-    public void addWindowView2Window() {
-        mWindowManager.addView(mWindowView, wmParams);
-        mWindowManager.updateViewLayout(mWindowView, wmParams);
+    private void checkItemViewStatus(){
+        if(windowItem1Show.getVisibility()==View.VISIBLE){
+            AnimaUtil.goneRainBow(windowItem1ShowChild,windowItem1Show,AnimaUtil.HORIZONTAL,null);
+        }
+        if(windowItem2Show.getVisibility()==View.VISIBLE){
+            AnimaUtil.goneRainBow(windowItem2ShowChild,windowItem2Show,AnimaUtil.HORIZONTAL,null);
+        }
+        if(windowItem3Show.getVisibility()==View.VISIBLE){
+            AnimaUtil.goneRainBow(windowItem3ShowChild,windowItem3Show,AnimaUtil.HORIZONTAL,null);
+        }
+    }
+
+    public void changeItemView(View view,View group){
+        if(group.getVisibility()==View.GONE){
+            checkItemViewStatus();
+            AnimaUtil.showRainBow(view,group,AnimaUtil.HORIZONTAL);
+        }
+        else
+        AnimaUtil.goneRainBow(view,group,AnimaUtil.HORIZONTAL,null);
     }
 
     private void initClick() {
@@ -240,25 +325,30 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         windowItem1ContectBtn1.setOnClickListener(this);
         windowItem1ContectBtn2.setOnClickListener(this);
         windowItem1ContectBtn3.setOnClickListener(this);
+        call1.setOnClickListener(this);
+        call2.setOnClickListener(this);
+        call3.setOnClickListener(this);
         imgCenter.setOnClickListener(this);
         imgSetting.setOnClickListener(this);
+        windowRoot.setOnClickListener(this);
+        window_click.setOnClickListener(v -> changeMainView());
         GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDoubleTap(MotionEvent e) {     //双击事件
+                if(windowHideManager.isMoving())return true;
                 gotoApp(mContext);
                 return true;
             }
 
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-                if(windowMain.getVisibility()==View.GONE)
-                 AnimaUtil.showRainBow(windowMainChild,windowMain,AnimaUtil.VERTICAL);
-                else
-                AnimaUtil.goneRainBow(windowMainChild,windowMain,AnimaUtil.VERTICAL);
+                if(windowHideManager.isMoving())return true;
+                changeMainView();
                 return true;
             }
         });
         percentTv.setOnTouchListener((v, event) -> {
+            if(windowHideManager.onTouchEvent(WifiWindowManager.this::changeMainView))return true;
             gestureDetector.onTouchEvent(event);
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -269,19 +359,20 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
                     mEndX = (int) event.getRawX();
                     mEndY = (int) event.getRawY();
                     if (needIntercept()) {
+                        if(mX==0||mY==0){
+                            mX=percentTv.getMeasuredWidth();
+                            mY=percentTv.getMeasuredHeight();
+                        }
                         //getRawX是触摸位置相对于屏幕的坐标，getX是相对于按钮的坐标
-                        int mX=percentTv.getMeasuredWidth(),mY=percentTv.getMeasuredHeight();
-                        L.v(TAG,"窗口大小：X->"+mX+"\tY->"+mY);
-                        wmParams.x = (int) event.getRawX() - mX/2;
-                        wmParams.y = (int) event.getRawY() - mY/2;
-                        mWindowManager.updateViewLayout(mWindowView, wmParams);
+                        updateWindow(mEndX - mX/2,mEndY - mY/2);
                         return true;
                     }
                     break;
                 case MotionEvent.ACTION_UP:
                     mEndX = (int) event.getRawX();
                     mEndY = (int) event.getRawY();
-                    if (needIntercept()) {
+                    L.v(TAG,"当前位置：X->"+mEndX+"&Y->"+mEndY);
+                    if (checkHide()||needIntercept()) {
                         return true;
                     }
                     break;
@@ -290,6 +381,34 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         });
     }
 
+    private void updateWindow(int x,int y){
+        wmParams.x =x ;
+        wmParams.y =y ;
+        mWindowManager.updateViewLayout(mWindowView, wmParams);
+    }
+    private synchronized boolean checkHide(){
+        //50 作为手指滑动偏差值
+        if(!canHide)return true;
+        new Handler().postDelayed(() -> {
+            canHide=true;
+            if(isDestory||windowMain.getVisibility()==View.VISIBLE)return;
+            if(mEndX<50){
+                updateWindow(0,wmParams.y);
+                windowHideManager.action(WindowHideManager.TYPE_LEFT_IN);
+            }else if(SW-mEndX<50){
+                updateWindow(SW,wmParams.y);
+                windowHideManager.action(WindowHideManager.TYPE_RIGHT_IN);
+            }else if(mEndY<50){
+                updateWindow(wmParams.x,0);
+                windowHideManager.action(WindowHideManager.TYPE_TOP_IN);
+            }else if(SH-mEndY<50){
+                updateWindow(wmParams.x,SH);
+                windowHideManager.action(WindowHideManager.TYPE_BOTTOM_IN);
+            }
+        },500);
+        canHide=false;
+        return mEndX<50||SW-mEndX<50||mEndY<50||SH-mEndY<50;
+    }
     /**
      * 是否拦截
      *
@@ -361,44 +480,44 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
      * */
     private void setItemData(int pos, WifiProvider w) {
         if (w == null) return;
-        LatLng latLng = null;
+      /*  LatLng latLng = null;
         User u = SPUtils.getObject(USER);
-        if (u != null) latLng = new LatLng(u.getLat(), u.getLng());
+        if (u != null) latLng = new LatLng(u.getLat(), u.getLng());*/
         switch (pos) {
             case 0:
                 Glide.with(mContext).load(w.getLogo()).placeholder(R.mipmap.ic_photo).
                         bitmapTransform(new CropCircleTransformation(mContext)).into(windowItem1Imgphoto);
-                windowItem1Tvname.setText(w.getShopname());
-                windowTvLoc1.setText(LocationUtils.getDistance(new LatLng(w.getLat(), w.getLng()), latLng));
-                windowItemXinhao1.setText(getXinHaoStr(w.getLevel()));
+//                windowItem1Tvname.setText(w.getShopname());
+                windowTvLoc1.setText(w.getShopname());
+                windowItemXinhao1.setText(w.getAddr());
                 if (currentW != null && currentW.getBSSID().equals(w.getBSSID())) {
-                    windowItem1ContectBtn1.setText("已连");
+                    windowItem1ContectBtn1.setText(mContext.getString(R.string.status_has_connect));
                 } else {
-                    windowItem1ContectBtn1.setText("连接");
+                    windowItem1ContectBtn1.setText(mContext.getString(R.string.connect));
                 }
                 break;
             case 1:
                 Glide.with(mContext).load(w.getLogo()).placeholder(R.mipmap.ic_photo).
                         bitmapTransform(new CropCircleTransformation(mContext)).into(windowItem2Imgphoto);
-                windowItem2Tvname.setText(w.getShopname());
-                windowTvLoc2.setText(LocationUtils.getDistance(new LatLng(w.getLat(), w.getLng()), latLng));
-                windowItemXinhao2.setText(getXinHaoStr(w.getLevel()));
+//                windowItem2Tvname.setText(w.getShopname());
+                windowTvLoc2.setText(w.getShopname());
+                windowItemXinhao2.setText(w.getAddr());
                 if (currentW != null && currentW.getBSSID().equals(w.getBSSID())) {
-                    windowItem1ContectBtn2.setText("已连");
+                    windowItem1ContectBtn2.setText(mContext.getString(R.string.status_has_connect));
                 } else {
-                    windowItem1ContectBtn2.setText("连接");
+                    windowItem1ContectBtn2.setText(mContext.getString(R.string.connect));
                 }
                 break;
             case 2:
                 Glide.with(mContext).load(w.getLogo()).placeholder(R.mipmap.ic_photo).
                         bitmapTransform(new CropCircleTransformation(mContext)).into(windowItem3Imgphoto);
-                windowItem3Tvname.setText(w.getShopname());
-                windowTvLoc3.setText(LocationUtils.getDistance(new LatLng(w.getLat(), w.getLng()), latLng));
-                windowItemXinhao3.setText(getXinHaoStr(w.getLevel()));
+//                windowItem3Tvname.setText(w.getShopname());
+                windowTvLoc3.setText(w.getShopname());
+                windowItemXinhao3.setText(w.getAddr());
                 if (currentW != null && currentW.getBSSID().equals(w.getBSSID())) {
-                    windowItem1ContectBtn3.setText("已连");
+                    windowItem1ContectBtn3.setText(mContext.getString(R.string.status_has_connect));
                 } else {
-                    windowItem1ContectBtn3.setText("连接");
+                    windowItem1ContectBtn3.setText(mContext.getString(R.string.connect));
                 }
                 break;
         }
@@ -406,33 +525,23 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
 
 
     public void onDestory() {
-        if (mWindowView != null) {
-            //移除悬浮窗口
-            Log.i(TAG, "removeView");
-            mWindowManager.removeView(mWindowView);
-        }
+        Log.i(TAG, "onDestory");
+        isDestory=true;
+        removeWindowView();
     }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.window_item1_photo:
-                if(windowItem1Show.getVisibility()==View.GONE)
-                AnimaUtil.showRainBow(windowItem1ShowChild,windowItem1Show,AnimaUtil.HORIZONTAL);
-                else
-                AnimaUtil.goneRainBow(windowItem1ShowChild,windowItem1Show,AnimaUtil.HORIZONTAL);
+                changeItemView(windowItem1ShowChild,windowItem1Show);
                 break;
             case R.id.window_item2_photo:
-                if(windowItem2Show.getVisibility()==View.GONE)
-                    AnimaUtil.showRainBow(windowItem2ShowChild,windowItem2Show,AnimaUtil.HORIZONTAL);
-                else
-                    AnimaUtil.goneRainBow(windowItem2ShowChild,windowItem2Show,AnimaUtil.HORIZONTAL);
+                changeItemView(windowItem2ShowChild,windowItem2Show);
                 break;
             case R.id.window_item3_photo:
-                if(windowItem3Show.getVisibility()==View.GONE)
-                    AnimaUtil.showRainBow(windowItem3ShowChild,windowItem3Show,AnimaUtil.HORIZONTAL);
-                else
-                    AnimaUtil.goneRainBow(windowItem3ShowChild,windowItem3Show,AnimaUtil.HORIZONTAL);
+                changeItemView(windowItem3ShowChild,windowItem3Show);
                 break;
             case R.id.window_item1_contect_btn1:
                 connectBtnClick(0,windowItem1ContectBtn1);
@@ -449,6 +558,26 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
             case R.id.img_setting:
                 MainActivity.start(mContext);
                 break;
+            case R.id.window_item_img_call1:
+                call(0);
+                break;
+            case R.id.window_item_img_call2:
+                call(1);
+                break;
+            case R.id.window_item_img_call3:
+                call(2);
+                break;
+            case window_root:
+                changeMainView();
+                break;
+        }
+    }
+
+    private void call(int pos){
+        try {
+            WindowUtils.call(mContext,ww.get(pos).getMobile());
+        }catch (Exception E){
+            L.e(TAG,E.toString());
         }
     }
 
@@ -456,18 +585,18 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         try {
         WifiProvider wifiProvider=ww.get(index);
         if(wifiProvider==null){
-            Toast.makeText(mContext,"wifi信息已丢失",Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext,mContext.getString(R.string.e_wifi_msg_lost),Toast.LENGTH_SHORT).show();
             return;
         }
-//        if(button.getText().equals("已连"))return;
         switch (wifiProvider.getType()){
             case TYPE_SHOPER_FREE:
             case TYPE_SINGLE_FREE:
-                if(button.getText().equals("已连"))return;
+                if(button.getText().equals(mContext.getString(R.string.status_has_connect)))return;
                 WifiAdmin.getIntance(mContext).connect(wifiProvider.getSSID());
                 break;
             case TYPE_SHOPER_PAY:
             case TYPE_SINGLE_PAY:
+                WifiAdmin.getIntance(mContext).connect(wifiProvider.getSSID());
                 MainActivity.jumpPay(mContext,wifiProvider);
                 break;
         }
@@ -484,7 +613,7 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
 
     @Override
     public void wifiConnectSuccess(WifiProvider s) {
-          currentW=s;
+        currentW=s;
         getDataFromWifiFragment();
     }
 
@@ -500,4 +629,5 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
         currentW=null;
         getDataFromWifiFragment();
     }
+
 }

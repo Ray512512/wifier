@@ -14,7 +14,6 @@ import com.traffic.wifiapp.rxjava.RxSubscribe;
 import com.traffic.wifiapp.utils.SPUtils;
 import com.traffic.wifiapp.utils.SystemUtil;
 
-import static com.traffic.wifiapp.bean.entry.RegistEntry.REG_LOGIN;
 
 
 /**
@@ -26,24 +25,25 @@ public class LoginPresenter extends BasePresenter<LoginIView> {
     }
 
     //登录
-    public void login(String phone) {
-        RegistEntry registEntry=new RegistEntry(REG_LOGIN);
+    public void login(String phone,String psw) {
+        RegistEntry registEntry=new RegistEntry(RegistEntry.REG_LOGIN);
         registEntry.setMobile(phone);
+        registEntry.setPassword(psw);
         registEntry.setExt0(SystemUtil.getDeviceId());
 
         ApiManager.mApiService.registerAndLogin(registEntry).compose(RxHelper.handleResult())
-                .subscribe(new RxSubscribe<User>(mContext, R.string.login_load) {
-                    @Override
-                    protected void _onNext(User user) {
-                        SPUtils.setObject(ConstantField.USER,user);
-                        mView.onLoginSuccess();
-                    }
+                    .subscribe(new RxSubscribe<User>(mContext, R.string.login_load) {
+                        @Override
+                        protected void _onNext(User user) {
+                            SPUtils.setObject(ConstantField.USER,user);
+                            mView.onLoginSuccess();
+                        }
 
-                    @Override
-                    protected void _onError(String message) {
-                        showToast(message);
-                    }
-                });
+                        @Override
+                        protected void _onError(String message) {
+                            showToast(message);
+                        }
+                    });
 
     }
 }

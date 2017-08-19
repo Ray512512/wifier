@@ -10,10 +10,20 @@ public class RegistEntry {
     public static int REG_LOGIN=2;
     private int reg; //1注册 2登录
     private String mobile;
+    private String password  ;
     private String ext0; //设备标识
 
     public RegistEntry(int reg) {
         this.reg = reg;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getReg() {

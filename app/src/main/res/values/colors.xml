@@ -4,8 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#fe0101</color>
     <color name="white">#ffffff</color>
+    <color name="white_bg">#7FDBCA</color>
     <color name="whitePress">#88ffffff</color>
     <color name="black">#000000</color>
+    <color name="ripple_press">#636060</color>
     <color name="all_bg">#00A1EF</color>
     <color name="little_yellow">#90FEF4AD</color>
     <color name="text_black_high">#333333</color>
@@ -28,6 +30,8 @@
     <color name="colorOrangerPress">#88df6c1c</color>
     <color name="color_oranger">#dbc12b</color>
     <color name="mainGreen">#02B890</color>
+    <color name="mainGreen2">#91e2d0</color>
+    <color name="mainGreenBg">#ebf4f3</color>
     <color name="mainGreenHalf">#8802B890</color>
     <color name="bgGreen">#95DDCD</color>
     <color name="pressColor">#32f1f1f1</color>
@@ -35,5 +39,8 @@
     <color name="black_half_press">#32000000</color>
     <color name="tran_bg">#1f797979</color>
     <color name="map_item_tv">#e3d9b2</color>
+    <color name="window_bg_start">#04b992</color>
+    <color name="window_bg_end">#42caac</color>
+    <color name="tv_gray">#666565</color>
 
 </resources>

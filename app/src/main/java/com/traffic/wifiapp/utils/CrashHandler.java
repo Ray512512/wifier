@@ -111,7 +111,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             }
         }.start();
         //保存日志文件
-//        saveCrashInfo2File(ex);
+        saveCrashInfo2File(ex);
         return true;
     }
 

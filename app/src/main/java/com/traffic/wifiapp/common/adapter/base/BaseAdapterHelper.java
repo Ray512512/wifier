@@ -75,6 +75,11 @@ public class BaseAdapterHelper extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public BaseAdapterHelper setText(int viewId, int value) {
+        TextView view = retrieveView(viewId);
+        view.setText(value);
+        return this;
+    }
     /**
      * Will set the image of an ImageView from a resource id.
      *

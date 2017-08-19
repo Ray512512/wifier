@@ -170,7 +170,7 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
     @Override
     protected void initView(Bundle savedInstanceSate) {
         imgBack.setVisibility(View.INVISIBLE);
-        tvTitle.setText("商品");
+        tvTitle.setText(mRes.getString(R.string.tab_three));
         payEt.setText("0.1");
         //设置只允许输入小数点后两位
 //        InputFilter.setMoneyFilter(payEt);
@@ -181,9 +181,11 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
         wifiRecycler.setAdapter(goodsAdapter);
         wifiRecycler.initLayout(wifiRefresh, goodsAdapter);
         wifiRecycler.openMoreEnabled(false, false);
+        wifiRefresh.setColorSchemeColors(getResources().getColor(R.color.mainGreen));
         wifiRecycler.setLoadingListener(() -> {
             wifiRecycler.loadMoreComplete();
         });
+
         wifiRefresh.setOnRefreshListener(() -> {
             if (mWifiProvider != null){
                 mPresenter.getgetShowGoods(mWifiProvider.getShop_id());
@@ -191,12 +193,6 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
         });
 
         banner.setOnBannerItemClickListener(position -> {
-           /* if (slideImageUrlses != null) {
-                String clickUrl = slideImageUrlses.get(position).getLink_url();
-                Intent intent = new Intent(mContext, WebViewActivity.class);
-                intent.putExtra("url", clickUrl);
-                startActivity(intent);
-            }*/
         });
 
     }
@@ -253,14 +249,14 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
                 break;
             case R.id.monet_btn_pay_platform://打赏给平台
                 String money = payEt.getText().toString();
-                mPresenter.getWXOrderInfo(new OderEntry("0",money,"打赏给平台"));
+                mPresenter.getWXOrderInfo(new OderEntry("0",money,mRes.getString(R.string.pay_platfm)));
                 break;
         }
     }
 
     private OderEntry getOrder() {
         if(mWifiProvider==null){
-            showShortToast("未获取到wifi商户信息");
+            showShortToast(mRes.getString(R.string.e_no_shoper_msg));
             return null;
         }
         String price="", msg="", text;
@@ -269,22 +265,23 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
             case MONEY_CHECK_1H:
                 text = money1Price.getText().toString();
                 price = text.substring(0, text.length() - 1);
-                msg = "购买了"+money1Time.getText().toString()+"wifi使用";
+                msg=String.format(mRes.getString(R.string.pay_what),money1Time.getText().toString());
                 time= H1;
                 break;
             case MONEY_CHECK_4H:
                 text = money2Price.getText().toString();
                 price = text.substring(0, text.length() - 1);
-                msg = "购买了"+money2Time.getText().toString()+"wifi使用";
+                msg=String.format(mRes.getString(R.string.pay_what),money2Time.getText().toString());
                 time= H4;
                 break;
             case MONEY_CHECK_24H:
                 text = money3Price.getText().toString();
                 price = text.substring(0, text.length() - 1);
-                msg = "购买了"+money2Time.getText().toString()+"wifi使用";
+                msg=String.format(mRes.getString(R.string.pay_what),money3Time.getText().toString());
                 time= H24;
                 break;
         }
+        L.v(TAG,msg);
         mWifiProvider.setIpAddr(NetworkTools.getWifiIp(mContext));
         currentPayWifi=new OderEntry(mWifiProvider.getShop_id(),price,msg);
         currentPayWifi.setProvider(mWifiProvider);
@@ -339,7 +336,7 @@ public class ShopAndPayFragment extends BaseFragment<MoneyPresenter> implements 
                 return;
         }
         isOpenWifi=true;
-        showShortToast("打赏成功,感谢您的支持！");
+        showShortToast(mRes.getString(R.string.pay_success));
         new Handler().postDelayed(() -> {
             isOpenWifi = false;
             allowTime=0;
