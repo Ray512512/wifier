@@ -102,6 +102,8 @@ public class WifiAppPresenter {
     public synchronized void getScanWifiList() {
         if (isSearching || !NetUtil.checkNetWork()) {
             L.v(TAG, "正在搜索或者网络不可用，终止此次搜索");
+            if(!NetUtil.checkNetWork())
+                tryConnectAp();
             return;
         }
         isSearching = true;
@@ -224,15 +226,25 @@ public class WifiAppPresenter {
 //                        showToast(message);
                         if (mFragmentView != null)
                             mFragmentView.showDataView();
-                        if (!isInited) {
-                            if (listCanUse.size() > 0) {
-                                connect(listCanUse.get(0).SSID);
-                            }
-                        }
+                        /*if (!isInited) {
+                            tryConnectAp();
+                        }*/
                     }
                 });
     }
 
+    private void tryConnectAp(){
+        if(list==null)
+        wifiAdmin.getWifiList();
+        if(wifiMacList==null)
+        wifiMacList = SPUtils.getObject(ConstantField.WIFI_MAC_LIST);
+        getShowWifiList(wifiMacList);
+        if (listCanUse.size() > 0) {
+            L.f(TAG,"链接特定路由器"+listCanUse.get(0).SSID);
+//            connectpsd(listCanUse.get(0).SSID);
+            connect(listCanUse.get(0).SSID);
+        }
+    }
 
     private void registBordCast() {
         IntentFilter filter = new IntentFilter();
@@ -372,5 +384,7 @@ public class WifiAppPresenter {
     public void connect(String ssid) {
         wifiAdmin.connect(ssid);
     }
-
+    public void connectpsd(String ssid) {
+        wifiAdmin.connect(ssid,"123456789a",3);
+    }
 }

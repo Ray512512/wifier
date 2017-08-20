@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * email：1452011874@qq.com
  */
 public class ApiManager {
-    private static final String  ROOT_URL="http://wififan.zhikenet.com/";
+    public static final String  ROOT_URL="http://wififan.zhikenet.com/";
     public static ApiService mApiService;
 
     //后台请求的方法名枚举，后续根据需要调用的方法来增加

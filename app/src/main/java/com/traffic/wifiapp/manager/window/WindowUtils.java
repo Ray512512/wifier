@@ -15,6 +15,7 @@ import com.traffic.wifiapp.common.ConstantField;
 import com.traffic.wifiapp.common.WifiApplication;
 import com.traffic.wifiapp.fragment.ShopAndPayFragment;
 import com.traffic.wifiapp.login.LoginActivity;
+import com.traffic.wifiapp.mine.SettingActivity;
 import com.traffic.wifiapp.utils.AppManager;
 import com.traffic.wifiapp.utils.DeviceUtils;
 import com.traffic.wifiapp.utils.SPUtils;
@@ -93,5 +94,9 @@ public class WindowUtils {
             return false;
         }
         return true;
+    }
+
+    public static void goToSetting(Context context){
+        context.startActivity(new Intent(context, SettingActivity.class));
     }
 }

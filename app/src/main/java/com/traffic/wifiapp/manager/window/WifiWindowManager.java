@@ -555,7 +555,7 @@ public class WifiWindowManager implements View.OnClickListener, WifiServiceIView
                 MainActivity.start(mContext);
                 break;
             case R.id.img_setting:
-                MainActivity.start(mContext);
+                WindowUtils.goToSetting(mContext);
                 break;
             case R.id.window_item_img_call1:
                 call(0);

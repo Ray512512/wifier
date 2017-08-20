@@ -53,6 +53,7 @@ public class UserInfoPresenter extends BasePresenter<UserInfoIView> {
 
     private CityPicker mCityPicker;
     private String curentProvince, currentCity;
+    private String defaultName,defaultProvince,defaultCity;
 
     //获取省市数据
     private void getAddr() {
@@ -73,6 +74,11 @@ public class UserInfoPresenter extends BasePresenter<UserInfoIView> {
 
     public void saveInfo(String avatarPath, String userName) {
 //        String ids[]=getProvinceId(curentProvince,currentCity);
+        if(!isChange(avatarPath,userName)){
+            showToast(mContext.getString(R.string.msg_save_info_success));
+            mView.saveInfoSuccess();
+            return;
+        }
         Map<String, RequestBody> map = new HashMap<>();
         try {
             RequestBody userId = RequestBody.create(MediaType.parse("text/plain"), WifiApplication.getInstance().getUser().getUser_id());
@@ -80,6 +86,8 @@ public class UserInfoPresenter extends BasePresenter<UserInfoIView> {
             RequestBody provinceId = RequestBody.create(MediaType.parse("text/plain"), curentProvince);
             RequestBody cityId = RequestBody.create(MediaType.parse("text/plain"), currentCity);
 
+            L.v(TAG,"userId:"+WifiApplication.getInstance().getUser().getUser_id()+"\tnickName:"+
+            userName+"\tavatar:"+avatarPath+"\tprovince:"+curentProvince+"\tcity:"+currentCity);
             if(!TextUtils.isEmpty(avatarPath)){
                 File file = FileUtils.getCompressFile(avatarPath);
                 L.v("saveInfo", file.length() + "");
@@ -116,6 +124,7 @@ public class UserInfoPresenter extends BasePresenter<UserInfoIView> {
     private void saveUserInfo(String nickname, String avatarPath) {
         User u = WifiApplication.getInstance().getUser();
         u.setNickname(nickname);
+        if(avatarPath.length()>ApiManager.ROOT_URL.length())
         u.setFace(avatarPath);
         u.setProvinceid(curentProvince);
         u.setCityid(currentCity);
@@ -124,6 +133,13 @@ public class UserInfoPresenter extends BasePresenter<UserInfoIView> {
         SPUtils.setObject(ConstantField.USER, u);
     }
 
+    private boolean isChange(String avatarPath, String userName){
+           if(!TextUtils.isEmpty(avatarPath))return true;
+           if(!userName.equals(defaultName))return true;
+           if(!curentProvince.equals(defaultProvince))return true;
+           if(!currentCity.equals(defaultCity))return true;
+           return false;
+    }
 
     private void initAddrSelect() {
         User user = WifiApplication.getInstance().getUser();
@@ -135,6 +151,9 @@ public class UserInfoPresenter extends BasePresenter<UserInfoIView> {
             curentProvince = BaiduMapManager.myLocation == null ? "" : BaiduMapManager.myLocation.getProvince();
             currentCity = BaiduMapManager.myLocation == null ? "" : BaiduMapManager.myLocation.getCity();
         }
+        defaultProvince=curentProvince;
+        defaultCity=currentCity;
+        defaultName=TextUtils.isEmpty(user.getNickname())?user.getMobile():user.getNickname();
         mView.refreshAddr(curentProvince + "-" + currentCity);
 
         mCityPicker = new CityPicker.Builder(mContext)
